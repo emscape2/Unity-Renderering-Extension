@@ -15,8 +15,9 @@ namespace Assets.Coding.Renderer
         public List<int> triangles = new List<int>();
         public bool makeBezier;
         public bool opticalPositioning = true;
-        public MeshData(List<Vector2>meshData, float width)
+        public MeshData(List<Vector2>meshData, float width, bool optiallyOptimized = true)
         {
+            opticalPositioning = optiallyOptimized;
             var ending = new Vector2(Mathf.Ceil(meshData.Last().x), meshData.First().y);
             meshData.Add(ending);
             meshData.Add(ending+Vector2.right);
@@ -76,7 +77,12 @@ namespace Assets.Coding.Renderer
             
             
             sizeVector = new Vector2(-sizeVectorTurned.y, sizeVectorTurned.x); //90 graden draaien
-            var sizevectorstraigtened = sizeVectorTurned.x != 0.0f ? (sizeVector.x / sizeVectorTurned.x) * sizeVectorTurned : sizeVector;
+
+            Vector2 sizevectorstraigtened = Vector3.zero;
+            if (opticalPositioning)
+                sizevectorstraigtened = sizeVectorTurned.x != 0.0f ? (sizeVector.x / sizeVectorTurned.x) * sizeVectorTurned : sizeVector;
+            
+            
             var sizevectorDown = sizeVector - (sizevectorstraigtened );
             var sizevectorUp = (Vector2.zero - sizeVector) + (sizevectorstraigtened );
 
@@ -87,7 +93,7 @@ namespace Assets.Coding.Renderer
             if (sizeVector.y < 0)
 
             {
-
+                
 
                 vertices.Add(currentPoint - sizevectorDown);
                 vertices.Add(currentPoint - sizevectorUp);
