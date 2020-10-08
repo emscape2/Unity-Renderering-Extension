@@ -43,12 +43,13 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
 
     public IEnumerator SceneLoadCoroutine()
     {
-        yield return new WaitForSeconds(3.0f);
+        //yield return new WaitForSeconds(0.1f);
             engaged = new GameObject();
         var task =  SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         task.allowSceneActivation = true;
         yield return new WaitUntil(() => task.isDone);
         Scene = SceneManager.GetSceneByName(sceneToLoad);
+        
         engaged = false;
 
     }

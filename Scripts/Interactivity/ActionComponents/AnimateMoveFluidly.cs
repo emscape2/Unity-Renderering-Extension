@@ -7,7 +7,9 @@ public class AnimateMoveFluidly :Consequence
     public Vector3 Direction;
      Vector3 Movement;
     public float linearSpeed;
-     Vector3 origin;
+    public float exponent;
+    public float ratio;
+    Vector3 origin;
     public bool activated;
 
 public override void Disengage()
@@ -48,7 +50,7 @@ void Start()
             if (distance > linearSpeed * time*2.0f)
             {
                 Vector2 dir =((Vector2) (Movement - rectTransform.position)).normalized;
-                dir *= 0.5f + (1.8f * distance / Direction.magnitude);
+                dir *= 0.5f + Mathf.Pow(1.8f * distance / Direction.magnitude,exponent);
 
                 rectTransform.position += (Vector3)dir * time* linearSpeed; //new Vector3(dir.x * linearSpeed, dir.y * linearSpeed, 0.0f);
             }
@@ -62,7 +64,7 @@ void Start()
             if (distance > linearSpeed * time * 2.0f)
             {
                 Vector2 dir = ((Vector2)(origin -rectTransform.position)).normalized;
-                dir *= 0.5f + (1.8f * distance / Direction.magnitude);
+                dir *= 0.5f + Mathf.Pow(1.8f * distance / Direction.magnitude,exponent) *ratio;
                 rectTransform.position += (Vector3)dir * time*linearSpeed;
             }
             else

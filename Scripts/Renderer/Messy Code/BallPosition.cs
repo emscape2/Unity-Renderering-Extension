@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BallPosition : MonoBehaviour
 {
@@ -15,11 +16,11 @@ public class BallPosition : MonoBehaviour
     public Color colorLit;
     public Color colorUnlit;
     Color CurrentColor;
-    
+    float startTime;
     // Start is called before the first frame update
     void Start()
     {
-
+        startTime = Time.timeSinceLevelLoad;
         fakeBpm = transform.parent.GetComponent<SinusoidRendererComponent>().fakeBpm * 0.1f;     ;
         amplitude   = transform.parent.GetComponent<SinusoidRendererComponent>().amplitude  ;
         width       = transform.parent.GetComponent<SinusoidRendererComponent>().width   ;
@@ -38,7 +39,7 @@ public class BallPosition : MonoBehaviour
 
         var parentMesh = transform.parent.GetComponent<MeshRenderer>();
         var parentmeshTimeManipulation = (1.0f - (0.95f * Convert.ToInt32(!parentMesh.enabled)));
-        var totalTime = Time.timeSinceLevelLoad* parentmeshTimeManipulation;
+        var totalTime = (Time.timeSinceLevelLoad- startTime )* parentmeshTimeManipulation;
         float yPosLast = transform.localPosition.y;
         var yScaleLast = transform.localScale;
         double x = totalTime;
@@ -90,7 +91,7 @@ public class BallPosition : MonoBehaviour
         double velocityNext = (yNext - y).normalized.y;
         double velocityCurrent = xPos * velocityNext + (1.0 - xPos) * velocityLast;
         //transform.localScale = (float)(Math.Max(1-velocityCurrent,0.5) * 4 * width) * Vector3.one;
-        transform.localScale = (float)width*2.0f //(float)(0.5*((( 0.5*transform.localPosition.y )/ amplitude ) +0.5)+ 2*width)            
+        transform.localScale = (float)(((( 0.2*transform.localPosition.y )/ amplitude ) +0.5)+ 3*width)            
                                *  Vector3.one;
         
             
