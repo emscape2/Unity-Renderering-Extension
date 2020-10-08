@@ -6,9 +6,9 @@ public class MakeShiftXByX : MonoBehaviour
 {
     public float screenpercentage;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        transform.localPosition = new Vector3(screenpercentage, 0, 0.1f);
+        transform.localPosition = new Vector3(screenpercentage, 0, 1.1f);
     }
 
     // Update is called once per frame

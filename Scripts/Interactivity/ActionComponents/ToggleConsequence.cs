@@ -5,13 +5,17 @@ using UnityEngine;
 public class ToggleConsequence : Consequence
 {
     public UnityEngine.GameObject toToggle;
+    public UnityEngine.Renderer toDecativate;
     public override void Disengage()
     { 
     }
 
     public override void Engage()
     {
-        toToggle.SetActive(!toToggle.activeSelf);
+        if (toToggle != null)
+            toToggle.SetActive(!toToggle.activeSelf);
+        if (toDecativate!=null)
+            toDecativate.enabled = !toDecativate.enabled;
     }
     public override bool CanEngage()
     {

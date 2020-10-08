@@ -23,14 +23,14 @@ public class TimedRepeater : Interaction
 
     public override bool TryInteract(GameObject gameObject)
     {
-        double realbpm = gameObject.GetComponent<SinusoidRendererComponent>().realbpm;
+        double realbpm = gameObject.GetComponent<SinusoidRendererComponent>()?.realbpm ?? 12.0;
         double secsforLoop = (60.0 / realbpm);
 
         if (!started)
         {
             started = true;
-            ratioUp = ratioUp != 0 ? ratioUp :  gameObject.GetComponent<SinusoidRendererComponent>().ratioUp;//todo:  abstractify
-            ratioDown = ratioDown != 0 ? ratioDown : gameObject.GetComponent<SinusoidRendererComponent>().ratioDown;
+            ratioUp = ratioUp != 0 ? ratioUp :  gameObject.GetComponent<SinusoidRendererComponent>()?.ratioUp ?? 1.0;//todo:  abstractify
+            ratioDown = ratioDown != 0 ? ratioDown : gameObject.GetComponent<SinusoidRendererComponent>()?.ratioDown ?? 1.0;
             double totalRatio = ratioDown + ratioUp;
             nextUp = -(ratioDown / totalRatio) * secsforLoop;
             nextUp += headstart;
@@ -38,18 +38,36 @@ public class TimedRepeater : Interaction
             nextDown += headstart;
             return true;
         }
-        if (gameObject.transform.position.x <= nextUp)
+        if (gameObject.GetComponent<SinusoidRendererComponent>() != null)
         {
-            nextUp -= secsforLoop;
-            return true; //engage 
+            if (gameObject.transform.position.x <= nextUp)
+            {
+                nextUp -= secsforLoop;
+                return true; //engage 
+            }
+            if (gameObject.transform.position.x <= nextDown)
+            {
+                nextDown -= secsforLoop;
+                return false; //disengage
+            }
+            if (nextUp > nextDown)
+                return true;
         }
-        if (gameObject.transform.position.x <= nextDown)
+        else
         {
-            nextDown -= secsforLoop;
-            return false; //disengage
+            if (Time.realtimeSinceStartup <= nextUp)
+            {
+                nextUp -= secsforLoop;
+                return true; //engage 
+            }
+            if (Time.realtimeSinceStartup <= nextDown)
+            {
+                nextDown -= secsforLoop;
+                return false; //disengage
+            }
+            if (nextUp > nextDown)
+                return true;
         }
-        if (nextUp > nextDown)
-            return true;
         return false;
     }
 

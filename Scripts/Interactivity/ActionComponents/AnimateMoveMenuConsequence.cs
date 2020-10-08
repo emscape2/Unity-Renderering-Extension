@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class AnimateMoveFluidly :Consequence
+public class AnimateMoveMenuConsequence : Consequence
 {
     public Vector3 Direction;
      Vector3 Movement;
     public float linearSpeed;
      Vector3 origin;
     public bool activated;
-
 public override void Disengage()
 {
         engaged = false;
@@ -29,11 +29,12 @@ public override bool CanEngage()
 // Start is called before the first frame update
 void Start()
     {
+        gameObject.GetComponent<MakeShiftXByX>()?.Start(); 
         Transform rectTransform = transform;
-        origin = rectTransform.position;
-        Movement = origin + Direction;
+        origin = new Vector3(rectTransform.localPosition .x, rectTransform.localPosition .y,Direction.z);
+        Movement = origin + new Vector3(Direction.x, Direction.y,0);
         activated = false;
-
+               
     }
 
 
@@ -44,29 +45,29 @@ void Start()
         var time = Time.deltaTime;
         if (activated )
         {
-            float distance = Vector2.Distance(rectTransform.position, Movement);
+            float distance = Vector2.Distance(rectTransform.localPosition, Movement);
             if (distance > linearSpeed * time*2.0f)
             {
-                Vector2 dir =((Vector2) (Movement - rectTransform.position)).normalized;
+                Vector2 dir =((Vector2) (Movement - rectTransform.localPosition)).normalized;
                 dir *= 0.5f + (1.8f * distance / Direction.magnitude);
 
-                rectTransform.position += (Vector3)dir * time* linearSpeed; //new Vector3(dir.x * linearSpeed, dir.y * linearSpeed, 0.0f);
+                rectTransform.localPosition += (Vector3)dir * time* linearSpeed; //new Vector3(dir.x * linearSpeed, dir.y * linearSpeed, 0.0f);
             }
             else
-                rectTransform.position = Movement;
+                rectTransform.localPosition = Movement;
         }
         else
         {
 
-            float distance = Vector2.Distance(rectTransform.position, origin);
+            float distance = Vector2.Distance(rectTransform.localPosition, origin);
             if (distance > linearSpeed * time * 2.0f)
             {
-                Vector2 dir = ((Vector2)(origin -rectTransform.position)).normalized;
+                Vector2 dir = ((Vector2)(origin -rectTransform.localPosition)).normalized;
                 dir *= 0.5f + (1.8f * distance / Direction.magnitude);
-                rectTransform.position += (Vector3)dir * time*linearSpeed;
+                rectTransform.localPosition += (Vector3)dir * time*linearSpeed;
             }
             else
-                rectTransform.position = origin; 
+                rectTransform.localPosition = origin; 
         }
 }
 }
