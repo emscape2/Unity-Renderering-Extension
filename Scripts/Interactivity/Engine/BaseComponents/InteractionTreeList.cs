@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro.EditorUtilities;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,6 +29,7 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
             var firstItem = new InteractionList(root,
                 SceneManager.GetActiveScene().GetRootGameObjects().Select(go=>go.transform),
                 InteractionList.currentId, 0, "Scene");
+
             root.AddChild( firstItem);
             return root;
         }
@@ -41,8 +43,10 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
         {
             _transform = transform;
             _special = special;
-            if (_special)
+            if (_special)//todo meerdere
             {
+
+                icon = (AssetPreview.GetMiniTypeThumbnail(typeof(Animator)));//EditorGUIUtility.IconContent("")
             }
         }
         public void onGUI()
