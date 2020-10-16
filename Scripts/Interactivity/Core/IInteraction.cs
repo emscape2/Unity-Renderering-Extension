@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IInteraction
 {
-
+    string Name { get;  }
     bool? TryInteract(GameObject gameObject);
     
 }
+

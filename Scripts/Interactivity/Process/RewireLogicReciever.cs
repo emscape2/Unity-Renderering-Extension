@@ -12,6 +12,9 @@ namespace Assets.Scripts.Interactivity.Process
         public MonoBehaviour consequence;
         bool engaged;
         bool disengaged;
+        public string Name { get { return gameObject.name; } }
+
+
         public bool CanEngage()
         {
             return true;
