@@ -15,8 +15,9 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
 
     {
         [SerializeField]
-        TreeViewState viewState;
-        InteractionTreeView interactionTreeList;
+        TreeViewState viewStateL, viewStateR;
+        InteractionTreeView<IInteraction> interactionTreeList;
+        InteractionTreeView<IConsequence> interactionTreeListR;
         [MenuItem("GUIllaume/Interaction Management")]
         public static void ShowWindow()
         {
@@ -25,17 +26,23 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
         }
         void OnEnable()
         {
-            if (viewState == null)
+            if (viewStateL == null)
             {
-                viewState = new TreeViewState();
+                viewStateL = new TreeViewState();
             }
-            interactionTreeList = new InteractionTreeView(viewState);
-            
+            if (viewStateR == null)
+            {
+                viewStateR = new TreeViewState();
+            }
+            interactionTreeList = new InteractionTreeView<IInteraction>(viewStateL);
+            interactionTreeListR = new InteractionTreeView<IConsequence>(viewStateR);
+
         }
         void OnGUI()
         {
-            interactionTreeList.OnGUI(new Rect(0, 0, position.width/5, position.height));
-            EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 5, 0, position.width * 0.6f, position.height), new Color(0.25f, 0.22f, 0.23f));
+            interactionTreeList.OnGUI(new Rect(0, 0, position.width/3, position.height));
+            interactionTreeListR.OnGUI(new Rect(position.width *0.6667f, 0, position.width/3, position.height));
+            EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 0, position.width * 0.333333f, position.height), new Color(0.25f, 0.22f, 0.23f));
         }
     }
 }
