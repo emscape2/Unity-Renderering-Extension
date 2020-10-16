@@ -9,7 +9,7 @@ public class Draggable : Interaction
     bool isDown;
     float timeDown, timeUp;
 
-    public override bool TryInteract(GameObject gameObject)
+    public override bool? TryInteract(GameObject gameObject)
     {
 
         if ((MouseBehavior.MouseOver(Input.mousePosition, gameObject)|| isDown) && Input.GetMouseButton(0))

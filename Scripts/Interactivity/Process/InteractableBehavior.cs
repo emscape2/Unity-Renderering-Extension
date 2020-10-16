@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core;
+using Assets.Scripts.Interactivity.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,12 +30,9 @@ public class InteractableBehavior : MonoBehaviour, IConsequence
             }
         }
     }
-
-    
-
     public void Engage()
     {
-        foreach(var consequence in consequences)
+        foreach (var consequence in consequences)
         {
             (consequence as IConsequence).Engage();
         }
@@ -61,20 +59,21 @@ public class InteractableBehavior : MonoBehaviour, IConsequence
         {
             MouseBehavior.InstantiateDrawRect(gameObject);
         }
-
-        if (interaction.TryInteract(gameObject))
+        if (interaction == null)
+            return;
+        switch (interaction.TryInteract(gameObject))
         {
-            if (!engaged)
-            {
+            case (true):
                 engaged = true;
                 Engage();
-            }
+                break;
+            case (false):
+                engaged = false;
+                Disengage();
+                break;
+            case (null):
+                break;
         }
-        else if (engaged)
-        {
-            engaged = false;
-            Disengage();
-        }
-
     }
 }
+

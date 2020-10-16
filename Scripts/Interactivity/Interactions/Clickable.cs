@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class Clickable : Interaction
 {
     bool mouseDownLast, clicked;
-    public override bool TryInteract(GameObject gameObject)
+    public override bool? TryInteract(GameObject gameObject)
     {
         var mouseDownNow = Input.GetMouseButton(0);
         if (mouseDownLast && !mouseDownNow)

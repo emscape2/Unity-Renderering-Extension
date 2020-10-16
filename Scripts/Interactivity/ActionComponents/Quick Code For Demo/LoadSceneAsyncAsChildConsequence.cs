@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class LoadSceneAsyncAsChildConsequence : Consequence
 {
@@ -35,8 +36,10 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
             }
             else
             {
-                loading = false;
                 SceneManager.UnloadSceneAsync(Scene);
+                loading = false;
+                
+                
             }
         }
     }
@@ -46,6 +49,7 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
         //yield return new WaitForSeconds(0.1f);
             engaged = new GameObject();
         var task =  SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+        
         task.allowSceneActivation = true;
         yield return new WaitUntil(() => task.isDone);
         Scene = SceneManager.GetSceneByName(sceneToLoad);
@@ -57,6 +61,8 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
+        
+
     }
 
     // Update is called once per frame

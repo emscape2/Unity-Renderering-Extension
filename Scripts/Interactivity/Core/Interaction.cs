@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Interaction : ScriptableObject
+public abstract class Interaction : MonoBehaviour, IInteraction
 {
-    public virtual bool TryInteract(GameObject gameObject)
+    public bool engaged;
+    public virtual bool? TryInteract(GameObject gameObject)
     {
         return false;
     }

@@ -21,7 +21,7 @@ public class TimedRepeater : Interaction
 
 
 
-    public override bool TryInteract(GameObject gameObject)
+    public override bool? TryInteract(GameObject gameObject)
     {
         double realbpm = gameObject.GetComponent<SinusoidRendererComponent>()?.realbpm ?? 12.0;
         double secsforLoop = (60.0 / realbpm);

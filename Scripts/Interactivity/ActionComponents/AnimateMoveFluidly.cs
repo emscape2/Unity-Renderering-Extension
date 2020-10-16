@@ -11,15 +11,25 @@ public class AnimateMoveFluidly :Consequence
     public float ratio;
     Vector3 origin;
     public bool activated;
-
+    public bool returnOnDisengage;
 public override void Disengage()
 {
-        engaged = false;
-        activated = !activated;
+        if (returnOnDisengage)
+        {
+            activated = false;
+            engaged = true;
+        }
+        else
+        {
+            
+            engaged = false;
+        }
 }
 
 public override void Engage()
 {
+        activated = !activated;
+
         engaged = true;
 }
 
@@ -51,7 +61,6 @@ void Start()
             {
                 Vector2 dir =((Vector2) (Movement - rectTransform.position)).normalized;
                 dir *= 0.5f + Mathf.Pow(1.8f * distance / Direction.magnitude,exponent);
-
                 rectTransform.position += (Vector3)dir * time* linearSpeed; //new Vector3(dir.x * linearSpeed, dir.y * linearSpeed, 0.0f);
             }
             else

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,11 +45,18 @@ public class BallPosition : MonoBehaviour
         var yScaleLast = transform.localScale;
         double x = totalTime;
         double xPos = totalTime * fakeBpm * detail / 60.0;
-
+        int xPosA = (int)xPos;
+        if (points.Count() == 0 || xPosA >= points.Max(p =>  p.x));
+        {
+            if (points.Length > 0)
+                xPosA = 0;
+            else
+                return;
+        }
         //todo: quick search implementeren
-        Vector2 yLast = points[(int)xPos];
-        Vector2 y = points[(int)xPos + 1];
-        Vector2 yNext = points[(int)xPos + 2];
+        Vector2 yLast = points[xPosA];
+        Vector2 y = points[xPosA + 1];
+        Vector2 yNext = points[xPosA + 2];
         for (int i = 0; i < points.Length-1; i++)
         {
             var current = points[i];

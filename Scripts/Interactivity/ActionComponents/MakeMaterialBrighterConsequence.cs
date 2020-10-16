@@ -12,17 +12,23 @@ public class MakeMaterialBrighterConsequence : Consequence
     //<Sprite> ToBrighten;
     public Color Lit;
     public Color Unlit;
-
+    public bool onlyEngage;
     public override void Disengage()
     {
-        if (ToBrighten != null)
-            ToBrighten.color = Unlit;
-        if (sprite != null)
-            sprite.color = Unlit;
+        engaged = false;
+
+        if (!onlyEngage)
+        {
+            if (ToBrighten != null)
+                ToBrighten.color = Unlit;
+            if (sprite != null)
+                sprite.color = Unlit;
+        }
     }
 
     public override void Engage()
     {
+        engaged = true;
         if (ToBrighten != null)
             ToBrighten.color = Lit;
         if (sprite != null)

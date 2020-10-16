@@ -8,13 +8,16 @@ public class KeyboardInputSensitive : Interaction
 {
     [SerializeField]
     public KeyCode KeyCode; 
-    public override bool TryInteract(GameObject gameObject)
+
+    public override bool? TryInteract(GameObject gameObject)
     {
 
-        if (Input.GetKeyDown(KeyCode))
-            return true;
+        if (Input.GetKey(KeyCode))
+            return engaged = true;
+        else if (engaged)
+            return engaged = false;
         else
-            return false;
+            return null;
     }
 
 }
