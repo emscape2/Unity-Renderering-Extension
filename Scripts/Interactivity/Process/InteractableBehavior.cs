@@ -5,12 +5,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InteractableBehavior : MonoBehaviour, IConsequence
+public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPattern
 {
     public List<MonoBehaviour> consequences; //IConsequence
-    public Interaction interaction;
     [SerializeField]
     bool engaged;
+    [SerializeField]
+    public IInteraction interaction { get; set; }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +78,16 @@ public class InteractableBehavior : MonoBehaviour, IConsequence
             case (null):
                 break;
         }
+    }
+
+    public void Engage(int i)
+    {
+       Engage();
+    }
+
+    public void Disengage(int i)
+    {
+        Disengage();
     }
 }
 

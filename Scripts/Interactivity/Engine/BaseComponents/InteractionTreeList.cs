@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Interactivity.Core;
+using Assets.Scripts.Interactivity.Engine.Connecter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
+using UnityEditor.MemoryProfiler;
 using UnityEditor.UI;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -19,18 +21,26 @@ using UnityEngine.UIElements.Experimental;
 namespace Assets.Scripts.Interactivity.Engine.BaseComponents
 {
 
+    class InteractionTreeLinks
+    {
+        public static ConnetionLinkDictionary<Type, Component> links;
+
+    }
+
     class InteractionTreeView<T> : TreeView
         where T : IGUIllaume
     {
-        public InteractionTreeView(TreeViewState state) : base(state)
+        public InteractionTreeView(TreeViewState state, bool right) : base(state)
         {
-            
-            links = new Dictionary<Type, Component>();
-            Reload();
+            if (InteractionTreeLinks.links == null)
+            {
+
+                InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(Component), typeof(Component));
+            }
+                Reload();
         }
 
-        static Texture texIcon;
-        static Dictionary<Type, Component> links;
+        internal static Texture texIcon;
         protected override TreeViewItem BuildRoot()
             
         {
@@ -40,10 +50,6 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
             var firstItem = new InteractionList<T>(root,
                 SceneManager.GetActiveScene().GetRootGameObjects().Select(go => go.transform),
                 InteractionList<T>.currentId, 0, typeof(T).ToString(), iconType);
-            {
-                
-            };
-
             root.AddChild( firstItem);
             return root;
         }
@@ -61,7 +67,8 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
         protected override  void RowGUI(RowGUIArgs rowGUIArgs)
         {
             base.RowGUI(rowGUIArgs);
-            if ( this.IsSelected(rowGUIArgs.item.id))
+            bool isactive = InteractionTreeLinks.links.ContainsKey(typeof(T)) && InteractionTreeLinks.links[typeof(T)] != null && InteractionTreeLinks.links[typeof(T)].GetInstanceID() == (rowGUIArgs.item as InteractionListLine<T>).unitID;
+            if ( isactive || this.IsSelected(rowGUIArgs.item.id))
             {
                 var rekt = rowGUIArgs.rowRect;
                 var newRekt = new Rect(rekt.x, rekt.y, rekt.width * 0.1f, rekt.height);
@@ -69,7 +76,7 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
                 var scope = new GUILayout.AreaScope(newRekt);
                 if ((rowGUIArgs.item as InteractionListLine<T>)._special)
                 {
-                    if (links.ContainsKey(typeof(T)) && links[typeof(T)] != null && links[typeof(T)].GetInstanceID() == (rowGUIArgs.item as InteractionListLine<T>).unitID)
+                    if (isactive)
                     {
 
                        GUILayout.Box(new GUIContent(texIcon, "Selected"), EditorStyles.miniLabel);
@@ -78,14 +85,8 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
                     {
                         if (GUILayout.Button(new GUIContent(texIcon, "Start Linking"), EditorStyles.miniButton))
                         {
-                            if (links.ContainsKey(typeof(T)))
-                            {
-                                links[typeof(T)] = (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component;
-                            }
-                            else
-                            {
-                                links.Add(typeof(T), (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component);
-                            }
+                            InteractionTreeLinks.links.Add(typeof(T), (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component);
+
                         }
                     }
                 }

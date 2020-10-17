@@ -8,6 +8,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor.IMGUI.Controls;
 using Assets.Scripts.Interactivity.Engine.BaseComponents;
+using Assets.Scripts.Interactivity.Core;
+using Assets.Scripts.Interactivity.Engine.Connecter;
 
 namespace Assets.Scripts.Interactivity.Engine.Windows
 {
@@ -17,7 +19,9 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
         [SerializeField]
         TreeViewState viewStateL, viewStateR;
         InteractionTreeView<IInteraction> interactionTreeList;
-        InteractionTreeView<IConsequence> interactionTreeListR;
+        InteractionTreeView<ActivationReciever> interactionTreeListR;
+
+
         [MenuItem("GUIllaume/Interaction Management")]
         public static void ShowWindow()
         {
@@ -34,8 +38,9 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             {
                 viewStateR = new TreeViewState();
             }
-            interactionTreeList = new InteractionTreeView<IInteraction>(viewStateL);
-            interactionTreeListR = new InteractionTreeView<IConsequence>(viewStateR);
+            InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(IInteraction), typeof(ActivationReciever));
+            interactionTreeList = new InteractionTreeView<IInteraction>(viewStateL,false);
+            interactionTreeListR = new InteractionTreeView<ActivationReciever>(viewStateR,true);
 
         }
         void OnGUI()
