@@ -9,7 +9,7 @@ namespace Assets.Scripts.Interactivity.Core
 {
     public interface IActivationPattern: IGUIllaume
     {
-        
+
         void Engage(int i);
         void Disengage(int i);
     }

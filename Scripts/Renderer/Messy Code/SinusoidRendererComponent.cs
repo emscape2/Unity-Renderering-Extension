@@ -21,10 +21,9 @@ public class SinusoidRendererComponent : MonoBehaviour
     public double ratioDown;
     public double realbpm;
     // Start is called before the first frame update
-    void OnStartEnable()
+    void Start()
     {
         
-        //points = new Sinusoid().Points(bpm, amplitude, length, detail).ToArray();
         
         var totalRatio = ratioUp + ratioDown;
         var Omhoog = Upwards_Graph(totalRatio);

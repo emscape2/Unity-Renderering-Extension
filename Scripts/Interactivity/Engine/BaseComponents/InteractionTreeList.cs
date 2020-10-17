@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
+using UnityEditor.UI;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,13 +24,17 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
     {
         public InteractionTreeView(TreeViewState state) : base(state)
         {
+            
+            links = new Dictionary<Type, Component>();
             Reload();
         }
 
-
+        static Texture texIcon;
+        static Dictionary<Type, Component> links;
         protected override TreeViewItem BuildRoot()
             
         {
+            texIcon = AssetPreview.GetMiniTypeThumbnail(typeof(Flare)); 
             var iconType = typeof(T) == typeof(IInteraction) ? typeof(Animator) : typeof(CanvasRenderer);
             var root = new TreeViewItem { id = InteractionList<T>.currentId, depth = -1, displayName = "Root" };
             var firstItem = new InteractionList<T>(root,
@@ -41,40 +47,73 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
             root.AddChild( firstItem);
             return root;
         }
-        protected  void SelectionClick(UnityEditor.IMGUI.Controls.TreeViewItem item, bool keepMultiSelection)
-        {
-            //base.SelectionClick(item, keepMultiSelection);
-            //InspectorElement elem = new InspectorElement((item as InteractionListLine<T>).GetComponent() as Component);
-
-        }
 
         protected override void SingleClickedItem(int id)
         {
+            if (id == 1)
+                return;
             var guirow = FindRows(new List<int> () {id} );
             var fi = guirow.FirstOrDefault() as InteractionListLine<T>;
-            var el = (fi.GetComponent() as Component);
-            UnityEditor.Selection.SetActiveObjectWithContext(el.gameObject,el.gameObject.transform.parent);
+            var el = fi.GetComponent() as Component;
+            if (el !=null )
+                UnityEditor.Selection.SetActiveObjectWithContext(el.gameObject,el.gameObject.transform);
         }
-        
+        protected override  void RowGUI(RowGUIArgs rowGUIArgs)
+        {
+            base.RowGUI(rowGUIArgs);
+            if ( this.IsSelected(rowGUIArgs.item.id))
+            {
+                var rekt = rowGUIArgs.rowRect;
+                var newRekt = new Rect(rekt.x, rekt.y, rekt.width * 0.1f, rekt.height);
+                //GUILayout.BeginArea(newRekt);
+                var scope = new GUILayout.AreaScope(newRekt);
+                if ((rowGUIArgs.item as InteractionListLine<T>)._special)
+                {
+                    if (links.ContainsKey(typeof(T)) && links[typeof(T)] != null && links[typeof(T)].GetInstanceID() == (rowGUIArgs.item as InteractionListLine<T>).unitID)
+                    {
+
+                       GUILayout.Box(new GUIContent(texIcon, "Selected"), EditorStyles.miniLabel);
+                    }
+                    else
+                    {
+                        if (GUILayout.Button(new GUIContent(texIcon, "Start Linking"), EditorStyles.miniButton))
+                        {
+                            if (links.ContainsKey(typeof(T)))
+                            {
+                                links[typeof(T)] = (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component;
+                            }
+                            else
+                            {
+                                links.Add(typeof(T), (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component);
+                            }
+                        }
+                    }
+                }
+                GUILayout.EndArea();
+            }
+        }
+
     }
 
     class InteractionListLine<T> : TreeViewItem
+        where T : IGUIllaume
     {
         
         Transform _transform;
-        int unitID;
+        internal int unitID;
+        internal bool _special;
         public InteractionListLine(Transform transform,int unityId, bool special,  int id, int depth, string displayName) : base(id, depth, displayName)
         {
             _transform = transform;
             var typetje = typeof(T);
             if (typeof(T) == typeof(IInteraction))
                 typetje = typeof(Animator);
-
             else if (typeof(T) == typeof(IConsequence))
                 typetje = typeof(CanvasRenderer);
             if (special)
                 icon = (AssetPreview.GetMiniTypeThumbnail(typetje));//EditorGUIUtility.IconContent("")
             unitID = unityId;
+            _special = special;
         }
         public T GetComponent()
         {
@@ -85,9 +124,11 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
 
         public override Texture2D icon { get => base.icon; set => base.icon = value; }
 
+        
+
     }
 
-    class InteractionList<T> : TreeViewItem
+    class InteractionList<T> : InteractionListLine<T>
         where T: IGUIllaume
     {
         //alternatieve zoekmethode met 
@@ -96,7 +137,7 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
         private static int _curid;
         public static int currentId { get { return _curid++; } }
 
-        public InteractionList(TreeViewItem rootItem , IEnumerable<Transform> root, int id, int depth, string displayName, Type icon) : base(id, depth, displayName)
+        public InteractionList(TreeViewItem rootItem , IEnumerable<Transform> root, int id, int depth, string displayName, Type icon) : base(root.FirstOrDefault(),root.FirstOrDefault().GetInstanceID(),false,id, depth, displayName)
            
         {
             var SceneRoot = root;
