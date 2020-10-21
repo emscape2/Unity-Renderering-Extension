@@ -8,11 +8,11 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
     {
 
         
-        [MenuItem("GUIllaume/Interaction Management")]
+        [MenuItem("GUIllaume/1. Interaction Management", priority = 1)]
         public static void ShowWindow()
         {
            var window = EditorWindow.GetWindow(typeof(InteractionManagementScreen)); 
-            window.titleContent = new GUIContent("KANKER Management");
+            window.titleContent = new GUIContent("Interaction Management");
         }
 
         

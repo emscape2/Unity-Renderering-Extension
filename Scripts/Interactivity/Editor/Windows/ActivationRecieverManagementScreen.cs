@@ -8,7 +8,7 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
     {
 
 
-        [MenuItem("GUIllaume/Activation Reciever Management")]
+        [MenuItem("GUIllaume/2. Activation Reciever Management", priority = 2)]
         public static void ShowWindow()
         {
             var window = EditorWindow.GetWindow( typeof(ActivationRecieverManagementScreen));

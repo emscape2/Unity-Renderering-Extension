@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Interactivity.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Interactivity.Process
 {
-    class ReverterLogicReciever : MonoBehaviour, IConsequence
+    class ReverterLogicReciever : MonoBehaviour, IActivationPattern, IConsequence
     {
-        public MonoBehaviour consequence;
+        public List<MonoBehaviour> consequence;
+
+        public List<MonoBehaviour> Consequences { get => consequence; set => consequence = value; }
+
         public bool CanEngage()
         {
             return true;
@@ -17,12 +21,22 @@ namespace Assets.Scripts.Interactivity.Process
 
         public void Disengage()
         {
-            ((IConsequence)consequence)?.Engage();
+            consequence.ForEach(c => ((IConsequence)c).Engage());
+        }
+
+        public void Disengage(int i)
+        {
+            Disengage();
         }
 
         public void Engage()
         {
-            ((IConsequence)consequence)?.Disengage();
+            consequence.ForEach(c => ((IConsequence)c).Disengage());
+        }
+
+        public void Engage(int i)
+        {
+            Engage();
         }
     }
 }

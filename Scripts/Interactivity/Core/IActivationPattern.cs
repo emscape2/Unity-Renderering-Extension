@@ -9,7 +9,10 @@ namespace Assets.Scripts.Interactivity.Core
 {
     public interface IActivationPattern: IGUIllaume
     {
-       
+
+
+
+        List<MonoBehaviour> Consequences { get; set; }
 
         void Engage(int i);
         void Disengage(int i);

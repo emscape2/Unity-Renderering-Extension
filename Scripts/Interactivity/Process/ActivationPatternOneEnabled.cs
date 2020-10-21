@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Interactivity.Process
         public int enablyat;//Actually a boolean but hey Unity doesnt understand lists of booleans
         public bool isDisengageSensitive, isDisengageEveryone;
 
+        public List<MonoBehaviour> Consequences { get => consequences; set => consequences = value; }
 
         void Start()
         {

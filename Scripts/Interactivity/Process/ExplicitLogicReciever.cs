@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Interactivity.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Interactivity.Process
 {
-    class RewireLogicReciever : MonoBehaviour, IInteraction, IConsequence
+    class ExplicitLogicReciever : MonoBehaviour, IInteraction, IConsequence
     {
-        public MonoBehaviour consequence;
         bool engaged;
         bool disengaged;
         public string Name { get { return gameObject.name; } }
@@ -25,10 +25,23 @@ namespace Assets.Scripts.Interactivity.Process
             disengaged = true;
         }
 
+        public void Disengage(int i)
+        {
+            Disengage();
+        }
+
         public void Engage()
         {
-            disengaged = false;
-            engaged = true;
+            if (disengaged)
+            {
+                disengaged = false;
+                engaged = true;
+            }
+        }
+
+        public void Engage(int i)
+        {
+            Engage();
         }
 
         public bool? TryInteract(GameObject gameObject)

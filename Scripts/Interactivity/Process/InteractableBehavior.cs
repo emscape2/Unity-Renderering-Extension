@@ -11,6 +11,8 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
     [SerializeField]
     bool engaged;
 
+    public List<MonoBehaviour> Consequences { get => consequences; set => consequences=value; }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -11,27 +11,30 @@ namespace Assets.Scripts.Interactivity.Process
     class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
     {
         [SerializeField]
-        public MonoBehaviour consequence; //IConsequence
+        public List<MonoBehaviour> consequence; //IConsequence
         [SerializeField]
 
         public int enablyat;//Actually a boolean but hey Unity doesnt understand lists of booleans
         public bool counting;
         public float timer;
         public bool enableDisengage;
+        public List<MonoBehaviour> Consequences { get => consequence; set => consequence = value; }
 
 
         void Start()
         {
-
-            if ((IConsequence)(consequence) == null)
+            foreach (var c in consequence)
             {
-                try
+                if ((IConsequence)(c) == null)
                 {
-                    consequence.Invoke("CanEngage", 0);//try if implemements members anyways
-                }
-                catch
-                {
-                    Debug.LogError($"Invalid consequence {consequence.name} in {this.name}");
+                    try
+                    {
+                        c.Invoke("CanEngage", 0);//try if implemements members anyways
+                    }
+                    catch
+                    {
+                        Debug.LogError($"Invalid consequence {c.name} in {this.name}");
+                    }
                 }
             }
 
@@ -44,7 +47,7 @@ namespace Assets.Scripts.Interactivity.Process
                 if (timer <= 0)
                 {
                     counting = false;
-                    consequence.Invoke("Engage", 0);
+                    consequence.ForEach(c => c.Invoke("Engage", 0));
                 }
             }
         }
@@ -52,7 +55,7 @@ namespace Assets.Scripts.Interactivity.Process
         {
             if (enableDisengage)
             {
-                consequence.Invoke("Disengage", 0);//try if implemements members anyways();
+                consequence.ForEach(c => c.Invoke("Disengage", 0));
                 counting = false;
             }
         }
