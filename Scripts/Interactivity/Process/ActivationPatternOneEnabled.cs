@@ -17,7 +17,6 @@ namespace Assets.Scripts.Interactivity.Process
         public int enablyat;//Actually a boolean but hey Unity doesnt understand lists of booleans
         public bool isDisengageSensitive, isDisengageEveryone;
 
-        public IInteraction interaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void Start()
         {

@@ -13,22 +13,24 @@ using Assets.Scripts.Interactivity.Engine.Connecter;
 
 namespace Assets.Scripts.Interactivity.Engine.Windows
 {
-    class InteractionManagementScreen : EditorWindow
-
+    class InteractionManagementScreenBase<T,R> : EditorWindow
+        where T : IGUIllaume
+        where R : IGUIllaume
     {
         [SerializeField]
         TreeViewState viewStateL, viewStateR;
-        InteractionTreeView<IInteraction> interactionTreeList;
-        InteractionTreeView<ActivationReciever> interactionTreeListR;
+        InteractionTreeView<T> interactionTreeList;
+        InteractionTreeView<R> interactionTreeListR;
 
-
+        /*
         [MenuItem("GUIllaume/Interaction Management")]
         public static void ShowWindow()
         {
             var window = EditorWindow.GetWindow(typeof(InteractionManagementScreen));
             window.titleContent = new GUIContent("Interaction Management");
-        }
-        void OnEnable()
+        }*/
+
+        protected void OnEnable()
         {
             if (viewStateL == null)
             {
@@ -38,12 +40,14 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             {
                 viewStateR = new TreeViewState();
             }
-            InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(IInteraction), typeof(ActivationReciever));
-            interactionTreeList = new InteractionTreeView<IInteraction>(viewStateL,false);
-            interactionTreeListR = new InteractionTreeView<ActivationReciever>(viewStateR,true);
+
+
+            InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R));
+            interactionTreeList = new InteractionTreeView<T>(viewStateL,false);
+            interactionTreeListR = new InteractionTreeView<R>(viewStateR,true);
 
         }
-        void OnGUI()
+        protected void OnGUI()
         {
             interactionTreeList.OnGUI(new Rect(0, 0, position.width/3, position.height));
             interactionTreeListR.OnGUI(new Rect(position.width *0.6667f, 0, position.width/3, position.height));

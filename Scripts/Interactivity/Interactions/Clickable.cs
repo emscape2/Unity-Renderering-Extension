@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-[CreateAssetMenuAttribute(menuName = "Interactions/Clickable")]
 public class Clickable : Interaction
 {
     bool mouseDownLast, clicked;

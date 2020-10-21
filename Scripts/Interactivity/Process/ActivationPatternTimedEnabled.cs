@@ -19,7 +19,6 @@ namespace Assets.Scripts.Interactivity.Process
         public float timer;
         public bool enableDisengage;
 
-        public IInteraction interaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void Start()
         {

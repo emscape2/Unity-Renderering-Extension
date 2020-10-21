@@ -12,7 +12,7 @@ namespace Assets.Scripts.Interactivity.Core
     {
         public int interactionNumber;
         [SerializeField]
-        public MonoBehaviour activationPattern;
+        public MonoBehaviour activationPattern; 
         [SerializeField]
         public Interaction interaction;
         public bool engaged;

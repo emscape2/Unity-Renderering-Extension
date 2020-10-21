@@ -10,10 +10,6 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
     public List<MonoBehaviour> consequences; //IConsequence
     [SerializeField]
     bool engaged;
-    [SerializeField]
-    public IInteraction interaction { get; set; }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +54,7 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
     // Update is called once per frame
     protected virtual void Update()
     {
-        //debug masks 
+        /*//debug masks 
         if (Input.GetKeyDown(KeyCode.U))
         {
             MouseBehavior.InstantiateDrawRect(gameObject);
@@ -77,7 +73,7 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
                 break;
             case (null):
                 break;
-        }
+        }*/
     }
 
     public void Engage(int i)

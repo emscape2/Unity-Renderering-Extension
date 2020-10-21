@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenuAttribute(menuName = "Interactions/KeyboardInputSensitive")]
 public class KeyboardInputSensitive : Interaction
 {
     [SerializeField]

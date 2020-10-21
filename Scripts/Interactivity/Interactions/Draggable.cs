@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenuAttribute(menuName = "Interactions/Draggable")]
 public class Draggable : Interaction
 {
     bool isDown;
