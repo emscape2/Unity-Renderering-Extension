@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Core
-{
     public interface IActivationPattern: IGUIllaume
     {
 
@@ -17,4 +15,3 @@ namespace Assets.Scripts.Interactivity.Core
         void Engage(int i);
         void Disengage(int i);
     }
-}

@@ -1,14 +1,6 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Process
-{
-    class ExplicitLogicReciever : MonoBehaviour, IInteraction, IConsequence
+class ExplicitLogicReciever : MonoBehaviour, IInteraction, IConsequence
     {
         bool engaged;
         bool disengaged;
@@ -61,4 +53,3 @@ namespace Assets.Scripts.Interactivity.Process
         }
 
     }
-}

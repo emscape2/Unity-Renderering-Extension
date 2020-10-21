@@ -1,18 +1,8 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using Assets.Scripts.Interactivity.Engine.BaseComponents;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 
-namespace Assets.Scripts.Interactivity.Engine.Connecter
-{
-    internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key,Value>
+internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key,Value>
      where Key : Type
         where Value : Component
     {
@@ -45,4 +35,3 @@ namespace Assets.Scripts.Interactivity.Engine.Connecter
 
         
     }
-}

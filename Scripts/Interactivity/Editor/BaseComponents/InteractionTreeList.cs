@@ -1,27 +1,13 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using Assets.Scripts.Interactivity.Engine.Connecter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro.EditorUtilities;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
-using UnityEditor.MemoryProfiler;
-using UnityEditor.UI;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
 
-namespace Assets.Scripts.Interactivity.Engine.BaseComponents
-{
 
-    class InteractionTreeLinks
+class InteractionTreeLinks
     {
         public static ConnetionLinkDictionary<Type, Component> links;
 
@@ -196,4 +182,3 @@ namespace Assets.Scripts.Interactivity.Engine.BaseComponents
         
 
     }
-}

@@ -1,14 +1,7 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Process
-{
-    class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
+class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
     {
         [SerializeField]
         public List<MonoBehaviour> consequence; //IConsequence
@@ -80,4 +73,3 @@ namespace Assets.Scripts.Interactivity.Process
             }
         }
     }
-}

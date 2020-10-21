@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,6 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Engine.Connecter
-{
     class InteractionConnecter<T, R>
         where T: Component
         where R: Component
@@ -31,4 +28,3 @@ namespace Assets.Scripts.Interactivity.Engine.Connecter
         
         
     }
-}

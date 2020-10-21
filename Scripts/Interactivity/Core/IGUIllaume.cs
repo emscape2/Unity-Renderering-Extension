@@ -5,9 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Core
-{
     public interface IGUIllaume
     {
     }
-}

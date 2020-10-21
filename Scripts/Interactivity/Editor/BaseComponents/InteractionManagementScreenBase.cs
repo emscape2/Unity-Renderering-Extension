@@ -7,12 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections;
 using UnityEditor.IMGUI.Controls;
-using Assets.Scripts.Interactivity.Engine.BaseComponents;
-using Assets.Scripts.Interactivity.Core;
-using Assets.Scripts.Interactivity.Engine.Connecter;
 
-namespace Assets.Scripts.Interactivity.Engine.Windows
-{
     class InteractionManagementScreenBase<T,R> : EditorWindow
         where T : IGUIllaume
         where R : IGUIllaume
@@ -54,4 +49,3 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 0, position.width * 0.333333f, position.height), colour);
         }
     }
-}

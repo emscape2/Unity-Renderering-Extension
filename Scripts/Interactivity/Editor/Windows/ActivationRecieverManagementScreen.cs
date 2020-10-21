@@ -1,9 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using Assets.Scripts.Interactivity.Core;
 
-namespace Assets.Scripts.Interactivity.Engine.Windows
-{
     class ActivationRecieverManagementScreen : InteractionManagementScreenBase<ActivationReciever, IActivationPattern>
     {
 
@@ -21,4 +18,3 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
         }
 
     }
-}

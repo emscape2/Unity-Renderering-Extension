@@ -1,9 +1,5 @@
-﻿using Assets.Scripts.Core;
-using Assets.Scripts.Interactivity.Core;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPattern
 {

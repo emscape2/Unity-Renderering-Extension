@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Assets.Scripts.Core
-{
     class MouseBehavior
     {
 
@@ -150,4 +148,3 @@ namespace Assets.Scripts.Core
 
         }
     }
-}

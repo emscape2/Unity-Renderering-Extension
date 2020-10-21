@@ -1,9 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using Assets.Scripts.Interactivity.Core;
 
-namespace Assets.Scripts.Interactivity.Engine.Windows
-{
     class ConsequenceManagmentScreen : InteractionManagementScreenBase<IActivationPattern, IConsequence>
     {
 
@@ -24,4 +21,3 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
 
 
     }
-} 

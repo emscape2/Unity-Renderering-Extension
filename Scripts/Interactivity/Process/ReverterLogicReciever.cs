@@ -1,14 +1,7 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Process
-{
-    class ReverterLogicReciever : MonoBehaviour, IActivationPattern, IConsequence
+class ReverterLogicReciever : MonoBehaviour, IActivationPattern, IConsequence
     {
         public List<MonoBehaviour> consequence;
 
@@ -39,4 +32,3 @@ namespace Assets.Scripts.Interactivity.Process
             Engage();
         }
     }
-}

@@ -1,15 +1,7 @@
-﻿using Assets.Scripts.Interactivity.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Process
-{
-    class ActivationPatternOneEnabled : MonoBehaviour, IActivationPattern
+class ActivationPatternOneEnabled : MonoBehaviour, IActivationPattern
     {
         [SerializeField]
         public List<MonoBehaviour> consequences; //IConsequence
@@ -76,4 +68,3 @@ namespace Assets.Scripts.Interactivity.Process
             }
         }
     }
-}

@@ -1,14 +1,6 @@
-﻿using Assets.Scripts.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Interactivity.Core
-{
-    public class ActivationReciever : MonoBehaviour, IConsequence
+public class ActivationReciever : MonoBehaviour, IConsequence
     {
         public int interactionNumber;
         [SerializeField]
@@ -72,4 +64,3 @@ namespace Assets.Scripts.Interactivity.Core
 
         }
     }
-}
