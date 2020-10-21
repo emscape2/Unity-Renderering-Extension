@@ -13,8 +13,12 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
         {
             var window = EditorWindow.GetWindow( typeof(ActivationRecieverManagementScreen));
             window.titleContent = new GUIContent("Activation Management");
-        } 
-
+        }
+        protected override void OnGUI()
+        {
+            colour = new Color(0.15f, 0.22f, 0.23f);
+            base.OnGUI();
+        }
 
     }
 }

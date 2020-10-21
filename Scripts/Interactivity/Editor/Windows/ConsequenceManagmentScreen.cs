@@ -15,7 +15,13 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             window.titleContent = new GUIContent("Consequence Management");
         }
 
-        
-        
+        protected override void OnGUI()
+        {
+            colour = new Color(0.24f, 0.16f, 0.22f);
+            base.OnGUI();
+
+        }
+
+
     }
 } 

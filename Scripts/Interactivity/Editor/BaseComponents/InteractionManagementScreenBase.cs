@@ -21,7 +21,7 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
         TreeViewState viewStateL, viewStateR;
         InteractionTreeView<T> interactionTreeList;
         InteractionTreeView<R> interactionTreeListR;
-
+        protected Color colour = new Color(0.25f, 0.22f, 0.23f);
         /*
         [MenuItem("GUIllaume/Interaction Management")]
         public static void ShowWindow()
@@ -47,11 +47,11 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             interactionTreeListR = new InteractionTreeView<R>(viewStateR,true);
 
         }
-        protected void OnGUI()
+        protected virtual void OnGUI()
         {
             interactionTreeList.OnGUI(new Rect(0, 0, position.width/3, position.height));
             interactionTreeListR.OnGUI(new Rect(position.width *0.6667f, 0, position.width/3, position.height));
-            EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 0, position.width * 0.333333f, position.height), new Color(0.25f, 0.22f, 0.23f));
+            EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 0, position.width * 0.333333f, position.height), colour);
         }
     }
 }

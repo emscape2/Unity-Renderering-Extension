@@ -15,7 +15,13 @@ namespace Assets.Scripts.Interactivity.Engine.Windows
             window.titleContent = new GUIContent("Interaction Management");
         }
 
-        
-        
+
+        protected override void OnGUI()
+        {
+            colour = new Color(0.23f, 0.12f, 0.14f);
+            base.OnGUI();
+
+        }
+
     }
 } 
