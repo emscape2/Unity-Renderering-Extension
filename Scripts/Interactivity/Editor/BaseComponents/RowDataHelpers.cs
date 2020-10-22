@@ -12,6 +12,11 @@ public class RowDataHelpers<T> where T : IGUIllaume
     public static Texture2D RowIcon(Component component)
     {
         var typetje = component.GetType();
+        return RowIcon(typetje);
+    }
+
+    public static Texture2D RowIcon(Type typetje)
+    {
         var answer = AssetPreview.GetMiniTypeThumbnail(typetje);
         if (answer != null)
             return answer;
@@ -28,7 +33,11 @@ public class RowDataHelpers<T> where T : IGUIllaume
             typetje = typeof(CanvasRenderer);
         else
             typetje = typeof(LensFlare);
-        return (AssetPreview.GetMiniTypeThumbnail(typetje));//EditorGUIUtility.IconContent("")
+        answer = AssetPreview.GetMiniTypeThumbnail(typetje);
+        if (answer != null)
+            return answer;
+
+        return (AssetPreview.GetMiniTypeThumbnail(typeof(T)));//EditorGUIUtility.IconContent("")
     }
 }
 

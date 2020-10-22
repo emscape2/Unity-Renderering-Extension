@@ -7,40 +7,73 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections;
 using UnityEditor.IMGUI.Controls;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using UnityEditor.UIElements;
+using System.Management.Instrumentation;
+using UnityEditor.UI;
+using System.Reflection;
 
-    class InteractionManagementScreenBase<T,R> : EditorWindow
-        where T : IGUIllaume
-        where R : IGUIllaume
+class InteractionManagementScreenBase<T, R> : EditorWindow
+    where T : IGUIllaume
+    where R : IGUIllaume
+{
+    [SerializeField]
+    TreeViewState viewStateL, viewStateR;
+    InteractionTreeView<T> interactionTreeList;
+    InteractionTreeView<R> interactionTreeListR;
+    protected Color colour = new Color(0.25f, 0.22f, 0.23f);
+    protected bool oneToMany;   //todo: change into relationtype enum
+
+    GUIStyle stijl;
+    protected virtual void OnEnable()
     {
-        [SerializeField]
-        TreeViewState viewStateL, viewStateR;
-        InteractionTreeView<T> interactionTreeList;
-        InteractionTreeView<R> interactionTreeListR;
-        protected Color colour = new Color(0.25f, 0.22f, 0.23f);
-        protected bool oneToMany;   //todo: change into relationtype enum
+        if (viewStateL == null)
+        {
+            viewStateL = new TreeViewState();
+        }
+        if (viewStateR == null)
+        {
+            viewStateR = new TreeViewState();
+        }
+
+
+        var links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R), oneToMany);
+        interactionTreeList = new InteractionTreeView<T>(viewStateL, false, links);
+        interactionTreeListR = new InteractionTreeView<R>(viewStateR, true, links);
         
 
-        protected virtual void OnEnable()
+    }
+    protected virtual void OnGUI()
+    {/*
+        var genMen = new GenericMenu();
+            genMen.AddItem(
+            new GUIContent("Reload()", RowDataHelpers<IGUIllaume>.RowIcon(typeof(WindZone)),"RELADA DA PAGINA")
+            ,
+            false,
+            new GenericMenu.MenuFunction(OnEnable));
+
+
+        //genMen.DropDown(new Rect(0, 0, position.width, 10));
+
+        //EditorUtility.DisplayCustomMenu(new Rect(0, 0, position.width, 10),)
+
+        //genMen.ShowAsContext();
+        GUI.color = Color.black;
+
+        ContextMenu GFUCKER = new ContextMenu("KANKEROP", false, 1);
+
+        //KAMNKERohinjofj
+        var menuitem  = new MenuItem("FUUUUUCKKKK YOUUUUNIETIYYYY/KRIJGDEKANKER");
+        AddComponentMenu() 
+        (menuitem);
+        */
+        interactionTreeList.OnGUI(new Rect(0, 32, position.width / 3, position.height-10));
+        interactionTreeListR.OnGUI(new Rect(position.width * 0.6667f, 32, position.width / 3, position.height));
+        EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 32, position.width * 0.333333f, position.height), colour);
+        if (GUILayout.Button(new GUIContent("Cancer", "Reload de kanker "),GUI.skin.button))
         {
-            if (viewStateL == null)
-            {
-                viewStateL = new TreeViewState();
-            }
-            if (viewStateR == null)
-            {
-                viewStateR = new TreeViewState();
-            }
-
-
-            var links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R),oneToMany);
-            interactionTreeList = new InteractionTreeView<T>(viewStateL,false,links);
-            interactionTreeListR = new InteractionTreeView<R>(viewStateR,true,links);
-
-        }
-        protected virtual void OnGUI()
-        {
-            interactionTreeList.OnGUI(new Rect(0, 0, position.width/3, position.height));
-            interactionTreeListR.OnGUI(new Rect(position.width *0.6667f, 0, position.width/3, position.height));
-            EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 0, position.width * 0.333333f, position.height), colour);
+            OnEnable();
         }
     }
+}

@@ -12,7 +12,8 @@ public class ActivationReciever : MonoBehaviour, IConsequence
         {
                 if ((IActivationPattern)(activationPattern) == null)
                 {
-                        Debug.LogError($"Invalid consequence {activationPattern} in {this.name}");        
+                        Debug.LogError($"Missing activation pattern {activationPattern} in {this.name}, generating empty.");
+                        activationPattern = gameObject.AddComponent<DummyActivationPattern>();
                 }
         }
         public bool CanEngage()

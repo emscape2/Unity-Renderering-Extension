@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
-
+/// <summary>
+/// Passes logic on, needs to explicitely be Disengaged before re-engagement;
+/// </summary>
 class ExplicitLogicReciever : MonoBehaviour, IInteraction, IConsequence
     {
         bool engaged;
-        bool disengaged;
+        bool disengaged = true;
         public string Name { get { return gameObject.name; } }
 
 
