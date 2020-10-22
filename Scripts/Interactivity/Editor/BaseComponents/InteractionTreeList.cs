@@ -143,7 +143,7 @@ class InteractionList<T> : InteractionListLine<T>
         List<TreeViewItem> answer = new List<TreeViewItem>();
         foreach (var obj in SceneRoot)
         {
-            var children = obj.GetComponentsInChildren<Transform>().Where(child => child.gameObject != obj.gameObject).ToList();
+            var children = obj.GetComponentsInChildren<Transform>().Where(child => child.parent== obj.transform).ToList();
             T[] Interactions = obj.GetComponents<T>();
             TreeViewItem curData = null;
             if (Interactions.Any())

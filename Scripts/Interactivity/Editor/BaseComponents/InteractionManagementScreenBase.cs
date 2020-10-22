@@ -45,33 +45,11 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
 
     }
     protected virtual void OnGUI()
-    {/*
-        var genMen = new GenericMenu();
-            genMen.AddItem(
-            new GUIContent("Reload()", RowDataHelpers<IGUIllaume>.RowIcon(typeof(WindZone)),"RELADA DA PAGINA")
-            ,
-            false,
-            new GenericMenu.MenuFunction(OnEnable));
-
-
-        //genMen.DropDown(new Rect(0, 0, position.width, 10));
-
-        //EditorUtility.DisplayCustomMenu(new Rect(0, 0, position.width, 10),)
-
-        //genMen.ShowAsContext();
-        GUI.color = Color.black;
-
-        ContextMenu GFUCKER = new ContextMenu("KANKEROP", false, 1);
-
-        //KAMNKERohinjofj
-        var menuitem  = new MenuItem("FUUUUUCKKKK YOUUUUNIETIYYYY/KRIJGDEKANKER");
-        AddComponentMenu() 
-        (menuitem);
-        */
+    {
         interactionTreeList.OnGUI(new Rect(0, 32, position.width / 3, position.height-10));
         interactionTreeListR.OnGUI(new Rect(position.width * 0.6667f, 32, position.width / 3, position.height));
         EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 32, position.width * 0.333333f, position.height), colour);
-        if (GUILayout.Button(new GUIContent("Cancer", "Reload de kanker "),GUI.skin.button))
+        if (GUILayout.Button(new GUIContent("Cancer", "Und davos kanker bij"),GUI.skin.button))
         {
             OnEnable();
         }
