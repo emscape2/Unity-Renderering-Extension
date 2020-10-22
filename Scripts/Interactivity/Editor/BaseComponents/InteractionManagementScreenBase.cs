@@ -17,15 +17,10 @@ using UnityEditor.IMGUI.Controls;
         InteractionTreeView<T> interactionTreeList;
         InteractionTreeView<R> interactionTreeListR;
         protected Color colour = new Color(0.25f, 0.22f, 0.23f);
-        /*
-        [MenuItem("GUIllaume/Interaction Management")]
-        public static void ShowWindow()
-        {
-            var window = EditorWindow.GetWindow(typeof(InteractionManagementScreen));
-            window.titleContent = new GUIContent("Interaction Management");
-        }*/
+        protected bool oneToMany;   //todo: change into relationtype enum
+        
 
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             if (viewStateL == null)
             {
@@ -37,9 +32,9 @@ using UnityEditor.IMGUI.Controls;
             }
 
 
-            InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R));
-            interactionTreeList = new InteractionTreeView<T>(viewStateL,false);
-            interactionTreeListR = new InteractionTreeView<R>(viewStateR,true);
+            var links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R),oneToMany);
+            interactionTreeList = new InteractionTreeView<T>(viewStateL,false,links);
+            interactionTreeListR = new InteractionTreeView<R>(viewStateR,true,links);
 
         }
         protected virtual void OnGUI()

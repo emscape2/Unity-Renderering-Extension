@@ -9,20 +9,18 @@ using UnityEngine.SceneManagement;
 
 class InteractionTreeLinks
     {
-        public static ConnetionLinkDictionary<Type, Component> links;
 
     }
 
     class InteractionTreeView<T> : TreeView
         where T : IGUIllaume
     {
-        public InteractionTreeView(TreeViewState state, bool right) : base(state)
+        public ConnetionLinkDictionary<Type, Component> links;
+        private bool _right;
+        public InteractionTreeView(TreeViewState state, bool right, ConnetionLinkDictionary<Type, Component> _links) : base(state)
         {
-            if (InteractionTreeLinks.links == null)
-            {
-
-                InteractionTreeLinks.links = new ConnetionLinkDictionary<Type, Component>(typeof(Component), typeof(Component));
-            }
+                links = _links;
+        _right = right;
                 Reload();
         }
 
@@ -53,7 +51,9 @@ class InteractionTreeLinks
         protected override  void RowGUI(RowGUIArgs rowGUIArgs)
         {
             base.RowGUI(rowGUIArgs);
-            bool isactive = InteractionTreeLinks.links.ContainsKey(typeof(T)) && InteractionTreeLinks.links[typeof(T)] != null && InteractionTreeLinks.links[typeof(T)].GetInstanceID() == (rowGUIArgs.item as InteractionListLine<T>).unitID;
+        int id = (rowGUIArgs.item as InteractionListLine<T>).unitID;
+            bool isactive = links.ContainsKey(typeof(T)) && links[typeof(T)] != null && links[typeof(T)].GetInstanceID() == id;
+            isactive = isactive || (_right && links.rightList != null && links.rightList.Any(r => r.GetInstanceID() == id));
             if ( isactive || this.IsSelected(rowGUIArgs.item.id))
             {
                 var rekt = rowGUIArgs.rowRect;
@@ -71,7 +71,7 @@ class InteractionTreeLinks
                     {
                         if (GUILayout.Button(new GUIContent(texIcon, "Start Linking"), EditorStyles.miniButton))
                         {
-                            InteractionTreeLinks.links.Add(typeof(T), (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component);
+                            links.Add(typeof(T), (rowGUIArgs.item as InteractionListLine<T>).GetComponent() as Component);
 
                         }
                     }
