@@ -9,7 +9,7 @@ using UnityEngine;
     {
 
 
-
+        [SerializeField]
         List<MonoBehaviour> Consequences { get; set; }
 
         void Engage(int i);

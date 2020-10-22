@@ -14,7 +14,7 @@ class InteractionConnecter<T, R>
     {
     }
 
-    public void Connect(T source, R target)
+    public void Connect(T source, R target)//todo: tagging mechanism for dynamic linkage
     {
         if ((source as Interaction) != null && (target as ActivationReciever) != null)
             Connect(source as Interaction, target as ActivationReciever);
@@ -24,17 +24,11 @@ class InteractionConnecter<T, R>
 
     public void Connect(T source, IEnumerable<R> target)
     {
-
-    }
-    /// <summary>
-    /// Interaction Management
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    public void Connect(Interaction source, ActivationReciever target)
-    {
-        SerializedObject serializedObject = new SerializedObject(target as UnityEngine.Object);
-        target.interaction = source;
+        var targetList = target?.Any() ?? false;
+        if ((typeof(T) == typeof( ConsequenceGroup)) && targetList)
+            Connect(source as ConsequenceGroup, target.OfType<MonoBehaviour>().ToList());
+        if (((source as IActivationPattern) != null ) && targetList)
+            Connect(source as IActivationPattern, target.OfType<MonoBehaviour>().ToList());
     }
     /// <summary>
     /// Activation Reciever Management
@@ -46,6 +40,34 @@ class InteractionConnecter<T, R>
         SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
         source.activationPattern = target as MonoBehaviour;
     }
-
-
+    /// <summary>
+    /// consequence grouping
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public void Connect(ConsequenceGroup source, List<MonoBehaviour> target)
+    {
+        SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
+        source.consequences = target;
+    }
+    /// <summary>
+    /// consequence management
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public void Connect(IActivationPattern source, List<MonoBehaviour> target)
+    {
+        SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
+        source.Consequences = target;
+    }
+    /// <summary>
+    /// Interaction Management
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public void Connect(Interaction source, ActivationReciever target)
+    {
+        SerializedObject serializedObject = new SerializedObject(target as UnityEngine.Object);
+        target.interaction = source;
+    }
 }

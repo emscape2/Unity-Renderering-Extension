@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ConsequenceGroup : MonoBehaviour, IConsequence
 {
+    [SerializeField]
     public List<MonoBehaviour> consequences; //IConsequence
     void Start()
     {

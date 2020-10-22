@@ -17,10 +17,7 @@ internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key, Value>
             {
                 rightList = new List<Value>();
             }
-            if (base.ContainsKey(rightType))
-            {
-                base.Remove(rightType);
-            }
+            
             if (base[key] == value)
             {
                 if (key == rightType && rightList != null)
@@ -29,8 +26,11 @@ internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key, Value>
             }
             else
             {
-               
 
+                if (base.ContainsKey(rightType))
+                {
+                    base.Remove(rightType);
+                }
 
                 base[key] = value;
             }

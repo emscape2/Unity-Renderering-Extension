@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPattern
 {
+    [SerializeField]
     public List<MonoBehaviour> consequences; //IConsequence
     [SerializeField]
     bool engaged;
