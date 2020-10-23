@@ -40,6 +40,7 @@ public class InteractionAttribute : System.Attribute
     public InteractionAttribute(Type c, string name)
     {
         ConnectionType = c;
+        Name = name;
     }
 
     /// <summary>
@@ -72,6 +73,7 @@ public class InteractionAttribute : System.Attribute
         foreach (var prop in info)
         {
             var attr = prop.GetCustomAttributes(typeof(G), true);
+            attr = attr ?? prop.GetCustomAttributes(typeof(IEnumerable<G>), true);
             Interaction = (G)attr.FirstOrDefault();
         }
         

@@ -21,28 +21,27 @@ where T : IGUIllaume
         
     public void Link(IEnumerable<T> left, IEnumerable<R> right)
     {
-        if (leftInteraction.ConnectionType == typeof(R))
+        if (leftInteraction?.ConnectionType == typeof(R))
         {
             WrapUp(leftInteraction, left.First(), right.First());
         }
-        else if (rightInteraction.ConnectionType == typeof(T))
+        else if (rightInteraction?.ConnectionType == typeof(T))
         {
             WrapUp(rightInteraction, right.First(), left.First());
         }
-        else if (leftInteraction.ConnectionType == typeof(IEnumerable<R>))
+        else if (leftInteraction?.ConnectionType == typeof(IEnumerable<R>))
         {
             WrapUp(leftInteraction, left.First(), right);
         }
-        else if (rightInteraction.ConnectionType == typeof(IEnumerable<T>))
+        else if (rightInteraction?.ConnectionType == typeof(IEnumerable<T>))
         {
             WrapUp(rightInteraction, right.First(), left);
         }
     }
 
-    public void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, object target)
+    protected void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, object target)
     {
         sourceInteraction.setTargetRef(source, target);
-
     }
 
 

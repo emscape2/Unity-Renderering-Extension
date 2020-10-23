@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 internal class ConnetionLinkDictionary<Key, Value>
      where Key : Type
@@ -14,7 +17,16 @@ internal class ConnetionLinkDictionary<Key, Value>
 
 
 
-    public IEnumerable<Value> this[Key key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public IEnumerable<Value> this[Key key]
+    {
+        get => dictionary[key];
+        set  {
+            if (!dictionary.ContainsKey(key))
+                dictionary.Add(key, null);
+            dictionary[key] = value.ToList();
+        } 
+    }
+
 
     public void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
     {
@@ -23,7 +35,7 @@ internal class ConnetionLinkDictionary<Key, Value>
             if (dictionary.ContainsKey(key))
             {
                 dictionary.Remove(key);
-                return;
+                
             }
         }
         if (!dictionary.ContainsKey(key))
@@ -53,24 +65,30 @@ internal class ConnetionLinkDictionary<Key, Value>
 
     public bool ContainsKey(Key key)
     {
-        throw new NotImplementedException();
+        return dictionary.ContainsKey(key);
     }
 
     public bool Remove(Key key)
     {
-        throw new NotImplementedException();
+        return dictionary.Remove(key);
     }
 
 
 
     public void Clear()
     {
-        throw new NotImplementedException();
+        dictionary = new Dictionary<Key, IList<Value>>();
     }
 
     public bool Contains(KeyValuePair<Key, Value> item)
     {
-        throw new NotImplementedException();
+        return dictionary[item.Key].Contains(item.Value);
+    }
+    public bool Contains<K>( Value item)
+        where K : Key
+    {
+        var type = typeof(K);
+        return dictionary[(Key)type].Contains(item);
     }
 
 

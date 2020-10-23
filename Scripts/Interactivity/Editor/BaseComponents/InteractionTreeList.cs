@@ -15,7 +15,7 @@ class InteractionTreeLinks
     {
         public ConnetionLinkDictionary<Type, Component> links;
         private bool _right;
-        public InteractionTreeView(TreeViewState state, bool right, ConnetionLinkDictionary<Type, Component> _links) : base(state)
+        public InteractionTreeView(TreeViewState state, bool right, ref ConnetionLinkDictionary<Type, Component> _links) : base(state)
         {
                 links = _links;
         _right = right;

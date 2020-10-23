@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[InteractionFlow(SideOption.Left)]
 public class ConsequenceGroup : MonoBehaviour, IConsequence
 {
     [SerializeField]
+    [LeftInteraction(typeof(IEnumerable<ConsequenceGroup>), "consequences")]
     public List<MonoBehaviour> consequences; //IConsequence
     void Start()
     {
