@@ -36,8 +36,10 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
             viewStateR = new TreeViewState();
         }
 
-
-        var links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R), oneToMany);
+        var dic = new Dictionary<Type, bool>();
+        if (oneToMany)
+            dic.Add(typeof(T), true);
+        var links = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R),dic  );
         interactionTreeList = new InteractionTreeView<T>(viewStateL, false, links);
         interactionTreeListR = new InteractionTreeView<R>(viewStateR, true, links);
         

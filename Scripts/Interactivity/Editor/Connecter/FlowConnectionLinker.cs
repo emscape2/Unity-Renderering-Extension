@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 class FlowConnectionLinker<T, R>
 where T : IGUIllaume
@@ -18,24 +19,29 @@ where T : IGUIllaume
         rightInteraction = InteractionAttribute.getAttribute<RightInteractionAttribute>(typeof(R));
     }
         
-    public void Link(T left, R right)
+    public void Link(IEnumerable<T> left, IEnumerable<R> right)
     {
-        if (leftInteraction.Connection == typeof(R))
+        if (leftInteraction.ConnectionType == typeof(R))
         {
-            WrapUp(leftInteraction, left, right);
+            WrapUp(leftInteraction, left.First(), right.First());
         }
-        else if (rightInteraction.Connection == typeof(T))
+        else if (rightInteraction.ConnectionType == typeof(T))
         {
-            WrapUp(rightInteraction, right, left);
+            WrapUp(rightInteraction, right.First(), left.First());
+        }
+        else if (leftInteraction.ConnectionType == typeof(IEnumerable<R>))
+        {
+            WrapUp(leftInteraction, left.First(), right);
+        }
+        else if (rightInteraction.ConnectionType == typeof(IEnumerable<T>))
+        {
+            WrapUp(rightInteraction, right.First(), left);
         }
     }
 
-    public void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, IGUIllaume target)
+    public void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, object target)
     {
-        krijgkanker ghehehe nu zit je met een probleem
-    }
-    public void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, IEnumerable<IGUIllaume> target)
-    {
+        sourceInteraction.setTargetRef(source, target);
 
     }
 

@@ -50,8 +50,8 @@ class InteractionTreeLinks
         {
             base.RowGUI(rowGUIArgs);
         int id = (rowGUIArgs.item as InteractionListLine<T>).unitID;
-            bool isactive = links.ContainsKey(typeof(T)) && links[typeof(T)] != null && links[typeof(T)].GetInstanceID() == id;
-            isactive = isactive || (_right && links.rightList != null && links.rightList.Any(r => r.GetInstanceID() == id));
+            bool isactive = links.ContainsKey(typeof(T)) && links[typeof(T)] != null && links[typeof(T)].First().GetInstanceID() == id;
+            isactive = isactive || (_right && links.ContainsKey(typeof(T)) && links[typeof(T)].Where(r => r.GetInstanceID() == id).Count() > 0);
             if ( isactive || this.IsSelected(rowGUIArgs.item.id))
             {
                 var rekt = rowGUIArgs.rowRect;

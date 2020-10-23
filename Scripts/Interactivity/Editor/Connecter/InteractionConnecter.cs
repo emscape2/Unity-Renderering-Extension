@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-
+[Obsolete]
 class InteractionConnecter<T, R>
     where T : Component
     where R : Component

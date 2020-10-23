@@ -5,10 +5,10 @@ public class ActivationReciever : MonoBehaviour, IConsequence
         
         public int interactionNumber;
         [SerializeField]
-        [RightInteraction(typeof(IActivationPattern))]
+        [RightInteraction(typeof(IActivationPattern), "activationPattern")]
         public MonoBehaviour activationPattern; 
         [SerializeField]
-        [LeftInteraction(typeof(IInteraction))]
+        [LeftInteraction(typeof(IInteraction), "interaction")]
         public Interaction interaction;
         public bool engaged;
         public void Start()

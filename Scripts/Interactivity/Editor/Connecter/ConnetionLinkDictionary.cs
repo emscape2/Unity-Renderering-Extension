@@ -1,48 +1,42 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key, Value>
+internal class ConnetionLinkDictionary<Key, Value>
      where Key : Type
         where Value : Component
 {
     public Key leftType;
     public Key rightType;
-    public List<Value> rightList;
-    public new void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
+    public Dictionary<Key, bool> lists;
+    public Dictionary<Key, IList<Value>> dictionary;
+
+
+
+    public IEnumerable<Value> this[Key key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
     {
-        if (ContainsKey(key))
+        if (!lists.ContainsKey(key)|| !lists[key])
         {
-            if (key == leftType && rightList != null)
+            if (dictionary.ContainsKey(key))
             {
-                rightList = new List<Value>();
+                dictionary.Remove(key);
+                return;
             }
-            
-            if (base[key] == value)
-            {
-                if (key == rightType && rightList != null)
-                    rightList.Remove(value);
-                base.Remove(key);
-            }
+        }
+        if (!dictionary.ContainsKey(key))
+        {
+            dictionary[key] = new List<Value>();
+        }
+            if (dictionary[key].Contains(value))
+            dictionary[key].Add(value);
             else
-            {
+            dictionary[key].Add(value);
 
-                if (base.ContainsKey(rightType))
-                {
-                    base.Remove(rightType);
-                }
-
-                base[key] = value;
-            }
-        }
-        else
-        {
-            base.Add(key, value);
-        }
-        if(key == rightType && rightList != null)
-        {
-            rightList.Add(value);
-        }
+        
+        /*
         if (ContainsKey(leftType) && ContainsKey(rightType))
         {
             var connect = new InteractionConnecter<Value, Value>();
@@ -54,19 +48,39 @@ internal class ConnetionLinkDictionary<Key, Value> : Dictionary<Key, Value>
                 connect.Connect(
                     this[leftType],
                     this[rightType]);
-        }
+        }*/
+    }
+
+    public bool ContainsKey(Key key)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool Remove(Key key)
+    {
+        throw new NotImplementedException();
     }
 
 
 
-    public ConnetionLinkDictionary(Key left, Key right, bool rList) : base()
+    public void Clear()
     {
+        throw new NotImplementedException();
+    }
+
+    public bool Contains(KeyValuePair<Key, Value> item)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+    public ConnetionLinkDictionary(Key left, Key right, Dictionary<Key,bool> ListTypes) 
+    {
+        dictionary = new Dictionary<Key, IList<Value>>();
+        lists = ListTypes;
         leftType = left;
         rightType = right;
-        if (rList)
-            rightList = new List<Value>();
-        else
-            rightList = null;
     }
 
 
