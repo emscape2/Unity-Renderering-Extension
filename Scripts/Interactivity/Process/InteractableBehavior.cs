@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+[InteractionFlow(SideOption.BothSides)]
 public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPattern
 {
     [SerializeField]
+    [LeftInteractionAttribute]
     public List<MonoBehaviour> consequences; //IConsequence
     [SerializeField]
     bool engaged;

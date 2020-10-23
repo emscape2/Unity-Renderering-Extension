@@ -25,7 +25,6 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
     protected Color colour = new Color(0.25f, 0.22f, 0.23f);
     protected bool oneToMany;   //todo: change into relationtype enum
 
-    GUIStyle stijl;
     protected virtual void OnEnable()
     {
         if (viewStateL == null)

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
-
+[InteractionFlow(SideOption.BothSides)]
 public class ActivationReciever : MonoBehaviour, IConsequence
     {
+        
         public int interactionNumber;
         [SerializeField]
+        [RightInteraction]
         public MonoBehaviour activationPattern; 
         [SerializeField]
+        [LeftInteraction]
         public Interaction interaction;
         public bool engaged;
         public void Start()
