@@ -4,7 +4,7 @@ using UnityEngine;
 public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPattern
 {
     [SerializeField]
-    [LeftInteractionAttribute]
+    [LeftInteractionAttribute(typeof(IConsequence))]
     public List<MonoBehaviour> consequences; //IConsequence
     [SerializeField]
     bool engaged;

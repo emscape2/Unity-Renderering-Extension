@@ -36,14 +36,30 @@ public class InteractionAttribute : System.Attribute
 {
     public IGUIllaume refComponent;
     public IEnumerable<IGUIllaume> refList;
-    public InteractionAttribute()
+    public Type Connection;
+    public InteractionAttribute(Type c)
     {
+        Connection = c;
+    }
+
+
+    public static G getAttribute<G> (Type T)
+        where G: InteractionAttribute
+    {
+        var properties = T.GetProperties();
+        G lefInteraction = null;
+        foreach (var prop in properties)
+        {
+            var attr = prop.GetCustomAttributes(typeof(G), true);
+            lefInteraction = (G)attr.FirstOrDefault();
+        }
+        return lefInteraction;
     }
 }
 
 public class LeftInteractionAttribute : InteractionAttribute
 {
-    public LeftInteractionAttribute() : base()
+    public LeftInteractionAttribute(Type c) : base(c)
     {
 
     }
@@ -51,7 +67,7 @@ public class LeftInteractionAttribute : InteractionAttribute
 
 public class RightInteractionAttribute : InteractionAttribute
 {
-    public RightInteractionAttribute() : base()
+    public RightInteractionAttribute(Type c) : base(c)
     {
 
     }

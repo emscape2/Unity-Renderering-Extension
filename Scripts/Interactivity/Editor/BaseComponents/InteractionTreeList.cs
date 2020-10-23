@@ -6,10 +6,8 @@ using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 class InteractionTreeLinks
     {
-
     }
 
     class InteractionTreeView<T> : TreeView
@@ -99,20 +97,12 @@ class InteractionListLine<T> : TreeViewItem
             icon = RowDataHelpers<T>.RowIcon(GetComponent() as Component);
         }
     }
-
-   
-
     public T GetComponent()
     {
         var target = _transform.GetComponents<T>().Where(c => (c as Component).GetInstanceID() == unitID).ToList();
         return target.FirstOrDefault();
     }
-
-
     public override Texture2D icon { get => base.icon; set => base.icon = value; }
-
-
-
 }
 
 class InteractionList<T> : InteractionListLine<T>
