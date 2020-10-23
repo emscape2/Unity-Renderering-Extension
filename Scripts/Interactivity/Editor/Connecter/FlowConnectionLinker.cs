@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 class FlowConnectionLinker<T, R>
@@ -41,6 +42,7 @@ where T : IGUIllaume
 
     protected void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, object target)
     {
+        SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
         sourceInteraction.setTargetRef(source, target);
     }
 

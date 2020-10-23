@@ -28,8 +28,15 @@ internal class ConnetionLinkDictionary<Key, Value>
     }
 
     public void Link<T,R>()
+        where T: IGUIllaume
+        where R: IGUIllaume
     {
-        throw new NotImplementedException("ik hebn kanker");
+        throw new NotImplementedException("CAST TROUBLES");
+        throw new NotImplementedException("CAST TROUBLES");
+        var LeftList = dictionary[leftType].ToList()as List<T>;
+        var RightList = dictionary[rightType].ToList() as List<R>;
+        var interactionFlowLinker = new FlowConnectionLinker<T,R>();
+        interactionFlowLinker.Link(LeftList, RightList);
     }
     public void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
     {
