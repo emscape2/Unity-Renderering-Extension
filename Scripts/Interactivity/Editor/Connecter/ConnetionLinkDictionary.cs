@@ -27,7 +27,10 @@ internal class ConnetionLinkDictionary<Key, Value>
         } 
     }
 
-
+    public void Link<T,R>()
+    {
+        throw new NotImplementedException("ik hebn kanker");
+    }
     public void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
     {
         if (!lists.ContainsKey(key)|| !lists[key])

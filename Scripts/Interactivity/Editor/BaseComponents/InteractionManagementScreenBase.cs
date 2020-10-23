@@ -82,7 +82,7 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
                 OnEnable();
                 break;
             case 5:
-                linktionary.link(FlowConnectionLinker);
+                linktionary.Link<T,R>();
                 break;
             default:
                 //nothing
