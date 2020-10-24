@@ -55,7 +55,12 @@ public class InteractionAttribute : System.Attribute
        
              
     }
+    public void setTargetListRef(IGUIllaume sourceObject, IEnumerable<IGUIllaume> Target)
+    {
+        SetPropertyValue(sourceObject, Name, Target.OfType<MonoBehaviour>().ToList());
 
+
+    }
     public static void SetPropertyValue(object obj, string propName, object value) 
     { 
         obj.GetType().GetField(propName)?.SetValue(obj,value);

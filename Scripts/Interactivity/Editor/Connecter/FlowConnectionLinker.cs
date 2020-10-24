@@ -16,6 +16,9 @@ where T : IGUIllaume
 
     public FlowConnectionLinker()
     {
+
+        var type = typeof(T);
+        var typed = typeof(R);
         leftInteraction = InteractionAttribute.getAttribute<LeftInteractionAttribute>(typeof(R));
         rightInteraction = InteractionAttribute.getAttribute<RightInteractionAttribute>(typeof(T));
     }
@@ -24,6 +27,7 @@ where T : IGUIllaume
     {
         var type = typeof(T);
         var typed = typeof(R);
+        var typel = typeof(List<R>);
         if (leftInteraction != null && leftInteraction.ConnectionType == typeof(T))
         {
             WrapUp(leftInteraction, left.First(), right.First());
@@ -32,13 +36,13 @@ where T : IGUIllaume
         {
             WrapUp(rightInteraction, right.First(), left.First());
         }
-        else if (leftInteraction != null && leftInteraction.ConnectionType == typeof(IEnumerable<T>))
+        else if (leftInteraction != null && leftInteraction.ConnectionType == typeof(List<T>))
         {
-            WrapUp(leftInteraction, left.First(), right);
+            WrapUpList(leftInteraction, right.First(), left);
         }
-        else if (rightInteraction != null &&  rightInteraction.ConnectionType == typeof(IEnumerable<R>))
+        else if (rightInteraction != null &&  rightInteraction.ConnectionType == typeof(List<R>))
         {
-            WrapUp(rightInteraction, right.First(), left);
+            WrapUpList(rightInteraction, left.First(), right);
         }
     }
 
@@ -46,6 +50,12 @@ where T : IGUIllaume
     {
         SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
         sourceInteraction.setTargetRef(source,target );
+    }
+
+    protected void WrapUpList(InteractionAttribute sourceInteraction, IGUIllaume source, IEnumerable<IGUIllaume> target)
+    {
+        SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
+        sourceInteraction.setTargetListRef(source, target);
     }
 
 

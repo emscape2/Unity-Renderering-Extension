@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConsequenceGroup : MonoBehaviour, IConsequence
 {
     [SerializeField]
-    [LeftInteraction(typeof(IEnumerable<ConsequenceGroup>), "consequences")]
+    [RightInteraction(typeof(List<IConsequence>), "consequences")]
     public List<MonoBehaviour> consequences; //IConsequence
     void Start()
     {
