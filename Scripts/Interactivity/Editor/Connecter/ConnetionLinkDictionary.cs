@@ -31,12 +31,11 @@ internal class ConnetionLinkDictionary<Key, Value>
         where T: IGUIllaume
         where R: IGUIllaume
     {
-        throw new NotImplementedException("CAST TROUBLES");
-        throw new NotImplementedException("CAST TROUBLES");
-        var LeftList = dictionary[leftType].ToList()as List<T>;
-        var RightList = dictionary[rightType].ToList() as List<R>;
+        var Type = leftType.GetType();
+        var LeftList = dictionary[leftType].Select(l => l as IGUIllaume).ToList();
+        var RightList = dictionary[rightType].Select(r => r as IGUIllaume).ToList();
         var interactionFlowLinker = new FlowConnectionLinker<T,R>();
-        interactionFlowLinker.Link(LeftList, RightList);
+        interactionFlowLinker.Link(LeftList,RightList);
     }
     public void Add(Key key, Value value)//todo: needs better coding, unoptimal data structure
     {

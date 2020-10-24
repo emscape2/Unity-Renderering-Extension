@@ -16,25 +16,27 @@ where T : IGUIllaume
 
     public FlowConnectionLinker()
     {
-        leftInteraction = InteractionAttribute.getAttribute<LeftInteractionAttribute>(typeof(T));
-        rightInteraction = InteractionAttribute.getAttribute<RightInteractionAttribute>(typeof(R));
+        leftInteraction = InteractionAttribute.getAttribute<LeftInteractionAttribute>(typeof(R));
+        rightInteraction = InteractionAttribute.getAttribute<RightInteractionAttribute>(typeof(T));
     }
         
-    public void Link(IEnumerable<T> left, IEnumerable<R> right)
+    public void Link(List<IGUIllaume> left, List<IGUIllaume> right)
     {
-        if (leftInteraction?.ConnectionType == typeof(R))
+        var type = typeof(T);
+        var typed = typeof(R);
+        if (leftInteraction != null && leftInteraction.ConnectionType == typeof(T))
         {
             WrapUp(leftInteraction, left.First(), right.First());
         }
-        else if (rightInteraction?.ConnectionType == typeof(T))
+        else if (rightInteraction != null && rightInteraction.ConnectionType == typeof(R))
         {
             WrapUp(rightInteraction, right.First(), left.First());
         }
-        else if (leftInteraction?.ConnectionType == typeof(IEnumerable<R>))
+        else if (leftInteraction != null && leftInteraction.ConnectionType == typeof(IEnumerable<T>))
         {
             WrapUp(leftInteraction, left.First(), right);
         }
-        else if (rightInteraction?.ConnectionType == typeof(IEnumerable<T>))
+        else if (rightInteraction != null &&  rightInteraction.ConnectionType == typeof(IEnumerable<R>))
         {
             WrapUp(rightInteraction, right.First(), left);
         }
@@ -43,7 +45,7 @@ where T : IGUIllaume
     protected void WrapUp(InteractionAttribute sourceInteraction, IGUIllaume source, object target)
     {
         SerializedObject serializedObject = new SerializedObject(source as UnityEngine.Object);
-        sourceInteraction.setTargetRef(source, target);
+        sourceInteraction.setTargetRef(source,target );
     }
 
 

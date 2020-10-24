@@ -51,15 +51,16 @@ public class InteractionAttribute : System.Attribute
     /// <returns></returns>
     public void setTargetRef(IGUIllaume sourceObject, object Target)
     {
-        SetPropertyValue(sourceObject, Name,Target);
+        SetPropertyValue(Target, Name, sourceObject);
        
              
     }
 
     public static void SetPropertyValue(object obj, string propName, object value) 
     { 
+        obj.GetType().GetField(propName)?.SetValue(obj,value);
         obj.GetType().GetProperty(propName)?.SetValue(obj,value);
-       
+        
     }
 
 
@@ -67,14 +68,18 @@ public class InteractionAttribute : System.Attribute
         where G: InteractionAttribute
     {
         System.Reflection.MemberInfo[] properties = T.GetProperties();//T.GetMembers( System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.SetField | System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty);
-        System.Reflection.FieldInfo[] fields = T.GetFields();
-        var info = properties.Union(fields);
+        System.Reflection.MemberInfo[] fields = T.GetFields();
+        var info = properties.Union(fields).ToList();
         G Interaction = null;
         foreach (var prop in info)
         {
             var attr = prop.GetCustomAttributes(typeof(G), true);
             attr = attr ?? prop.GetCustomAttributes(typeof(IEnumerable<G>), true);
-            Interaction = (G)attr.FirstOrDefault();
+            Interaction = (G )attr.FirstOrDefault();
+            if (Interaction != null)
+            {
+                return Interaction;
+            }
         }
         
         return Interaction;
