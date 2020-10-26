@@ -15,10 +15,12 @@ class InteractionTreeLinks
     {
         public ConnetionLinkDictionary<Type, Component> links;
         private bool _right;
-        public InteractionTreeView(TreeViewState state, bool right, ref ConnetionLinkDictionary<Type, Component> _links) : base(state)
+        private GuillaumeInspector _inspector;
+        public InteractionTreeView(GuillaumeInspector inspector, TreeViewState state, bool right, ref ConnetionLinkDictionary<Type, Component> _links) : base(state)
         {
                 links = _links;
-        _right = right;
+                _right = right;
+                _inspector = inspector;
                 Reload();
         }
 
@@ -36,16 +38,19 @@ class InteractionTreeLinks
             return root;
         }
 
-        protected override void SingleClickedItem(int id)
+    protected override void SingleClickedItem(int id)
+    {
+        if (id == 1)
+            return;
+        var guirow = FindRows(new List<int>() { id });
+        var fi = guirow.FirstOrDefault() as InteractionListLine<T>;
+        var el = fi.GetComponent() as Component;
+        if (el != null)
         {
-            if (id == 1)
-                return;
-            var guirow = FindRows(new List<int> () {id} );
-            var fi = guirow.FirstOrDefault() as InteractionListLine<T>;
-            var el = fi.GetComponent() as Component;
-            if (el !=null )
-                UnityEditor.Selection.SetActiveObjectWithContext(el.gameObject,el.gameObject.transform);
+            UnityEditor.Selection.SetActiveObjectWithContext(el.gameObject, el.gameObject.transform);
+            _inspector.selected.component = el;
         }
+    }
         protected override  void RowGUI(RowGUIArgs rowGUIArgs)
         {
             base.RowGUI(rowGUIArgs);

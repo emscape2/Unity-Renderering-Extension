@@ -10,7 +10,7 @@ public class ActivationReciever : MonoBehaviour, IConsequence
         [SerializeField]
         [LeftInteraction(typeof(IInteraction), "interaction")]
         public Interaction interaction;
-        public bool engaged;
+        protected bool engaged;
         public void Start()
         {
                 if ((IActivationPattern)(activationPattern) == null)

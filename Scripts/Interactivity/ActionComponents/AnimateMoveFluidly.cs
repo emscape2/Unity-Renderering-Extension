@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,14 @@ public class AnimateMoveFluidly :Consequence
 {
     public Vector3 Direction;
      Vector3 Movement;
+        [SerializeField]
     public float linearSpeed;
+        [SerializeField]
     public float exponent;
+        [SerializeField]
     public float ratio;
     Vector3 origin;
+        [NonSerialized]
     public bool activated;
     public bool returnOnDisengage;
 public override void Disengage()

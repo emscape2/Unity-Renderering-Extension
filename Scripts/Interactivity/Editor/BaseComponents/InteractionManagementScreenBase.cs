@@ -17,6 +17,7 @@ using UnityEditor.U2D.Path.GUIFramework;
 using UnityEditor.Rendering;
 using UnityEditor.Graphs;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
 class InteractionManagementScreenBase<T, R> : EditorWindow
     where T : IGUIllaume
@@ -26,6 +27,8 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
     TreeViewState viewStateL, viewStateR;
     InteractionTreeView<T> interactionTreeList;
     InteractionTreeView<R> interactionTreeListR;
+    public GuillaumeInspector inspector;
+    public ComponentReference selected;
     protected Color colour = new Color(0.25f, 0.22f, 0.23f);
     protected bool oneToMany;   //todo: find relation attribute and check 1:n || 1:1 trough that
     protected ConnetionLinkDictionary<Type, Component> linktionary ;
@@ -45,13 +48,16 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
         if (oneToMany)
             dic.Add(typeof(R), true);
 
-        linktionary=  new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R), dic);
-        interactionTreeList = new InteractionTreeView<T>(viewStateL, false, ref linktionary);
-        interactionTreeListR = new InteractionTreeView<R>(viewStateR, true, ref linktionary);
-        
+        linktionary = new ConnetionLinkDictionary<Type, Component>(typeof(T), typeof(R), dic);
+        selected = new ComponentReference();
+        inspector = new GuillaumeInspector() { selected = selected };
+        interactionTreeList = new InteractionTreeView<T>(inspector, viewStateL, false, ref linktionary);
+        interactionTreeListR = new InteractionTreeView<R>(inspector, viewStateR, true, ref linktionary);
 
     }
-    protected virtual void OnGUI()
+
+
+protected virtual void OnGUI()
     {
         var style = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).button;
         style.margin = new RectOffset(2,2,1,2);
@@ -88,6 +94,7 @@ class InteractionManagementScreenBase<T, R> : EditorWindow
                 //nothing
                 break;
         }
+        inspector.OnGUI(new Rect(12 + position.width / 3,44, -24 + position.width / 3, -56 + position.height),selected);
         /* if (GUILayout.Button(new GUIContent("Cancer", "Und davos kanker bij"),GUI.skin.button))
          {
              OnEnable();

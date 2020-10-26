@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Consequence : MonoBehaviour, IConsequence
 {
-    [SerializeField]
+    //[SerializeField]
     protected bool engaged;
     public virtual void Engage()
     {
