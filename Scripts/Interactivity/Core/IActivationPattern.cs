@@ -10,7 +10,7 @@ using UnityEngine;
 
 
         [SerializeField]
-        [LeftInteraction(typeof(IEnumerable<IConsequence>), "Consequences")]
+        [RightInteraction(typeof(List<IConsequence>), "Consequences")]
         List <MonoBehaviour> Consequences { get; set; }
 
         void Engage(int i);
