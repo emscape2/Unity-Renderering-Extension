@@ -5,6 +5,13 @@ public class Clickable : Interaction
     bool mouseDownLast, clicked;
     public override bool? TryInteract(GameObject gameObject)
     {
+
+        //debug masks 
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            MouseBehavior.InstantiateDrawRect(gameObject);
+        }
+
         var mouseDownNow = Input.GetMouseButton(0);
         if (mouseDownLast && !mouseDownNow)
         {
@@ -30,5 +37,9 @@ public class Clickable : Interaction
         if (!mouseDownLast)
             clicked = false;
         return false;
+
+
+
+       
     }
 }

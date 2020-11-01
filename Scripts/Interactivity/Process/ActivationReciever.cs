@@ -37,11 +37,6 @@ public class ActivationReciever : MonoBehaviour, IConsequence
         // Update is called once per frame
         protected virtual void Update()
         {
-            //debug masks 
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                MouseBehavior.InstantiateDrawRect(gameObject);
-            }
             if (interaction == null)
                 return;
 
