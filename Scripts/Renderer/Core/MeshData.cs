@@ -22,6 +22,9 @@ namespace Assets.Coding.Renderer
             meshData.Add(ending);
             meshData.Add(ending+Vector2.right);
 
+            var meshdatacopy = new List<Vector2>(meshData);
+            meshData = setInterval(meshdatacopy.ToArray()); 
+
             int i = 0;
             Vector2 lastPoint;
             Vector2 sizeVector;
@@ -46,8 +49,6 @@ namespace Assets.Coding.Renderer
                 {
                     lastPoint = meshData[0]+Vector2.left;
 
-
-
                     vertices.Add(currentPoint + new Vector2(0, halfWidth));
                     vertices.Add(currentPoint - new Vector2(0, halfWidth));
                     i++;
@@ -66,7 +67,40 @@ namespace Assets.Coding.Renderer
 
         }
 
-        private Vector2 AddMeshDataForPoint(int i, Vector2 lastPoint, float halfWidth, Vector2 currentPoint, Vector2 nextPoint)
+        List<Vector2> setInterval(Vector2[] controlPoints)
+        {
+            var answer = new List<Vector2>();
+            int nodeIndex = 0;
+            try
+            {
+                int numbreaks = 4;
+                for (int i = 0; i < controlPoints.Length * numbreaks; i++)
+                {
+                    float t = (i % (numbreaks * (2))) / ((float)numbreaks * 2.0f);
+                    Vector2 pixel = CalculateCubicBezierPoint(t, controlPoints[nodeIndex],
+                        controlPoints[nodeIndex + 1], controlPoints[nodeIndex + 2]);
+                    answer.Add(pixel);
+                    if ((i % (2 * numbreaks)) == ((2 * numbreaks) - 1))
+                        nodeIndex += 2;
+                } 
+            }
+            catch { }
+            return answer;
+        }
+
+        private Vector2 CalculateCubicBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        Vector2 p = uu * p0;
+        p += 2 * u * t * p1;
+        p += tt * p2;
+
+        return p;
+    }
+    private Vector2 AddMeshDataForPoint(int i, Vector2 lastPoint, float halfWidth, Vector2 currentPoint, Vector2 nextPoint)
         {
             Vector2 sizeVector;
             

@@ -17,7 +17,7 @@ class MouseBehavior
         var guillaumeCam = Camera.allCameras.Where(c => c.gameObject.layer == 29).FirstOrDefault();//eerste guillaume camera 
         if (guillaumeCam == null)
         {
-                    Debug.LogError("no carmerá attaché");
+                    Debug.LogError("no carmerá presenté");
             return false;
         }
         else
