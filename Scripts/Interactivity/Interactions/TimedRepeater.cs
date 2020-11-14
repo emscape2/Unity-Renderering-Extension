@@ -6,7 +6,9 @@ public class TimedRepeater : Interaction
     private double nextUp;
     private double nextDown;
     public float headstart;
-    public double ratioUp, ratioDown;
+    [SerializeField]
+    public double realBPM;
+    protected double ratioUp, ratioDown;
     private bool started;
 
     private void OnEnable()
@@ -19,7 +21,7 @@ public class TimedRepeater : Interaction
 
     public override bool? TryInteract(GameObject gameObject)
     {
-        double realbpm = gameObject.GetComponent<SinusoidRendererComponent>()?.realbpm ?? 12.0;
+        double realbpm = realBPM;// gameObject.GetComponent<SinusoidRendererComponent>()?.realbpm ?? 12.0;
         double secsforLoop = (60.0 / realbpm);
 
         if (!started)

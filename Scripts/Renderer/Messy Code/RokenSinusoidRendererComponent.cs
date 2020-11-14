@@ -15,6 +15,7 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
         pointsafterEmielsZak.Add(Omlaag[0]);
         for (double i = 0; i < (totalLength * realbpm); i += 1)
         {
+            
             pointsafterEmielsZak.Add(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1] + Vector2.right);
             for (int j = 0; j < Omlaag.Count; j++)
             {
