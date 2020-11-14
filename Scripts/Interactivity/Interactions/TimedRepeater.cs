@@ -8,7 +8,7 @@ public class TimedRepeater : Interaction
     public float headstart;
     [SerializeField]
     public double realBPM;
-    protected double ratioUp, ratioDown;
+    public double ratioUp, ratioDown;
     private bool started;
 
     private void OnEnable()
@@ -34,7 +34,7 @@ public class TimedRepeater : Interaction
             nextUp += headstart;
             nextDown = -secsforLoop;
             nextDown += headstart;
-            return true;
+            return false;
         }
         if (gameObject.GetComponent<SinusoidRendererComponent>() != null)
         {
