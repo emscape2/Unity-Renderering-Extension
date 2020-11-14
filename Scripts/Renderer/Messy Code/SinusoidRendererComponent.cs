@@ -9,8 +9,11 @@ using UnityEngine.PlayerLoop;
 
 public class SinusoidRendererComponent : MonoBehaviour
 {
-    public double fakeBpm { get { return realbpm * (2 * Math.PI); }
-                        set { realbpm = value / (2 * Math.PI) ;} }
+    public double fakeBpm
+    {
+        get { return realbpm * (2 * Math.PI); }
+        set { realbpm = value / (2 * Math.PI); }
+    }
     public float amplitude;
     public float width;
     public double totalLength;
@@ -23,44 +26,22 @@ public class SinusoidRendererComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        
-        var totalRatio = ratioUp + ratioDown;
-        var Omhoog = Upwards_Graph(totalRatio);
-        var Omlaag = Downwards_Graph(totalRatio);
-        
-        List<Vector2> pointsafterEmielsZak = new List<Vector2>();   
-        pointsafterEmielsZak.Add(Omlaag[0]);
-        for (double i = 0; i < (totalLength*realbpm) ; i += 1)
-        {
-            for (int j = 0; j < Omlaag.Count; j++)
-            {
-                pointsafterEmielsZak.Add(new Vector2(((Omlaag[j].x +
-                        (float)(i * 60.0 / realbpm)))                    
-                    , Omlaag[j].y));
-            }
-        
-            for (int j = 0; j < Omhoog.Count; j++ )
-            {
-                pointsafterEmielsZak.Add(new Vector2((Omhoog[j].x + (
-                    (float)(
-                    (i  + (ratioDown / totalRatio))
-                    * 60.0 / realbpm)))
-                    , Omhoog[j].y));
-            }
-        }
-        
+
+
+        List<Vector2> pointsafterEmielsZak = GetPointsAfterEmielsZak();
+
+
         points = pointsafterEmielsZak.ToArray();
         MeshData meshData = new MeshData(
             pointsafterEmielsZak,
-            width, true) ;
+            width, true);
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
-                     
+
         mesh.vertices = meshData.vertices.ToArray();
         mesh.uv = meshData.newUv.ToArray();
         mesh.RecalculateBounds();
-        
+
         mesh.triangles = meshData.triangles.ToArray();
         mesh.RecalculateNormals();
         mesh.RecalculateTangents();
@@ -70,7 +51,35 @@ public class SinusoidRendererComponent : MonoBehaviour
         //meshRenderer.material.SetColor("_Color", color);
     }
 
-    
+    protected virtual List<Vector2> GetPointsAfterEmielsZak()
+    {
+
+        var totalRatio = ratioUp + ratioDown;
+        var Omhoog = Upwards_Graph(totalRatio);
+        var Omlaag = Downwards_Graph(totalRatio);
+        List<Vector2> pointsafterEmielsZak = new List<Vector2>();
+
+        pointsafterEmielsZak.Add(Omlaag[0]);
+        for (double i = 0; i < (totalLength * realbpm); i += 1)
+        {
+            for (int j = 0; j < Omlaag.Count; j++)
+            {
+                pointsafterEmielsZak.Add(new Vector2(((Omlaag[j].x +
+                        (float)(i * 60.0 / realbpm)))
+                    , Omlaag[j].y));
+            }
+
+            for (int j = 0; j < Omhoog.Count; j++)
+            {
+                pointsafterEmielsZak.Add(new Vector2((Omhoog[j].x + (
+                    (float)(
+                    (i + (ratioDown / totalRatio))
+                    * 60.0 / realbpm)))
+                    , Omhoog[j].y));
+            }
+        }
+        return pointsafterEmielsZak;
+    }
 
     private void OnEnable()
     {
@@ -89,14 +98,14 @@ public class SinusoidRendererComponent : MonoBehaviour
 
     public List<Vector2> Downwards_Graph(double totalRatio)
     {
-        var pointss = new Sinusoid().Points(realbpm/(ratioDown/ totalRatio), amplitude, detail, 0);      
+        var pointss = new Sinusoid().Points(realbpm / (ratioDown / totalRatio), amplitude, detail, 0);
         return pointss.ToList();
 
     }
 
     public List<Vector2> Upwards_Graph(double totalRatio)
     {
-        var pointss = new Sinusoid().Points(realbpm / (ratioUp/ totalRatio), amplitude, detail,0.5);
+        var pointss = new Sinusoid().Points(realbpm / (ratioUp / totalRatio), amplitude, detail, 0.5);
         return pointss.ToList();
 
     }
