@@ -60,5 +60,5 @@ Shader "GUIllaume/PlainColourShader"
         }
         ENDCG
     }
-    FallBack "Diffuse"
+    FallBack "Unlit/Color"
 }

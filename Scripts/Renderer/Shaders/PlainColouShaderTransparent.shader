@@ -59,5 +59,5 @@ Shader "GUIllaume/PlainColourShader,Transparent"
         }
         ENDCG
     }
-    FallBack "Diffuse"
+    FallBack "Legacy Shaders/Transparent/Cutout/Soft Edge Unlit"
 }
