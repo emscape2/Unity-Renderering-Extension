@@ -6,16 +6,19 @@ public class ToggleConsequence : Consequence
 {
     public UnityEngine.GameObject toToggle;
     public UnityEngine.Renderer toDecativate;
+    public AnimateMoveMenuConsequence toSlumber;
     public override void Disengage()
-    { 
+    {
+        if (toToggle != null)
+            toToggle.SetActive(!toToggle.activeSelf);
+        if (toDecativate != null)
+            toDecativate.enabled = !toDecativate.enabled;
+        if (toSlumber != null)
+            toSlumber.slumbering = !toSlumber.slumbering;
     }
 
     public override void Engage()
     {
-        if (toToggle != null)
-            toToggle.SetActive(!toToggle.activeSelf);
-        if (toDecativate!=null)
-            toDecativate.enabled = !toDecativate.enabled;
     }
     public override bool CanEngage()
     {

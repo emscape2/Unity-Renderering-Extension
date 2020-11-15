@@ -1,12 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Schema;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.Video;
-using UnityEngine.Windows;
 
 
 [RequireComponent(typeof(HorizontalLayoutGroup))]

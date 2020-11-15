@@ -2,11 +2,12 @@
 
 public class TimedRepeater : Interaction
 {
-
+    [SerializeField]
     private double nextUp;
+    [SerializeField]
     private double nextDown;
     public float headstart;
-    [SerializeField]
+    
     public double realBPM;
     public double ratioUp, ratioDown;
     private bool started;
@@ -27,7 +28,7 @@ public class TimedRepeater : Interaction
         if (!started)
         {
             started = true;
-            ratioUp = ratioUp != 0 ? ratioUp :  gameObject.GetComponent<SinusoidRendererComponent>()?.ratioUp ?? 1.0;//todo:  abstractify
+            ratioUp = ratioUp != 0 ? ratioUp : gameObject.GetComponent<SinusoidRendererComponent>()?.ratioUp ?? 1.0;//todo:  abstractify
             ratioDown = ratioDown != 0 ? ratioDown : gameObject.GetComponent<SinusoidRendererComponent>()?.ratioDown ?? 1.0;
             double totalRatio = ratioDown + ratioUp;
             nextUp = -(ratioDown / totalRatio) * secsforLoop;

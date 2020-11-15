@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
+class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern, IConsequence
     {
         [SerializeField]
         public List<MonoBehaviour> consequence; //IConsequence
@@ -41,8 +41,10 @@ class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
                 {
                     counting = false;
                     consequence.ForEach(c => c.Invoke("Engage", 0));
-                }
+                consequence.ForEach(c => c.Invoke("Disengage", 0));
+
             }
+        }
         }
         void IActivationPattern.Disengage(int i)
         {
@@ -72,4 +74,19 @@ class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern
                 }
             }
         }
+
+    public void Disengage()
+    {
     }
+
+    public void Engage()
+    {
+        timer = 0.2f;
+        (this as IActivationPattern).Engage(1);
+    }
+
+    public bool CanEngage()
+    {
+        return true;
+    }
+}

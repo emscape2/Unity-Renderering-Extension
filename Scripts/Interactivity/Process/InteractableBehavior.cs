@@ -9,7 +9,7 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
     [SerializeField]
     bool engaged;
 
-    public List<MonoBehaviour> Consequences { get => consequences; set => consequences=value; }
+    public List<MonoBehaviour> Consequences { get => consequences; set => consequences = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -78,7 +78,7 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
 
     public void Engage(int i)
     {
-       Engage();
+        Engage();
     }
 
     public void Disengage(int i)
@@ -86,4 +86,3 @@ public class InteractableBehavior : MonoBehaviour, IConsequence, IActivationPatt
         Disengage();
     }
 }
-

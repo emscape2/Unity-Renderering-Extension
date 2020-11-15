@@ -22,7 +22,7 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
     {
         //base.Disengage();
         engaged = false;
-        
+
     }
 
     public override void Engage()
@@ -39,8 +39,8 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
             {
                 SceneManager.UnloadSceneAsync(Scene);
                 loading = false;
-                
-                
+
+
             }
         }
     }
@@ -48,13 +48,13 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
     public IEnumerator SceneLoadCoroutine()
     {
         //yield return new WaitForSeconds(0.1f);
-            engaged = new GameObject();
-        var task =  SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+        engaged = new GameObject();
+        var task = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         task.allowSceneActivation = true;
         yield return new WaitUntil(() => task.isDone);
         Scene = SceneManager.GetSceneByName(sceneToLoad);
         if (unloadDirectly)
-            SceneManager.UnloadSceneAsync(Scene);       
+            SceneManager.UnloadSceneAsync(Scene);
         engaged = false;
 
     }
@@ -62,13 +62,13 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
-        
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -17,14 +17,14 @@ class MouseBehavior
         var guillaumeCam = Camera.allCameras.Where(c => c.gameObject.layer == 29).FirstOrDefault();//eerste guillaume camera 
         if (guillaumeCam == null)
         {
-                    Debug.LogError("no carmerá presenté");
+            Debug.LogError("no carmerá attaché");
             return false;
         }
         else
         {
             // var ray = (Vector2)rect.InverseTransformPoint(guillaumeCam.ScreenPointToRay(pos).origin);
             var ray = guillaumeCam.ScreenPointToRay(pos);
-            if (RectSurface(ray.origin, gameObject,guillaumeCam))
+            if (RectSurface(ray.origin, gameObject, guillaumeCam))
             {
                 Debug.LogWarning("Clicked: " + gameObject.name);
                 return true;
@@ -69,12 +69,12 @@ class MouseBehavior
             gameObject.transform.DetachChildren();
             var name = gameObject.name;
             gameObject.SetActive(false);
-            throw new Exception("Guillaume Error: " + name+": RectTransforms are incompatible with Guillaume. Use proper components or get Rect (it's funny cuz you can't easily do that).");
-            
+            //throw new Exception("Guillaume Error: " + name + ": RectTransforms are incompatible with Guillaume. Use proper components or get Rect (it's funny cuz you can't easily do that).");
+
         }
         return false;
     }
-   
+
 
     public static bool Intersects(Vector2 pos, Rect rect)
     {

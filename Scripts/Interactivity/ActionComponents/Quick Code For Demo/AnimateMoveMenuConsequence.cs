@@ -10,12 +10,17 @@ public class AnimateMoveMenuConsequence : Consequence
     public float linearSpeed;
     Vector3 origin;
     public bool activated;
+    public bool slumbering;
+    private bool gearingUp;
     public float exponent;
     public float ratio;
+    private float slumberTjiem;
     public override void Disengage()
     {
         engaged = false;
         activated = !activated;
+        slumberTjiem = 0;
+        gearingUp = true;
     }
 
     public override void Engage()
@@ -43,9 +48,24 @@ public class AnimateMoveMenuConsequence : Consequence
     // Update is called once per frame
     void Update()
     {
+        if (gearingUp)
+        {
+            gearingUp = false;
+            return;
+        }
         Transform rectTransform = transform;
         var time = Time.deltaTime;
-        if (activated)
+        
+        if (slumbering)
+        {
+            slumberTjiem += Time.deltaTime;
+            if (slumberTjiem< 0.9f)
+            {
+                time /= 1.0f - slumberTjiem;
+            }
+        }
+        
+        if (activated )
         {
             float distance = Vector2.Distance(rectTransform.localPosition, Movement);
             if (distance > linearSpeed * time * 2.0f)
@@ -58,7 +78,7 @@ public class AnimateMoveMenuConsequence : Consequence
             else
                 rectTransform.localPosition = Movement;
         }
-        else
+        else 
         {
 
             float distance = Vector2.Distance(rectTransform.localPosition, origin);
