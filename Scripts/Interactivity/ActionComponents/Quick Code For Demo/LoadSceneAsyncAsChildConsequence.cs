@@ -12,6 +12,7 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
     public string sceneToLoad;
     Scene Scene;
     bool loading;
+    public bool unloadDirectly;
     public override bool CanEngage()
     {
         return true;
@@ -49,11 +50,11 @@ public class LoadSceneAsyncAsChildConsequence : Consequence
         //yield return new WaitForSeconds(0.1f);
             engaged = new GameObject();
         var task =  SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-        
         task.allowSceneActivation = true;
         yield return new WaitUntil(() => task.isDone);
         Scene = SceneManager.GetSceneByName(sceneToLoad);
-        
+        if (unloadDirectly)
+            SceneManager.UnloadSceneAsync(Scene);       
         engaged = false;
 
     }
