@@ -48,7 +48,7 @@ public class SinusoidRendererComponent : MonoBehaviour
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 
         meshRenderer.material = Resources.Load<Material>("Materials/colouredUnlit");
-        meshRenderer.material.SetColor("_Color", color);
+        meshRenderer.material.SetColor("_EmissionColor", color);
     }
 
     protected virtual List<Vector2> GetPointsAfterEmielsZak()
