@@ -35,13 +35,13 @@ public class ToggleConsequence : Consequence
         {
             toggled = toToggle.activeSelf;
 
-            toToggle.SetActive(true);
+            toToggle.SetActive(false);
         }
         if (toDecativate != null)
         {
             activated = toDecativate.enabled;
 
-            toDecativate.enabled = true;
+            toDecativate.enabled = false;
         }
     }
     public override bool CanEngage()
