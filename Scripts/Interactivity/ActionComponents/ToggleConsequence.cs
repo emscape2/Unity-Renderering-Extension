@@ -7,7 +7,8 @@ public class ToggleConsequence : Consequence
     public UnityEngine.GameObject toToggle;
     public UnityEngine.Renderer toDecativate;
     public AnimateMoveMenuConsequence toSlumber;
-    public bool toggled = true, activated = true;
+    private bool toggled = true, activated = true;
+    public bool delay;
     public override void Disengage()
     {
         if (toToggle != null)
@@ -31,17 +32,20 @@ public class ToggleConsequence : Consequence
 
     public override void Engage()
     {
-        if (toToggle != null)
+        if (delay)
         {
-            toggled = toToggle.activeSelf;
+            if (toToggle != null)
+            {
+                toggled = toToggle.activeSelf;
 
-            toToggle.SetActive(false);
-        }
-        if (toDecativate != null)
-        {
-            activated = toDecativate.enabled;
+                toToggle.SetActive(false);
+            }
+            if (toDecativate != null)
+            {
+                activated = toDecativate.enabled;
 
-            toDecativate.enabled = false;
+                toDecativate.enabled = false;
+            }
         }
     }
     public override bool CanEngage()
