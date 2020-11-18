@@ -40,11 +40,10 @@ class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern, IConseq
                 if (timer <= 0)
                 {
                     counting = false;
-                    consequence.ForEach(c => c.Invoke("Engage", 0));
-                consequence.ForEach(c => c.Invoke("Disengage", 0));
+                    consequence.ForEach(c => c.Invoke("Disengage", 0));
 
+                }
             }
-        }
         }
         void IActivationPattern.Disengage(int i)
         {
@@ -70,6 +69,7 @@ class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern, IConseq
             {
                 if (!counting || i < timer)
                 {
+                    consequence.ForEach(c => c.Invoke("Engage", 0));
                     counting = true;
                 }
             }

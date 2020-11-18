@@ -7,6 +7,7 @@ public class ToggleConsequence : Consequence
     public UnityEngine.GameObject toToggle;
     public UnityEngine.Renderer toDecativate;
     public AnimateMoveMenuConsequence toSlumber;
+    public bool slumbering;
     public override void Disengage()
     {
         if (toToggle != null)
@@ -14,11 +15,18 @@ public class ToggleConsequence : Consequence
         if (toDecativate != null)
             toDecativate.enabled = !toDecativate.enabled;
         if (toSlumber != null)
-            toSlumber.slumbering = !toSlumber.slumbering;
+        {
+
+            toSlumber.slumbering = !slumbering;
+            slumbering = toSlumber.slumbering;
+
+        }
     }
 
     public override void Engage()
     {
+        slumbering = toSlumber.slumbering;
+        toSlumber.slumbering = true;
     }
     public override bool CanEngage()
     {
@@ -27,7 +35,7 @@ public class ToggleConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
-        
+        slumbering = toSlumber.slumbering;
     }
 
     // Update is called once per frame

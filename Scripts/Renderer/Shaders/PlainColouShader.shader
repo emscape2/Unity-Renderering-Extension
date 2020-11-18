@@ -54,7 +54,7 @@ Shader "GUIllaume/PlainColourShader"
             
             o.Emission = _EmissionColor * _EmissionColor.a;
             // Metallic and smoothness come from slider variables
-            o.Metallic = 1.0 - (tex2D(_OcclusionMap, IN.uv_MainTex) * _OcclusionStrength* 0.4);
+            o.Metallic = 1.0 - (tex2D(_OcclusionMap, IN.uv_MainTex) * _OcclusionStrength * 0.4);
             o.Smoothness = _OcclusionStrength*tex2D(_OcclusionMap, IN.uv_MainTex) * 0.28;
             o.Alpha = sign(color.a-0.94);
         }
