@@ -1,42 +1,58 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Threading;
+using UnityEngine;
 
 public class Clickable : Interaction
 {
     bool mouseDownLast, clicked;
+    public static DateTime tijd;
+
     public override bool? TryInteract(GameObject gameObject)
     {
-
-        //debug masks 
-        if (Input.GetKeyDown(KeyCode.U))
+        if (tijd == null || DateTime.Now >= tijd)
         {
-            MouseBehavior.InstantiateDrawRect(gameObject);
-        }
-
-        var mouseDownNow = Input.GetMouseButton(0);
-        if (mouseDownLast && !mouseDownNow)
-        {
-            mouseDownLast = mouseDownNow;
-            if (clicked)
+            //debug masks 
+            if (Input.GetKeyDown(KeyCode.U))
             {
-                clicked = false;
+                MouseBehavior.InstantiateDrawRect(gameObject);
+            }
+
+            var mouseDownNow = Input.GetMouseButton(0);
+            if (mouseDownLast && !mouseDownNow)
+            {
+                mouseDownLast = mouseDownNow;
+                if (clicked)
+                {
+                    clicked = false;
+                    if (MouseBehavior.MouseOver(Input.mousePosition, gameObject))
+                    {
+                        tijd = DateTime.Now.AddMilliseconds(500);
+                        return true;
+                    }
+                        
+                }
+                return false;
+            }
+            else if (!mouseDownLast && mouseDownNow)
+            {
+                mouseDownLast = mouseDownNow;
                 if (MouseBehavior.MouseOver(Input.mousePosition, gameObject))
-                    return true;
+                {
+                    clicked = true;
+                }
+                return false;
             }
-            return false;
-        }
-        else if (!mouseDownLast && mouseDownNow)
-        {
             mouseDownLast = mouseDownNow;
-            if (MouseBehavior.MouseOver(Input.mousePosition, gameObject))
-            {
-                clicked = true;
-            }
+            if (!mouseDownLast)
+                clicked = false;
             return false;
         }
-        mouseDownLast = mouseDownNow;
-        if (!mouseDownLast)
-            clicked = false;
-        return false;
+        else
+        {
+            return false;
+        }
+        
+
 
 
 
