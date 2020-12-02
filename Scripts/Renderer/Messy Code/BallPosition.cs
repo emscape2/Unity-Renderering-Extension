@@ -16,6 +16,7 @@ public class BallPosition : MonoBehaviour
     Vector2[] points;
     public Color colorLit;
     public Color colorUnlit;
+    float pointsMaxX;
     Color CurrentColor;
     float startTime;
     // Start is called before the first frame update
@@ -30,7 +31,7 @@ public class BallPosition : MonoBehaviour
         points      = transform.parent.GetComponent<SinusoidRendererComponent>().points;
         CurrentColor = colorUnlit;
 
-
+        pointsMaxX = points.Max(p => p.x);
 
     }
 
@@ -46,7 +47,7 @@ public class BallPosition : MonoBehaviour
         double x = totalTime;
         double xPos = totalTime * fakeBpm * detail / 60.0;
         int xPosA = (int)xPos;
-        if (points.Count() == 0 || xPosA >= points.Max(p =>  p.x));
+        if (points.Count() == 0 || xPosA >= pointsMaxX)
         {
             if (points.Length > 0)
                 xPosA = 0;

@@ -45,15 +45,15 @@ class MouseBehavior
 
             if (!gameObject.TryGetComponent<SpriteRenderer>(out PotentialComponent2))
             {
-                Collider collider;
+                MeshFilter collider;
 
-                if (!gameObject.TryGetComponent<Collider>(out collider))
+                if (!gameObject.TryGetComponent<MeshFilter>(out collider))
                 {
                     Debug.LogError(gameObject.name + ": no collada attaché");
                     return false;
                 }
                 else
-                    return Intersects(pos, collider.bounds);
+                    return Intersects(pos, collider.mesh.bounds);
 
             }
             else
@@ -110,10 +110,10 @@ class MouseBehavior
             SpriteRenderer PotentialComponent2 = gameObject.GetComponent<SpriteRenderer>();
             if (PotentialComponent2 == null)
             {
-                Collider collider = gameObject.GetComponent<Collider>();
+                Mesh collider = gameObject.GetComponent<MeshFilter>().mesh;
                 {
                     pos = collider.bounds.center; //- collider.bounds.extents;
-                    rotation = collider.transform.rotation;
+                    rotation = gameObject.transform.rotation;
                     scale = collider.bounds.extents * 2.0f;
                 }
             }
