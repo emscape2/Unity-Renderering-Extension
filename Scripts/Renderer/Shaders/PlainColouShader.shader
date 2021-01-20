@@ -59,5 +59,5 @@ Shader "GUIllaume/PlainColourShader"
         }
         ENDCG
     }
-    FallBack "Legacy Shaders/VertexLit"
+    FallBack "Legacy Shaders/Self-Illumin/VertexLit"
 }

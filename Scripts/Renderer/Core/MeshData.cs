@@ -15,13 +15,19 @@ namespace Assets.Coding.Renderer
         public List<int> triangles = new List<int>();
         public bool makeBezier;
         public bool opticalPositioning = true;
-        public MeshData(List<Vector2>meshData, float width, bool optiallyOptimized = true)
+        public MeshData(List<Vector2> meshData, float width, bool optiallyOptimized = true)
         {
             opticalPositioning = optiallyOptimized;
+            makeBezier = !optiallyOptimized;
             var ending = new Vector2(Mathf.Ceil(meshData.Last().x), meshData.First().y);
             meshData.Add(ending);
-            meshData.Add(ending+Vector2.right);
+            meshData.Add(ending + Vector2.right);
+            if (makeBezier)
+            {
+                var meshdatacopy = new List<Vector2>(meshData);
+                meshData = setInterval(meshdatacopy.ToArray());
 
+            }
             int i = 0;
             Vector2 lastPoint;
             Vector2 sizeVector;
@@ -35,7 +41,7 @@ namespace Assets.Coding.Renderer
                 if (notFirst)
                 {
                     lastPoint = meshData[i - 1];
-                    var nextPoint = meshData[Math.Min(i + 1,lenMinOne)];
+                    var nextPoint = meshData[Math.Min(i + 1, lenMinOne)];
                     sizeVector = AddMeshDataForPoint(i, lastPoint, halfWidth, currentPoint, nextPoint);
                     i++;
 
@@ -44,7 +50,7 @@ namespace Assets.Coding.Renderer
                 }
                 else
                 {
-                    lastPoint = meshData[0]+Vector2.left;
+                    lastPoint = meshData[0] + Vector2.left;
 
 
 
@@ -56,7 +62,7 @@ namespace Assets.Coding.Renderer
                     newUv.Add(new Vector2(1, 1));
                 }
 
-                            
+
 
 
             }
@@ -65,26 +71,59 @@ namespace Assets.Coding.Renderer
 
 
         }
+        List<Vector2> setInterval(Vector2[] controlPoints)
+        {
+            var answer = new List<Vector2>();
+            int nodeIndex = 0;
+            try
+            {
+                int numbreaks = 4;
+                for (int i = 0; i < controlPoints.Length * numbreaks; i++)
+                {
+                    float t = (i % (numbreaks * (2))) / ((float)numbreaks * 2.0f);
+                    Vector2 pixel = CalculateCubicBezierPoint(t, controlPoints[nodeIndex],
+                        controlPoints[nodeIndex + 1], controlPoints[nodeIndex + 2]);
+                    answer.Add(pixel);
+                    if ((i % (2 * numbreaks)) == ((2 * numbreaks) - 1))
+                        nodeIndex += 1;
+                }
+            }
+            catch { }
+            return answer;
+        }
+
+        private Vector2 CalculateCubicBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
+        {
+            float u = 1 - t;
+            float tt = t * t;
+            float uu = u * u;
+
+            Vector2 p = uu * p0;
+            p += 2 * u * t * p1;
+            p += tt * p2;
+
+            return p;
+        }
 
         private Vector2 AddMeshDataForPoint(int i, Vector2 lastPoint, float halfWidth, Vector2 currentPoint, Vector2 nextPoint)
         {
             Vector2 sizeVector;
-            
+
             var sizeVectorMax = (nextPoint - currentPoint).normalized;
             var sizeVectorMin = (currentPoint - lastPoint).normalized;
             var sizeVectorTurned = (sizeVectorMin + sizeVectorMax) * halfWidth;
-            
-            
-            
+
+
+
             sizeVector = new Vector2(-sizeVectorTurned.y, sizeVectorTurned.x); //90 graden draaien
 
             Vector2 sizevectorstraigtened = Vector3.zero;
             if (opticalPositioning)
                 sizevectorstraigtened = sizeVectorTurned.x != 0.0f ? (sizeVector.x / sizeVectorTurned.x) * sizeVectorTurned : sizeVector;
-            
-            
-            var sizevectorDown = sizeVector - (sizevectorstraigtened );
-            var sizevectorUp = (Vector2.zero - sizeVector) + (sizevectorstraigtened );
+
+
+            var sizevectorDown = sizeVector - (sizevectorstraigtened);
+            var sizevectorUp = (Vector2.zero - sizeVector) + (sizevectorstraigtened);
 
 
             // schetst directie orthagonaal op het verloop van de grafiek
@@ -93,7 +132,7 @@ namespace Assets.Coding.Renderer
             if (sizeVector.y < 0)
 
             {
-                
+
 
                 vertices.Add(currentPoint - sizevectorDown);
                 vertices.Add(currentPoint - sizevectorUp);

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -103,7 +102,7 @@ class MouseBehavior
         RectTransform PotentialComponent1 = gameObject.GetComponent<RectTransform>();//todo:Uitbreiden
         Vector3 pos = Vector3.zero;
         Vector3 scale = Vector3.one;
-        quaternion rotation = quaternion.identity;
+        Quaternion rotation = Quaternion.identity;
         Vector3 pivotCor = Vector3.zero;
         if (PotentialComponent1 == null)
         {
