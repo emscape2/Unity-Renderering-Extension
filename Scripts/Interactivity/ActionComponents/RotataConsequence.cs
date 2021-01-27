@@ -31,7 +31,6 @@ public class RotataConsequence : Consequence
     }
     private void Rotata()
     {
-        var random = new Random();
         if (engaged)
             transform.Rotate(Time.deltaTime * new Vector3(Random.Range(-12.0f, 22.0f), Random.Range(-11.0f, 21.5f), Random.Range(1.0f, 2.0f)));
     }
