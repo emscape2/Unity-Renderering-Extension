@@ -22,7 +22,7 @@ Shader "GUIllaume/PerceptiveAngularShader"
        // #pragma surface surf Standard fullforwardshadows 
 
         // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 6.0
+        #pragma target 5.0
 
         sampler2D _MainTex;
         float _OcclusionStrength;
@@ -61,5 +61,5 @@ Shader "GUIllaume/PerceptiveAngularShader"
         }
         ENDCG
     }
-    FallBack "Diffuse"
+    FallBack "Legacy Shaders/Diffuse"
 }

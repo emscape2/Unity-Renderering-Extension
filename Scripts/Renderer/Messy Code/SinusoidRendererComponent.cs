@@ -18,6 +18,7 @@ public class SinusoidRendererComponent : MonoBehaviour
     public float width;
     public double totalLength;
     public Color color;
+    public bool setColor;
     public double detail;
     public Vector2[] points;
     public double ratioUp;
@@ -34,7 +35,7 @@ public class SinusoidRendererComponent : MonoBehaviour
         points = pointsafterEmielsZak.ToArray();
         MeshData meshData = new MeshData(
             pointsafterEmielsZak,
-            width, true);
+            width, false);
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
 
@@ -48,6 +49,7 @@ public class SinusoidRendererComponent : MonoBehaviour
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 
         meshRenderer.material = Resources.Load<Material>("Materials/colouredUnlit");
+        if (setColor)
         meshRenderer.material.SetColor("_EmissionColor", color);
     }
 

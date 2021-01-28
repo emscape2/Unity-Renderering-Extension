@@ -55,15 +55,21 @@ public class ToggleConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
+
+    }
+
+    public ToggleConsequence():base()
+    {
         if (toToggle != null)
         {
             toggled = toToggle.activeSelf;
         }
-        if(toDecativate != null)
+        if (toDecativate != null)
         {
             activated = toDecativate.enabled;
         }
     }
+
 
     // Update is called once per frame
     void Update()

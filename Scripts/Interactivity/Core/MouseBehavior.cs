@@ -68,7 +68,7 @@ class MouseBehavior
             gameObject.transform.DetachChildren();
             var name = gameObject.name;
             gameObject.SetActive(false);
-            //throw new Exception("Guillaume Error: " + name + ": RectTransforms are incompatible with Guillaume. Use proper components or get Rect (it's funny cuz you can't easily do that).");
+            throw new Exception("Guillaume Error: " + name + ": RectTransforms are incompatible with Guillaume. Use proper components or get Rect (it's funny cuz you can't easily do that).");
 
         }
         return false;
