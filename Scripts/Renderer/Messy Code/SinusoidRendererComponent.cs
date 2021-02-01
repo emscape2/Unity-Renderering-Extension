@@ -1,4 +1,5 @@
 ﻿using Assets.Coding.Renderer;
+using Assets.Scripts.Interactivity.ActionComponents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,10 +25,26 @@ public class SinusoidRendererComponent : MonoBehaviour
     public double ratioUp;
     public double ratioDown;
     public double realbpm;
+    public bool getSPEED;
     // Start is called before the first frame update
     void Start()
     {
-
+        if (getSPEED)
+        {
+            var speed = GlobalVars.getGlobalVars().getVar("SPEED");
+            switch (speed)
+            {
+                case 0:
+                    realbpm = 6.5;
+                    break;
+                case 1:
+                    realbpm = 6;
+                    break;
+                case 2:
+                    realbpm = 5.5;
+                    break;
+            }
+        }
 
         List<Vector2> pointsafterEmielsZak = GetPointsAfterEmielsZak();
 
