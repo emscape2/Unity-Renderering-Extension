@@ -18,7 +18,7 @@ namespace Assets.Coding.Renderer
         public MeshData(List<Vector2> meshData, float width, bool optiallyOptimized = true)
         {
             opticalPositioning = optiallyOptimized;
-            makeBezier = !optiallyOptimized;
+            makeBezier = ! optiallyOptimized;
             var ending = new Vector2(Mathf.Ceil(meshData.Last().x), meshData.First().y);
             meshData.Add(ending);
             meshData.Add(ending + Vector2.right);
@@ -74,16 +74,21 @@ namespace Assets.Coding.Renderer
         List<Vector2> setInterval(Vector2[] controlPoints)
         {
             var answer = new List<Vector2>();
+            var last = controlPoints.First() + Vector2.left ;
             int nodeIndex = 0;
             try
             {
-                int numbreaks = 4;
+                int numbreaks = 3;
                 for (int i = 0; i < controlPoints.Length * numbreaks; i++)
                 {
                     float t = (i % (numbreaks * (2))) / ((float)numbreaks * 2.0f);
                     Vector2 pixel = CalculateCubicBezierPoint(t, controlPoints[nodeIndex],
                         controlPoints[nodeIndex + 1], controlPoints[nodeIndex + 2]);
-                    answer.Add(pixel);
+                    if (pixel.x > last.x + 0.02f)
+                    {
+                        answer.Add(pixel);
+                        last = pixel;
+                    }
                     if ((i % (2 * numbreaks)) == ((2 * numbreaks) - 1))
                         nodeIndex += 1;
                 }

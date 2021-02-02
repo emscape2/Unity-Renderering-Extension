@@ -52,7 +52,7 @@ public class SinusoidRendererComponent : MonoBehaviour
         points = pointsafterEmielsZak.ToArray();
         MeshData meshData = new MeshData(
             pointsafterEmielsZak,
-            width, false);
+            width, true);
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
 
