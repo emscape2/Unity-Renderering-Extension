@@ -4,3 +4,9 @@
 *.asset
 *.preset
 Scripts/Interactivity/Editor/BaseComponents/Max.unitypackage
+Scripts/.vs/slnx.sqlite
+Scripts/.vs/Scripts/v16/Browse.VC.opendb
+Scripts/.vs/Scripts/v16/Browse.VC.db-wal
+Scripts/.vs/Scripts/v16/Browse.VC.db-shm
+Scripts/.vs/Scripts/v16/Browse.VC.db
+Scripts/.vs/ProjectSettings.json

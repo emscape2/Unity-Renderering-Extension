@@ -25,7 +25,6 @@ class MouseBehavior
             var ray = guillaumeCam.ScreenPointToRay(pos);
             if (RectSurface(ray.origin, gameObject, guillaumeCam))
             {
-                Debug.LogWarning("Clicked: " + gameObject.name);
                 return true;
             }
         }

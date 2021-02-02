@@ -1,0 +1,23 @@
+﻿ToolbarButton {
+	background-color: #241617;
+	border-top-width: 2px;
+	border-top-color: #22232C;
+	border-bottom-width: 2px;
+	border-bottom-color: #22232C;
+	margin-top: 8px;
+	margin-left: 4px;
+	-unity-text-align: middle-center;
+	-unity-font-style: bold;
+	font-size: 18px;
+}
+ToolbarButton:hover {
+	background-color: #351a1d;
+}
+
+ToolbarButton:active  {
+	background-color: #200A0E;
+}
+
+ColorField:hover{
+	background-color: #202020;
+}

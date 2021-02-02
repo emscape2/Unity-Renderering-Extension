@@ -26,6 +26,8 @@ public class Clickable : Interaction
                     clicked = false;
                     if (MouseBehavior.MouseOver(Input.mousePosition, gameObject))
                     {
+
+                        Debug.LogWarning("Clicked: " + gameObject.name);
                         tijd = DateTime.Now.AddMilliseconds(500);
                         return true;
                     }
@@ -38,6 +40,8 @@ public class Clickable : Interaction
                 mouseDownLast = mouseDownNow;
                 if (MouseBehavior.MouseOver(Input.mousePosition, gameObject))
                 {
+
+                    Debug.LogWarning("Released: " + gameObject.name);
                     clicked = true;
                 }
                 return false;
