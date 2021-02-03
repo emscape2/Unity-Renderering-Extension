@@ -18,7 +18,7 @@ public class MainCamPostProcessingConsequence : Consequence
     public override void Engage()
     {
 
-        layer.antialiasingMode = (layer.antialiasingMode < PostProcessLayer.Antialiasing.FastApproximateAntialiasing )? layer.antialiasingMode++ : PostProcessLayer.Antialiasing.TemporalAntialiasing);
+        layer.antialiasingMode = (layer.antialiasingMode < PostProcessLayer.Antialiasing.FastApproximateAntialiasing )? layer.antialiasingMode++ : PostProcessLayer.Antialiasing.TemporalAntialiasing;
         volume.enabled = (layer.antialiasingMode > PostProcessLayer.Antialiasing.FastApproximateAntialiasing);
     }
 
