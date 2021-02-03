@@ -17,7 +17,7 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     public Color Unlit;
     private Color baseC;
     public bool onlyEngage;
-    public string ColorName = "_Emission";
+    public string ColorName = "_Color";
     [NonSerialized]
     public bool instantiate;
     public override void Disengage()
