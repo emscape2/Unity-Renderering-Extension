@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Interactivity.ActionComponents;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +39,16 @@ public class BallPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var global = GlobalVars.getGlobalVars();
+        if (global.getVar("Pause") == 1)
+        {
+            return;
+        }
 
         var parentMesh = transform.parent.GetComponent<MeshRenderer>();
         var parentmeshTimeManipulation = (1.0f - (0.95f * Convert.ToInt32(!parentMesh.enabled)));
-        var totalTime = (Time.timeSinceLevelLoad- startTime )* parentmeshTimeManipulation;
+        //var totalTime = (Time.timeSinceLevelLoad- startTime )* parentmeshTimeManipulation;
+        var totalTime = -transform.parent.position.x;
         float yPosLast = transform.localPosition.y;
         var yScaleLast = transform.localScale;
         double x = totalTime;

@@ -32,8 +32,8 @@ public class AddHoverableToClickableScreen : EditorWindow
             }
         }
 
-        var text = FindObjectsOfType<TextMesh>();
-        foreach (var spr in text)
+        var text2 = FindObjectsOfType<TextMesh>();
+        foreach (var spr in text2)
         {
             if (spr.GetComponents<Clickable>().Length == 0)
             {

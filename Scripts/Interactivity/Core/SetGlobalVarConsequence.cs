@@ -16,12 +16,12 @@ namespace Assets.Scripts.Interactivity.ActionComponents
 
         public override void Disengage()
         {
-            var global = GlobalVars.getGlobalVars();
-            global.setVar(VarToSet, ValueToSet);
+
         }
         public override void Engage()
         {
-
+            var global = GlobalVars.getGlobalVars();
+            global.setVar(VarToSet, ValueToSet);
         }
     }
 }

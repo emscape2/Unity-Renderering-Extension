@@ -112,7 +112,12 @@ public class SinusoidRendererComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position -= new Vector3(Time.deltaTime, 0);
+        var global = GlobalVars.getGlobalVars();
+        if (global.getVar("Pause") == 0)
+        {
+            transform.position -= new Vector3(Time.deltaTime, 0);
+        }
+        
     }
 
     public List<Vector2> Downwards_Graph(double totalRatio)

@@ -10,8 +10,8 @@ using System.Threading;
 public class LoadSceneAsyncAsChildConsequence : Consequence
 {
     public string sceneToLoad;
-    Scene Scene;
-    bool loading;
+    internal Scene Scene;
+    internal bool loading;
     public bool unloadDirectly;
     public override bool CanEngage()
     {
