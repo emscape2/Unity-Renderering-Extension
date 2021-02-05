@@ -13,12 +13,21 @@ public class TemporaryCleanup : Editor
     [MenuItem("GUIllaume/X. Temp Emissionary", priority = 5)]
     static void FixMe()
     {
+
+        Material material;
         var components = FindObjectsOfType<MakeMaterialLookActivatedConsequence>();
 
         foreach (var comp in components)
         {
             comp.ColorName = "_Emission";
+            material = comp.GetComponent<Renderer>().material;
+            if (material.name.Contains("Sprites-Default"))
+            {
+                comp.ColorName = "_Color";
+            }
+
         }
+
 
         
 
