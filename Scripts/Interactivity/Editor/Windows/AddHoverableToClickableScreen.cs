@@ -22,6 +22,25 @@ public class AddHoverableToClickableScreen : EditorWindow
     {
         Debug.Log("Starting Hoverable Invasion");
         Debug.Log("Searching for Clickables in Scene");
+
+        var text = FindObjectsOfType<SpriteRenderer>();
+        foreach (var spr in text)
+        {
+            if (spr.GetComponents<Clickable>().Length == 0)
+            {
+                spr.gameObject.AddComponent<Clickable>();
+            }
+        }
+
+        var text = FindObjectsOfType<TextMesh>();
+        foreach (var spr in text)
+        {
+            if (spr.GetComponents<Clickable>().Length == 0)
+            {
+                spr.gameObject.AddComponent<Clickable>();
+            }
+        }
+
         var clickables = FindObjectsOfType<Clickable>();
         Debug.Log($"Found {clickables.Length} Clickables in Scene");
         foreach (var clickable in clickables)

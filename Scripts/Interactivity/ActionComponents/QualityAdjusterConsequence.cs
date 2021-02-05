@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : Consequence
+public class QualityAdjusterConsequence : Consequence
 {
 
     public override void Disengage()
