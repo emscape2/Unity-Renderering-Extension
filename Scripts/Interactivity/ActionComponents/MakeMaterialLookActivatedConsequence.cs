@@ -20,6 +20,7 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     public string ColorName = "_Color";
     [NonSerialized]
     public bool instantiate;
+    public Texture2D iconHover;
     public override void Disengage()
     {
         engaged = false;
@@ -32,6 +33,8 @@ public class MakeMaterialLookActivatedConsequence : Consequence
             //if (sprite != null)
             //    sprite.color = Unlit;
         }
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     public void FindMaterial()
@@ -71,6 +74,10 @@ public class MakeMaterialLookActivatedConsequence : Consequence
         engaged = true;
         if (ToBrighten != null)
             ToBrighten.SetColor(ColorName, Lit);
+        if (iconHover == null)
+        {
+            Cursor.SetCursor(iconHover, Vector2.zero, CursorMode.Auto);
+        }
        // if (sprite != null)
          //   sprite.color = Lit;
     }
@@ -83,6 +90,7 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
+        
         FindMaterial();
         baseC = ToBrighten.GetColor(ColorName);
         Lit = baseC - (Lit* (Color.white-baseC));
