@@ -10,15 +10,16 @@ using UnityEngine.Rendering.PostProcessing;
 public class TemporaryCleanup : Editor
 {
 
-    [MenuItem("GUIllaume/X. Temp Cleanup", priority = 5)]
+    [MenuItem("GUIllaume/X. Temp Emissionary", priority = 5)]
     static void FixMe()
     {
-        var colliders = FindObjectsOfType<Collider>();
-        colliders.ToList().ForEach(c => c.enabled = false);
-        var ppL = FindObjectsOfType<PostProcessLayer>();
-        ppL.ToList().ForEach(p => p.enabled = false);
-        var ppV = FindObjectsOfType<PostProcessVolume>();
-        ppV.ToList().ForEach(p => p.enabled = false);
+        var components = FindObjectsOfType<MakeMaterialLookActivatedConsequence>();
+
+        foreach (var comp in components)
+        {
+            comp.ColorName = "_Emission";
+        }
+
         
 
 
