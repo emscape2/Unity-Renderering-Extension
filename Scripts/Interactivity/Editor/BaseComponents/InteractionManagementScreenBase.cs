@@ -70,13 +70,13 @@ protected virtual void OnGUI()
         EditorGUIUtility.DrawColorSwatch(new Rect(position.width / 3, 32, position.width * 0.333333f, position.height), colour);
         switch (GUILayout.Toolbar(-1, new GUIContent[]
             {
-                        EditorGUIUtility.TrTextContent("<=", "Und davos kanker af"),
-                        new GUIContent("Cancer", "Und davos kanker bij"),
-                        new GUIContent(RowDataHelpers<R>.RowIcon(typeof(IConsequence)),"krijg kanker"),
+                        EditorGUIUtility.TrTextContent("<=", "Und davos Left af"),
+                        new GUIContent("Cancel", "Und davos annuleren."),
+                        new GUIContent(RowDataHelpers<R>.RowIcon(typeof(IConsequence)),""),
                         GUIContent.none,
-                        new GUIContent("AddComponent", "Und davos kanker ee"),
-                        new GUIContent("Couple", "Und davos kanker weer"),
-                        EditorGUIUtility.TrTextContent("=>", "Und davos kanker af"),
+                        new GUIContent("AddComponent", "Und davos toevoegen ee"),
+                        new GUIContent("Couple", "Und davos linken weer"),
+                        EditorGUIUtility.TrTextContent("=>", "Und davos Right af"),
 
 
 
@@ -95,9 +95,6 @@ protected virtual void OnGUI()
                 break;
         }
         inspector.OnGUI(new Rect(12 + position.width / 3,44, -24 + position.width / 3, -56 + position.height),selected);
-        /* if (GUILayout.Button(new GUIContent("Cancer", "Und davos kanker bij"),GUI.skin.button))
-         {
-             OnEnable();
-         }*/
+
     }
 }
