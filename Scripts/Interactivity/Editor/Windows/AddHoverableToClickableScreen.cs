@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class AddHoverableToClickableScreen : EditorWindow
 {
-    private TextField objectName;
+    private TextField objectName, emissionName, teintName;
     private TagField tagName;
     private UnityEngine.UIElements.Toggle hoverChange, holdChange;
     private ColorField unlit, lit, hold;
@@ -20,7 +20,12 @@ public class AddHoverableToClickableScreen : EditorWindow
         wnd.titleContent = new GUIContent("AddHoverableToClickableScreen");
         
     }
-
+    /// <summary>
+    /// filters the list of objects to change
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public  T[] FilterQuery<T>(IEnumerable<T> list) where T: Component
     {
         var answer = list;
@@ -80,6 +85,8 @@ public class AddHoverableToClickableScreen : EditorWindow
                 hoverEvent.Unlit = unlit.value;
                 hoverEvent.Lit = lit.value;
 
+                if ((emissionName.value ?? "") != "")
+                    hoverEvent.ColorName = emissionName.value;
                 //interactionreciever hover
                 var interactionReciever = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(hoverEvent)).FirstOrDefault()
                     ?? clickable.gameObject.AddComponent<InteractableBehavior>();
@@ -97,7 +104,8 @@ public class AddHoverableToClickableScreen : EditorWindow
                 var holdEvent = Events.Length > 1 ? Events[1] : clickable.gameObject.AddComponent<MakeMaterialLookActivatedConsequence>();
                 holdEvent.Unlit = lit.value;
                 holdEvent.Lit = hold.value;
-
+                if ((teintName.value ?? "") != "")
+                    holdEvent.ColorName = teintName.value;
                 //interactionreciever hold
                 var interactionRecieverHold = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(holdEvent)).FirstOrDefault()
                     ?? clickable.gameObject.AddComponent<InteractableBehavior>();
@@ -107,6 +115,7 @@ public class AddHoverableToClickableScreen : EditorWindow
                 ?? clickable.gameObject.AddComponent<ActivationReciever>();
                 activationRecieverHold.activationPattern = interactionRecieverHold;
                 activationRecieverHold.interaction = holdable;
+
             }
 
         }
@@ -124,6 +133,8 @@ public class AddHoverableToClickableScreen : EditorWindow
         unlit = unlit ?? new ColorField("Unlit");
         lit = lit ?? new ColorField("Lit");
         hold = hold ?? new ColorField("Hold");
+        teintName = new TextField("Material Teint name (Hold)");
+        emissionName = new TextField("Material Emission name (Hover)");
 
         hoverChange = hoverChange ?? new Toggle("Write Hover");
         holdChange = holdChange ?? new Toggle("Write Hold");
@@ -153,6 +164,8 @@ public class AddHoverableToClickableScreen : EditorWindow
         root.Add(unlit);
         root.Add(lit);
         root.Add(hold);
+        root.Add(teintName);
+        root.Add(emissionName);
         root.Add(hoverChange);
         root.Add(holdChange);
         root.Add(tagName);

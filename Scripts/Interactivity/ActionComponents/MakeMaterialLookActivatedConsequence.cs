@@ -92,9 +92,9 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     {
         
         FindMaterial();
-        baseC = ToBrighten.GetColor(ColorName);
+        ToBrighten.SetColor(ColorName, Unlit);
         //Lit = Lit;
-        Unlit = baseC;// - (Unlit * baseC);
+        //Unlit = baseC;// - (Unlit * baseC);
     }
 
     
