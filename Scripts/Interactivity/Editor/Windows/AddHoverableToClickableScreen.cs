@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 public class AddHoverableToClickableScreen : EditorWindow
 {
+    private TextField objectName;
+    private TagField tagName;
+    private UnityEngine.UIElements.Toggle hoverChange, holdChange;
     private ColorField unlit, lit, hold;
     private Button button;
     [MenuItem("GUIllaume/Helpers/AddHoverableToClickableScreen")]
@@ -18,12 +21,30 @@ public class AddHoverableToClickableScreen : EditorWindow
         
     }
 
+    public  T[] FilterQuery<T>(IEnumerable<T> list) where T: Component
+    {
+        var answer = list;
+        if (!new string[2] { "", "untagged" }.Contains (tagName?.value ?? "")   )
+        {
+            answer = answer.Where(a => a.gameObject.tag == tagName.value);
+        }
+        if ((objectName?.value?.Trim() ?? "") != "")
+        {
+            answer = answer.Where(a => a.gameObject.name.Contains(objectName.value));
+        }
+        return answer.ToArray();
+    }
+
     public void ExecuteFunctionality()
     {
         Debug.Log("Starting Hoverable Invasion");
         Debug.Log("Searching for Clickables in Scene");
 
+        
+
         var text = FindObjectsOfType<SpriteRenderer>();
+        text = FilterQuery(text);
+
         foreach (var spr in text)
         {
             if (spr.GetComponents<Clickable>().Length == 0)
@@ -32,7 +53,10 @@ public class AddHoverableToClickableScreen : EditorWindow
             }
         }
 
+        
+
         var text2 = FindObjectsOfType<TextMesh>();
+        text2 = FilterQuery(text2);
         foreach (var spr in text2)
         {
             if (spr.GetComponents<Clickable>().Length == 0)
@@ -42,6 +66,7 @@ public class AddHoverableToClickableScreen : EditorWindow
         }
 
         var clickables = FindObjectsOfType<Clickable>();
+        clickables = FilterQuery(clickables);
         Debug.Log($"Found {clickables.Length} Clickables in Scene");
         foreach (var clickable in clickables)
         {
@@ -49,34 +74,40 @@ public class AddHoverableToClickableScreen : EditorWindow
             var holdable = clickable.gameObject.GetComponent<Holdable>() ?? clickable.gameObject.AddComponent<Holdable>();
             var Events = clickable.gameObject.GetComponents<MakeMaterialLookActivatedConsequence>();
 
-            var hoverEvent = Events.Length > 0 ? Events[0] : clickable.gameObject.AddComponent<MakeMaterialLookActivatedConsequence>();
-            hoverEvent.Unlit = unlit.value;
-            hoverEvent.Lit = lit.value;
+            if (hoverChange.value)
+            {
+                var hoverEvent = Events.Length > 0 ? Events[0] : clickable.gameObject.AddComponent<MakeMaterialLookActivatedConsequence>();
+                hoverEvent.Unlit = unlit.value;
+                hoverEvent.Lit = lit.value;
 
-            var holdEvent = Events.Length > 1 ? Events[1] : clickable.gameObject.AddComponent<MakeMaterialLookActivatedConsequence>();
-            holdEvent.Unlit = lit.value;
-            holdEvent.Lit = hold.value;
+                //interactionreciever hover
+                var interactionReciever = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(hoverEvent)).FirstOrDefault()
+                    ?? clickable.gameObject.AddComponent<InteractableBehavior>();
+                interactionReciever.Consequences = new List<MonoBehaviour>() { hoverEvent };
 
-            //interactionreciever hover
-            var interactionReciever = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(hoverEvent)).FirstOrDefault()
-                ?? clickable.gameObject.AddComponent<InteractableBehavior>();
-            interactionReciever.Consequences = new List<MonoBehaviour>() { hoverEvent };
-            
-            //interactionreciever hold
-            var interactionRecieverHold = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(holdEvent)).FirstOrDefault()
-                ?? clickable.gameObject.AddComponent<InteractableBehavior>();
-            interactionRecieverHold.Consequences = new List<MonoBehaviour>() { holdEvent };
 
-            var activationReciever = clickable.gameObject.GetComponents<ActivationReciever>().Where(ac => ac.activationPattern == interactionReciever && ac.interaction == hoverable).FirstOrDefault()
+                var activationReciever = clickable.gameObject.GetComponents<ActivationReciever>().Where(ac => ac.activationPattern == interactionReciever && ac.interaction == hoverable).FirstOrDefault()
+                    ?? clickable.gameObject.AddComponent<ActivationReciever>();
+                activationReciever.activationPattern = interactionReciever;
+                activationReciever.interaction = hoverable;
+            }
+
+            if (holdChange.value)
+            {
+                var holdEvent = Events.Length > 1 ? Events[1] : clickable.gameObject.AddComponent<MakeMaterialLookActivatedConsequence>();
+                holdEvent.Unlit = lit.value;
+                holdEvent.Lit = hold.value;
+
+                //interactionreciever hold
+                var interactionRecieverHold = clickable.gameObject.GetComponents<InteractableBehavior>().Where(ic => ic.Consequences.Contains(holdEvent)).FirstOrDefault()
+                    ?? clickable.gameObject.AddComponent<InteractableBehavior>();
+                interactionRecieverHold.Consequences = new List<MonoBehaviour>() { holdEvent };
+
+                var activationRecieverHold = clickable.gameObject.GetComponents<ActivationReciever>().Where(ac => ac.activationPattern == interactionRecieverHold && ac.interaction == holdable).FirstOrDefault()
                 ?? clickable.gameObject.AddComponent<ActivationReciever>();
-            activationReciever.activationPattern = interactionReciever;
-            activationReciever.interaction = hoverable;
-
-            var activationRecieverHold = clickable.gameObject.GetComponents<ActivationReciever>().Where(ac => ac.activationPattern == interactionRecieverHold && ac.interaction == holdable).FirstOrDefault()
-            ?? clickable.gameObject.AddComponent<ActivationReciever>();
-            activationRecieverHold.activationPattern = interactionRecieverHold;
-            activationRecieverHold.interaction = holdable;
-
+                activationRecieverHold.activationPattern = interactionRecieverHold;
+                activationRecieverHold.interaction = holdable;
+            }
 
         }
         Debug.Log("Done Hoverable Invasion");
@@ -93,6 +124,12 @@ public class AddHoverableToClickableScreen : EditorWindow
         unlit = unlit ?? new ColorField("Unlit");
         lit = lit ?? new ColorField("Lit");
         hold = hold ?? new ColorField("Hold");
+
+        hoverChange = hoverChange ?? new Toggle("Write Hover");
+        holdChange = holdChange ?? new Toggle("Write Hold");
+
+        tagName = tagName ?? new TagField("Tag");
+        objectName = new TextField("Object name filter");
 
         // A stylesheet can be added to a VisualElement.
         // The style will be applied to the VisualElement and all of its children.
@@ -116,6 +153,10 @@ public class AddHoverableToClickableScreen : EditorWindow
         root.Add(unlit);
         root.Add(lit);
         root.Add(hold);
+        root.Add(hoverChange);
+        root.Add(holdChange);
+        root.Add(tagName);
+        root.Add(objectName);
         root.Add(button);
 
  
