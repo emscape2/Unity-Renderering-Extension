@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Interactivity.ActionComponents
 {
@@ -38,7 +39,17 @@ namespace Assets.Scripts.Interactivity.ActionComponents
 
         private GlobalVars()
         {
-            globalVars = new Dictionary<string,int>();
+            globalVars = new Dictionary<string, int>();
+            CalculateDefaultGLobals();
+        }
+
+        private void CalculateDefaultGLobals()
+        {
+            int width = Mathf.RoundToInt(Screen.width * 25 / Screen.dpi);
+            setVar("ScreenW", width);
+            int height = Mathf.RoundToInt(Screen.height * 25 / Screen.dpi);
+            setVar("ScreenH", height);
+            setVar("ScreenDiag", Mathf.RoundToInt(Mathf.Sqrt(height * height + width * width)));
         }
     }
 }
