@@ -25,7 +25,7 @@ public class FrameCounter : Interaction
             elapsed -= 1.0f;
             timings.Add(frames);
             
-            if (frames < 1200)
+            if (frames < 20)
             {
                 iterations += 1;
                 if (iterations == 3)

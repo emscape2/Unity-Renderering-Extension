@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RenderTextureResolutionConsequence : Consequence
 {
-    List<RenderTexture> texturesToManage;
+    public List<RenderTexture> texturesToManage;
     public override void Disengage()
     {
         texturesToManage.ForEach(t =>
