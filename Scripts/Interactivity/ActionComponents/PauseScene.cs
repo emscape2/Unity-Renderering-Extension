@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class PauseScene : Consequence
 {
     AudioSource source;
-    public string tagger;
+    public List<string> tagger;
 
     private void Start()
     {
@@ -19,15 +19,18 @@ public class PauseScene : Consequence
     {
         var global = GlobalVars.getGlobalVars();
         global.setVar("Pause",  Convert.ToInt32((global.getVar("Pause")==0)));
-        source = GameObject.FindWithTag(tagger).GetComponent<AudioSource>();
-        if (source.isPlaying)
-        {
-            source.Pause();
-        }
-        else
-        {
-            source.UnPause();
-        }
+		foreach(var tag in tagger)
+		{
+			source = GameObject.FindWithTag(tag).GetComponent<AudioSource>();
+			if (source.isPlaying)
+			{
+				source.Pause();
+			}
+			else
+			{
+				source.UnPause();
+			}
+		}
     }
 
     // Update is called once per frame
