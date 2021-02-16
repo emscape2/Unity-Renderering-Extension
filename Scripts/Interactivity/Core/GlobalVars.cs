@@ -12,6 +12,8 @@ namespace Assets.Scripts.Interactivity.ActionComponents
         private Dictionary<string, int> globalVars;
         private static GlobalVars thisObject;
         private static string Path = Application.persistentDataPath;
+        private static readonly string[] omissions = { "ScreenW", "ScreenH", "ScreenDiag", "Pause" };
+        
         public static GlobalVars getGlobalVars()
         {
             if (thisObject == null)
@@ -92,11 +94,12 @@ namespace Assets.Scripts.Interactivity.ActionComponents
 
             var list = globalVars.ToList();
             string text = "";
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 //unity cannot serialize anything properly
-                var Primaat = JsonUtility.ToJson(new SimpleSerializationItem() { Key = item.Key, Value = item.Value });
-                text += "©\n" + Primaat;
+                if (omissions.Contains(item.Key)) continue;
+                var Primaat = $"{{{item.Key}: {item.Value}}}";
+                text += ",\n" + Primaat;
             }
 
             return text.Substring(2,text.Length-2);
@@ -118,11 +121,13 @@ namespace Assets.Scripts.Interactivity.ActionComponents
                     sr = fileInfo.OpenText();
                     var contents = sr.ReadToEnd();
 
-                    foreach (var content in contents.Split("©\n".ToCharArray()))
+                    foreach (var content in contents.Split(",\n".ToCharArray()))
                     {
-                        var tuple = JsonUtility.FromJson<SimpleSerializationItem>(content);
-                        if (tuple?.Key != null)
-                            answer.Add(tuple.Key, tuple.Value);
+                        var trimmed = content.Trim("{} ".ToCharArray()).Split(':');
+                        if (!answer.ContainsKey(trimmed[0]))
+                            answer.Add(trimmed[0], Convert.ToInt32(trimmed[1].Trim()));
+                        else
+                            Debug.LogError("Duplicate key in Config.Json: " + trimmed[0]);
                     }
                 }
                 catch
