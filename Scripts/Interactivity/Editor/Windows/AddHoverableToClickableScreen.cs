@@ -5,20 +5,24 @@ using UnityEditor.UIElements;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Collections.Generic;
+using Assets.Scripts.Interactivity.Interactions;
+using Assets.Scripts.Interactivity.ActionComponents;
 
 public class AddHoverableToClickableScreen : EditorWindow
 {
     private TextField objectName, emissionName, teintName;
     private TagField tagName;
-    private UnityEngine.UIElements.Toggle hoverChange, holdChange;
+    private UnityEngine.UIElements.Toggle hoverChange, holdChange, addReshapeLogicChange;
     private ColorField unlit, lit, hold;
     private Button button;
+    private ObjectField baseObject;
+
     [MenuItem("GUIllaume/Helpers/AddHoverableToClickableScreen")]
     public static void ShowExample()
     {
         AddHoverableToClickableScreen wnd = GetWindow<AddHoverableToClickableScreen>();
         wnd.titleContent = new GUIContent("AddHoverableToClickableScreen");
-        
+
     }
     /// <summary>
     /// filters the list of objects to change
@@ -26,10 +30,10 @@ public class AddHoverableToClickableScreen : EditorWindow
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <returns></returns>
-    public  T[] FilterQuery<T>(IEnumerable<T> list) where T: Component
+    public T[] FilterQuery<T>(IEnumerable<T> list) where T : Component
     {
         var answer = list;
-        if (!new string[2] { "", "untagged" }.Contains (tagName?.value ?? "")   )
+        if (!new string[2] { "", "untagged" }.Contains(tagName?.value ?? ""))
         {
             answer = answer.Where(a => a.gameObject.tag == tagName.value);
         }
@@ -45,7 +49,7 @@ public class AddHoverableToClickableScreen : EditorWindow
         Debug.Log("Starting Hoverable Invasion");
         Debug.Log("Searching for Clickables in Scene");
 
-        
+
 
         var text = FindObjectsOfType<SpriteRenderer>();
         text = FilterQuery(text);
@@ -58,7 +62,7 @@ public class AddHoverableToClickableScreen : EditorWindow
             }
         }
 
-        
+
 
         var text2 = FindObjectsOfType<TextMesh>();
         text2 = FilterQuery(text2);
@@ -121,7 +125,57 @@ public class AddHoverableToClickableScreen : EditorWindow
         }
         Debug.Log("Done Hoverable Invasion");
 
+        if (addReshapeLogicChange.value)
+        {
+            Debug.Log("Add Reshape Logic Started");
+            var objectsToSchrink = FindObjectsOfType<Transform>();
+            var filteredObjects = FilterQuery<Transform>(objectsToSchrink);
 
+            var transformOfBase = baseObject.value as Transform;
+            if (transformOfBase.GetComponents<CompareGlobalVarInteraction>().Length == 0)
+            {
+                transformOfBase.gameObject.AddComponent<CompareGlobalVarInteraction>();
+            }
+            var CompareGlobalVarInteractions = transformOfBase.GetComponents<CompareGlobalVarInteraction>();//todo: alle interactions in deze list nagaan
+            var ActivationRecievers = transformOfBase.GetComponents<ActivationReciever>().Where(ac => ac.interaction == CompareGlobalVarInteractions.FirstOrDefault()).ToList();
+            ActivationReciever toEdit;
+            if (ActivationRecievers.Count == 0)
+            {
+                toEdit = transformOfBase.gameObject.AddComponent<ActivationReciever>();
+                toEdit.interaction = CompareGlobalVarInteractions.FirstOrDefault();
+
+            }
+            else
+            {
+                toEdit = ActivationRecievers.FirstOrDefault();
+            }
+
+
+            foreach (var transform in filteredObjects)
+            {
+
+                var Rescalabiliata = transform.GetComponent<RescaleConsequence>() ?? transform.gameObject.AddComponent<RescaleConsequence>();
+                
+
+                InteractableBehavior actipatterno;
+                if (toEdit.activationPattern == null)
+                     toEdit.activationPattern = toEdit.gameObject.AddComponent<InteractableBehavior>() as InteractableBehavior ;
+
+                actipatterno = (InteractableBehavior)toEdit.activationPattern;
+                
+                if (actipatterno.consequences == null)
+                    actipatterno.consequences = new List<MonoBehaviour>();
+                
+                actipatterno.consequences.Add(Rescalabiliata);
+
+            }
+
+
+
+
+
+
+        }
     }
 
 
@@ -138,9 +192,13 @@ public class AddHoverableToClickableScreen : EditorWindow
 
         hoverChange = hoverChange ?? new Toggle("Write Hover");
         holdChange = holdChange ?? new Toggle("Write Hold");
+        addReshapeLogicChange = addReshapeLogicChange ?? new Toggle("Write Reshape Logic");
 
         tagName = tagName ?? new TagField("Tag");
         objectName = new TextField("Object name filter");
+
+        baseObject = new ObjectField("Basis Object: Pas op, niet voeren!");
+        baseObject.objectType = typeof(Transform);
 
         // A stylesheet can be added to a VisualElement.
         // The style will be applied to the VisualElement and all of its children.
@@ -150,15 +208,16 @@ public class AddHoverableToClickableScreen : EditorWindow
 
         // VisualElements objects can contain other VisualElement following a tree hierarchy.
         VisualElement label = new Label("Ыуат ряк, Select your colours.");
-        button = new ToolbarButton() ;
+        button = new ToolbarButton();
         var buttonRect = new Box();
         button.Add(buttonRect);
         button.Add(new Label() { text = "GO" });
         button.clickable.clicked += () => ExecuteFunctionality();
-        
+
         buttonRect.style.backgroundColor = new Color(0.14f, 0.13f, 0.12f, 0.95f);
         buttonRect.style.opacity = 0.25f;
         button.style.color = new Color(0.04f, 0.07f, 0.43f);
+
 
         root.Add(label);
         root.Add(unlit);
@@ -170,8 +229,12 @@ public class AddHoverableToClickableScreen : EditorWindow
         root.Add(holdChange);
         root.Add(tagName);
         root.Add(objectName);
+
+
+        root.Add(addReshapeLogicChange);
+        root.Add(baseObject);
         root.Add(button);
 
- 
+
     }
 }

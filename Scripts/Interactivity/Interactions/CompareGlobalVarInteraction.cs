@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Interactivity.Interactions
 {
-    class CompareGlobalVarInteraction : Interaction
+    public class CompareGlobalVarInteraction : Interaction
     {
         public int LargerThanVar, SmallerThanVar;
         public bool CompareLargerThanVar, CompareSmallerThanVar;
