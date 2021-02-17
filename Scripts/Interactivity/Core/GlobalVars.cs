@@ -132,7 +132,7 @@ namespace Assets.Scripts.Interactivity.ActionComponents
                 }
                 catch
                 {
-                    //fuckoff
+                    //bummer
                     Debug.LogError("Error loading Config.Json. Location: " + fileName);
                 }
             }
@@ -149,10 +149,4 @@ namespace Assets.Scripts.Interactivity.ActionComponents
         }
     }
 
-    public class SimpleSerializationItem
-    {
-        //krijg kanker unity TODO: propere reader maken, slaat nergens op
-        public string Key;
-        public int Value;
-    }
 }
