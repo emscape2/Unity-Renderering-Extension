@@ -84,7 +84,7 @@ public class BallPosition : MonoBehaviour
         transform.localPosition = new Vector3(parentMesh.enabled ? currentPosition.x  : (currentPosition.x - transform.parent.position.x)- (Camera.main.aspect * Camera.main.orthographicSize), currentPosition.y, transform.localPosition.z);
        Color color = colorUnlit;
         //{
-        color = new Color(1f,1f,1f) /*+
+        /*color = new Color(1f,1f,1f) /*+
             colorUnlit * 3.6f*( 
                 Mathf.Abs
                     (
