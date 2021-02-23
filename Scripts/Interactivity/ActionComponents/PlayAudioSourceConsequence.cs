@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Interactivity.ActionComponents;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +25,16 @@ public class PlayAudioSourceConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
-        
+        var global = GlobalVars.getGlobalVars();
+        var waarde = global.getVar(tag + "Audio");
+        if (waarde == 0)
+        {
+            source.mute = false;
+        }
+        else
+        {
+            source.mute = true;
+        }
     }
 
     // Update is called once per frame

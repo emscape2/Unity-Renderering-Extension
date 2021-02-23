@@ -32,6 +32,16 @@ class MouseBehavior
         return false;
     }
 
+    public static Vector2 MousePos()
+    {
+        var guillaumeCam = Camera.allCameras.Where(c => c.gameObject.layer == 29).FirstOrDefault();//eerste guillaume camera 
+
+        var ray = guillaumeCam.ScreenPointToRay(Input.mousePosition);
+        return ray.origin;
+
+    }
+
+
     private static bool RectSurface(Vector2 pos, GameObject gameObject, Camera GuillaumeCam)
     {
 

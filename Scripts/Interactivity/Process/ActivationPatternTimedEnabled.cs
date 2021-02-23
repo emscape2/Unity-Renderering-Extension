@@ -2,78 +2,78 @@
 using UnityEngine;
 
 class ActivationPatternTimedEnabled : MonoBehaviour, IActivationPattern, IConsequence
+{
+    [SerializeField]
+    public List<MonoBehaviour> consequence; //IConsequence
+    [SerializeField]
+
+    public int enablyat;//Actually a boolean but hey Unity doesnt understand lists of booleans
+    public bool counting;
+    public float timer;
+    public bool enableDisengage;
+    public List<MonoBehaviour> Consequences { get => consequence; set => consequence = value; }
+
+
+    void Start()
     {
-        [SerializeField]
-        public List<MonoBehaviour> consequence; //IConsequence
-        [SerializeField]
-
-        public int enablyat;//Actually a boolean but hey Unity doesnt understand lists of booleans
-        public bool counting;
-        public float timer;
-        public bool enableDisengage;
-        public List<MonoBehaviour> Consequences { get => consequence; set => consequence = value; }
-
-
-        void Start()
+        foreach (var c in consequence)
         {
-            foreach (var c in consequence)
+            if ((IConsequence)(c) == null)
             {
-                if ((IConsequence)(c) == null)
+                try
                 {
-                    try
-                    {
-                        c.Invoke("CanEngage", 0);//try if implemements members anyways
-                    }
-                    catch
-                    {
-                        Debug.LogError($"Invalid consequence {c.name} in {this.name}");
-                    }
+                    c.Invoke("CanEngage", 0);//try if implemements members anyways
                 }
-            }
-
-        }
-        void Update()
-        {
-            if (counting)
-            {
-                timer -= Time.deltaTime;
-                if (timer <= 0)
+                catch
                 {
-                    counting = false;
-                    consequence.ForEach(c => c.Invoke("Disengage", 0));
-
+                    Debug.LogError($"Invalid consequence {c.name} in {this.name}");
                 }
             }
         }
-        void IActivationPattern.Disengage(int i)
+
+    }
+    void Update()
+    {
+        if (counting)
         {
-            if (enableDisengage)
+            timer -= Time.deltaTime;
+            if (timer <= 0)
             {
+                counting = false;
                 consequence.ForEach(c => c.Invoke("Disengage", 0));
+
+            }
+        }
+    }
+    void IActivationPattern.Disengage(int i)
+    {
+        if (enableDisengage)
+        {
+            consequence.ForEach(c => c.Invoke("Disengage", 0));
+            counting = false;
+        }
+    }
+
+    void IActivationPattern.Engage(int i)
+    {
+        if (!enableDisengage)
+        {
+            if (timer < i)
+            {
+                if (counting)
+                    timer = i;
                 counting = false;
             }
         }
-
-        void IActivationPattern.Engage(int i)
+        else
         {
-            if (!enableDisengage)
+            if (!counting || i < timer)
             {
-                if (timer < i)
-                {
-                    if (counting)
-                        timer = i;
-                    counting = false;
-                }
-            }
-            else
-            {
-                if (!counting || i < timer)
-                {
-                    consequence.ForEach(c => c.Invoke("Engage", 0));
-                    counting = true;
-                }
+                consequence.ForEach(c => c.Invoke("Engage", 0));
+                counting = true;
             }
         }
+    }
 
     public void Disengage()
     {

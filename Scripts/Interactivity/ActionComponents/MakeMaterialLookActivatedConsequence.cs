@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MakeMaterialLookActivatedConsequence : Consequence
 {
@@ -27,8 +28,18 @@ public class MakeMaterialLookActivatedConsequence : Consequence
 
         if (!onlyEngage)
         {
-            if (ToBrighten != null)
-                ToBrighten.SetColor(ColorName, Unlit);
+            var textM = gameObject.GetComponent<TextMeshPro>();
+            if (textM != null)
+            {
+                textM.color = Unlit;
+            }
+            else
+            {
+                if (ToBrighten != null)
+                    ToBrighten.SetColor(ColorName, Unlit);
+            }
+            
+            
                 
             //if (sprite != null)
             //    sprite.color = Unlit;
@@ -72,14 +83,24 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     public override void Engage()
     {
         engaged = true;
-        if (ToBrighten != null)
-            ToBrighten.SetColor(ColorName, Lit);
-        if (iconHover == null)
+        var textM = gameObject.GetComponent<TextMeshPro>();
+        if (textM != null)
         {
-            Cursor.SetCursor(iconHover, Vector2.zero, CursorMode.Auto);
+            textM.color = Lit;
         }
-       // if (sprite != null)
-         //   sprite.color = Lit;
+        else
+        {
+            if (ToBrighten != null)
+                ToBrighten.SetColor(ColorName, Lit);
+            if (iconHover != null)
+            {
+                Cursor.SetCursor(iconHover, Vector2.zero, CursorMode.Auto);
+            }
+        }
+
+
+        // if (sprite != null)
+        //   sprite.color = Lit;
     }
 
     public override bool CanEngage()

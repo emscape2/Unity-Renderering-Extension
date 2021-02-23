@@ -120,10 +120,10 @@ namespace Assets.Scripts.Interactivity.ActionComponents
                     StreamReader sr;
                     sr = fileInfo.OpenText();
                     var contents = sr.ReadToEnd();
-
-                    foreach (var content in contents.Split(",\n".ToCharArray()))
+                    var split = contents.Split("\n".ToCharArray());
+                    foreach (var content in split)
                     {
-                        var trimmed = content.Trim("{} ".ToCharArray()).Split(':');
+                        var trimmed = content.Trim("{} ,".ToCharArray()).Split(':');
                         if (!answer.ContainsKey(trimmed[0]))
                             answer.Add(trimmed[0], Convert.ToInt32(trimmed[1].Trim()));
                         else
