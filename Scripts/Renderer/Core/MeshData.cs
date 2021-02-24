@@ -78,7 +78,7 @@ namespace Assets.Coding.Renderer
             int nodeIndex = 0;
             try
             {
-                int numbreaks = 3;
+                int numbreaks =2;
                 for (int i = 0; i < controlPoints.Length * numbreaks; i++)
                 {
                     float t = (i % (numbreaks * (2))) / ((float)numbreaks * 2.0f);

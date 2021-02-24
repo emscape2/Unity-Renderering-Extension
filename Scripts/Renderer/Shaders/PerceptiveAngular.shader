@@ -5,7 +5,7 @@ Shader "GUIllaume/PerceptiveAngularShader"
         [MainTexture] _MainTex("Sprite", 2D) = "white" { }
         _PearlStrength("PearlStrength", Range(0.000000,3.00000)) = 0.05
         _OcclusionStrength("OcclusionStrength", Range(0.000000,3.00000)) = 0.05
-        _EmissionColor("Emission", Color) = (0.000000,0.000000,0.000000,1.000000)
+        _Emission("Emission", Color) = (0.000000,0.000000,0.000000,1.000000)
         [MainColor] _Color("Main(BG) Color", Color) = (0.000000,0.000000,0.000000,1.000000)
         
         //_BumpScale("Scale", Float) = 1.000000
@@ -36,7 +36,7 @@ Shader "GUIllaume/PerceptiveAngularShader"
             float4 _WorldSpaceCameraPos;
         };
 
-        fixed4 _EmissionColor;
+        fixed4 _Emission;
         fixed4 _Color;
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -50,10 +50,10 @@ Shader "GUIllaume/PerceptiveAngularShader"
             // Albedo comes from a texture tinted by color
             half3 color = normalize(ObjSpaceViewDir(IN._WorldSpaceCameraPos));
                 // tex2D(_MainTex, IN.uv_MainTex);
-            half3 colour =  _PearlStrength * cross(-normalize(IN.worldRefl),IN.WorldNormal) * color.rgb+ (_Color.rgb * _Color.a);// _EmissionColor;
+            half3 colour =  _PearlStrength * cross(-normalize(IN.worldRefl),IN.WorldNormal) * color.rgb+ (_Color.rgb * _Color.a);// _Emission;
             o.Albedo = _Color.a * cross(colour, IN._WorldSpaceCameraPos.xyz); //*/*
             half4 texcol = tex2D(_MainTex, IN.uv_MainTex);
-            o.Emission = texcol * (1- _EmissionColor.a) + _EmissionColor * _EmissionColor.a *normalize((   reflect(_WorldSpaceLightPos0, color.rgb)));
+            o.Emission = texcol * (1- _Emission.a) + _Emission * _Emission.a *normalize((   reflect(_WorldSpaceLightPos0, color.rgb)));
             // Metallic and smoothness come from slider variables
             o.Metallic = colour* _OcclusionStrength;
             o.Smoothness = color + _OcclusionStrength*0.2;

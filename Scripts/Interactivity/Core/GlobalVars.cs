@@ -12,7 +12,7 @@ namespace Assets.Scripts.Interactivity.ActionComponents
         private Dictionary<string, int> globalVars;
         private static GlobalVars thisObject;
         private static string Path = Application.persistentDataPath;
-        private static readonly string[] omissions = { "ScreenW", "ScreenH", "ScreenDiag", "Pause" };
+        private static readonly string[] omissions = { "ScreenW", "ScreenH", "ScreenDiag", "Pause", "delayGlobal" };
         
         public static GlobalVars getGlobalVars()
         {

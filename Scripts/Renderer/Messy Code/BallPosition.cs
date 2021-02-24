@@ -39,11 +39,6 @@ public class BallPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var global = GlobalVars.getGlobalVars();
-        if (global.getVar("Pause") == 1)
-        {
-            return;
-        }
 
         var parentMesh = transform.parent.GetComponent<MeshRenderer>();
         var parentmeshTimeManipulation = (1.0f - (0.95f * Convert.ToInt32(!parentMesh.enabled)));
@@ -79,10 +74,23 @@ public class BallPosition : MonoBehaviour
             }
         }
 
+        Color color = colorUnlit;
+
+        this.GetComponent<MeshRenderer>().material.color = color;
+        this.GetComponent<MeshRenderer>().material.SetColor("_Emission", colorLit);
+
         var currentPosition = InterpolateY(x, (xPos- (int)xPos),  yLast, y);
+
+        var global = GlobalVars.getGlobalVars();
+        if (global.getVar("Pause") == 1 || global.getVar("delayGlobal") >= 0)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, currentPosition.y, transform.localPosition.z);
+
+            return;
+        }
         ///todo: kleuren berekenen aan de hand van de velocity hieronder
         transform.localPosition = new Vector3(parentMesh.enabled ? currentPosition.x  : (currentPosition.x - transform.parent.position.x)- (Camera.main.aspect * Camera.main.orthographicSize), currentPosition.y, transform.localPosition.z);
-       Color color = colorUnlit;
+       
         //{
         /*color = new Color(1f,1f,1f) /*+
             colorUnlit * 3.6f*( 
@@ -100,9 +108,8 @@ public class BallPosition : MonoBehaviour
                        )
                     , 0.1f));*/
 
-            ;
+        ;
         // }
-        this.GetComponent<MeshRenderer>().material.color = color;
         double velocityLast = (y - yLast).normalized.y;
         double velocityNext = (yNext - y).normalized.y;
         double velocityCurrent = xPos * velocityNext + (1.0 - xPos) * velocityLast;

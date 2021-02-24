@@ -91,7 +91,17 @@ public class MakeMaterialLookActivatedConsequence : Consequence
         else
         {
             if (ToBrighten != null)
+            {
                 ToBrighten.SetColor(ColorName, Lit);
+                if (DateTime.Today.Day == 25 && DateTime.Today.Month == 12)
+                {
+                    if (ToBrighten.HasProperty("_Shininess"))
+                    {
+                        ToBrighten.SetFloat("_Shiniess", 0.9f);
+                    }
+                }
+
+            }
             if (iconHover != null)
             {
                 Cursor.SetCursor(iconHover, Vector2.zero, CursorMode.Auto);
@@ -111,7 +121,12 @@ public class MakeMaterialLookActivatedConsequence : Consequence
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (DateTime.Today.Day == 25 && DateTime.Today.Month == 12)
+        {
+         
+                Unlit = new Color(Mathf.Sqrt(Unlit.r), Unlit.g - 0.1f, Unlit.b, Unlit.a * 1.2f);
+         
+        }
         FindMaterial();
         ToBrighten.SetColor(ColorName, Unlit);
         //Lit = Lit;

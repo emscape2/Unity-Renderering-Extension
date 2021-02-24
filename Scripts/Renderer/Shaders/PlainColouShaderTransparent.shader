@@ -4,7 +4,8 @@ Shader "GUIllaume/PlainColourShader,Transparent"
     {
         [MainTexture] _MainTex("Sprite", 2D) = "white" { }
         _OcclusionMap("Occlusion", 2D) = "white" { }
-               _Cutoff("Strength", Range(0.000000,1.000000)) = 1.000000
+        _Cutoff("Strength", Range(0.000000,1.000000)) = 1.000000
+        _Alpha("Alpha", Range(0.000000,1.000000)) = 1.000000
          [PowerSlider(5.0)]  _Shininess("PearlStrength", Range(0.000000,1.00000)) = 0.05
         _Emission("Emission", Color) = (0.000000,0.000000,0.000000,1.000000)
         [MainColor] _Color("Main Color", Color) = (0.000000,0.000000,0.000000,1.000000)
@@ -28,6 +29,7 @@ Shader "GUIllaume/PlainColourShader,Transparent"
         sampler2D _MainTex;
         float _Shininess;
         float _Cutoff;
+        float _Alpha;
 
         struct Input
         {
@@ -50,12 +52,12 @@ Shader "GUIllaume/PlainColourShader,Transparent"
             // Albedo comes from a texture tinted by color
             fixed4 color = tex2D(_MainTex, IN.uv_MainTex);
             o.Albedo = /*_EmissionColor */ _Color.a * _Cutoff * cross(-normalize(IN.worldRefl), IN.WorldNormal) * color.rgb + (_Color.rgb);// _EmissionColor;
-            o.Emission = _Emission * _Emission.a;
+            o.Emission = color.rgb *_Emission * _Emission.a;
             // Metallic and smoothness come from slider variables
             o.Metallic = 1.0 - (tex2D(_OcclusionMap, IN.uv_MainTex) * _Shininess * 0.4);
             o.Smoothness = _Shininess * tex2D(_OcclusionMap, IN.uv_MainTex) * 0.28;
-            o.Alpha = color.a;
-        }
+            o.Alpha = color.a * _Alpha;
+}
         ENDCG
     }
                    FallBack "Legacy Shaders/Transparent/Cutout/VertexLit"

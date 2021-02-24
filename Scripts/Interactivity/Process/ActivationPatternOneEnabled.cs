@@ -45,7 +45,7 @@ class ActivationPatternOneEnabled : MonoBehaviour, IActivationPattern
                     consequence.Invoke("Disengage", 0);//try if implemements members anyways();
                 }
             }
-            else
+            else if (i >= 0)
             {
                 consequences[i].Invoke("Disengage", 0);//try if implemements members anyways();
                 if (enablyat == i && enablyat2 != 1)
@@ -58,14 +58,24 @@ class ActivationPatternOneEnabled : MonoBehaviour, IActivationPattern
                     enablyat = -1;
                 }
             }
+            else if (enablyat >= 0)
+            {
+                consequences[enablyat].Invoke("Disengage", 0);//try if implemements members anyways();
+
+                enablyat2 = 0;
+                enablyat = -1;
+            }
 
         }
     }
 
     void IActivationPattern.Engage(int i)
     {
-        if (!isDisengageSensitive)
+        if (!isDisengageSensitive && i >= 0)
+        {
             consequences[i].Invoke("Disengage", 0);//try if implemements members anyways();
+
+        }
         if (isDisengageSensitive && enablyat > -1 && enablyat != i && enablyat2 == 1)
         {
             consequences[enablyat].Invoke("Engage", 0);//try if implemements members anyways();
@@ -74,17 +84,20 @@ class ActivationPatternOneEnabled : MonoBehaviour, IActivationPattern
             enablyat2 = 0;
         }
 
-        if (enablyat >= -1 && i != enablyat)
+        if (enablyat >= -1)
         {
-            enablyat = i;
-            consequences[i].Invoke("Engage", 0);//try if implemements members anyways();
-        }
-        if (i == enablyat)
-        {
-            enablyat = i;
-            if (enablyat >= 0)
+            if (i != enablyat)
             {
-                consequences[i].Invoke("Engage", 0);//try if implemements members anyways
+                enablyat = i;
+                consequences[i].Invoke("Engage", 0);//try if implemements members anyways();
+            }
+            if (i == enablyat)
+            {
+                enablyat = i;
+                if (enablyat >= 0)
+                {
+                    consequences[i].Invoke("Engage", 0);//try if implemements members anyways
+                }
             }
         }
     }

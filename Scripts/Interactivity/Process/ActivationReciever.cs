@@ -10,6 +10,7 @@ public class ActivationReciever : MonoBehaviour, IConsequence
     [SerializeField]
     [LeftInteraction(typeof(IInteraction), "interaction")]
     public Interaction interaction;
+    public bool alwaysTrigger;
     protected bool engaged;
     public void Start()
     {
@@ -43,14 +44,14 @@ public class ActivationReciever : MonoBehaviour, IConsequence
         switch (interaction.TryInteract(gameObject))
         {
             case (true):
-                if (!engaged)
+                if (!engaged || alwaysTrigger)
                 {
                     engaged = true;
                     Engage();
                 }
                 break;
             case (false):
-                if (engaged)
+                if (engaged || alwaysTrigger)
                 {
                     engaged = false;
                     Disengage();

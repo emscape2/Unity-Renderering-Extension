@@ -23,17 +23,17 @@ public class FrameCounter : Interaction
         if (elapsed >= 1.0f)
         {
             elapsed -= 1.0f;
-            timings.Add(frames);
             
-            if (frames < 20)
+            if (frames < 16)
             {
+                timings.Add(frames);
                 iterations += 1;
                 if (iterations == 3)
                 {
                     iterations = -5;
                     timings.Clear();
                     frames = 0;
-                    return true;
+                    return false;
                 }
             }
             else
@@ -41,8 +41,13 @@ public class FrameCounter : Interaction
                 iterations = 0;
                 timings.Clear();
             }
+            if (frames > 150)
+            {
+                frames = 0;
+                return true;
+            }
             frames = 0;
         }
-        return false;
+        return null;
     }
 }

@@ -12,11 +12,12 @@ public class TimerConsequence : MonoBehaviour
     public bool timerIsRunning = false;
     public TextMeshPro timeText;
     public float delay;
-
-    private void Start()
+    public float remainingDelay;
+    private void OnEnable()
     {
         initialTimeRemainder = timeRemaining;
-        var speed = GlobalVars.getGlobalVars().getVar("SPEED");
+        var globalVars = GlobalVars.getGlobalVars();
+        var speed = globalVars.getVar("SPEED");
         switch (speed)
         {
             case 0:
@@ -29,25 +30,28 @@ public class TimerConsequence : MonoBehaviour
                 delay = 5.5f;
                 break;
         }
+        remainingDelay = delay;
+        globalVars.setVar("delayGlobal", (int)(delay*1000));
     }
 
     void Update()
     {
         var position = -FindObjectOfType<SinusoidRendererComponent>()?.transform?.position;
-        if (delay > position?.x)
+            var globalVars = GlobalVars.getGlobalVars();
+        
+        if ( remainingDelay >= 0)
         {
+            remainingDelay -= Time.deltaTime;
+            globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
             timeRemaining = initialTimeRemainder;
-            if (position == null)
-            {
-                timeText.text = $"Ready?";
-            }
-            else
-            {
-                timeText.text = $"{(int)(delay + 1 - position?.x) }";
-            }
+            
+                timeText.text = $"<#DD9DA5> {(int)(remainingDelay + 1) }</color>";
+            
         }
         else
         {
+            globalVars.setVar("delayGlobal", -1);
+
             if (timeRemaining > 0)
             {
                 timeRemaining = initialTimeRemainder - position?.x ?? 0f;
@@ -59,6 +63,16 @@ public class TimerConsequence : MonoBehaviour
                 Debug.Log("Time has run out!");
                 timeRemaining = 0;
                 timerIsRunning = false;
+            }
+        }
+        if (position == null || globalVars.getVar("Pause") == 1)
+        {
+            timeText.text = $"<#B3C2AC>Ready?</color>";
+
+            if (remainingDelay <= 0)
+            {
+                globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
+                remainingDelay = 3.99f;
             }
         }
     }
