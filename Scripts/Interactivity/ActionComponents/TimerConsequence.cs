@@ -9,7 +9,7 @@ public class TimerConsequence : MonoBehaviour
 {
     public float timeRemaining;
     private float initialTimeRemainder;
-    public bool timerIsRunning = false;
+    //public bool timerIsRunning = false;
     public TextMeshPro timeText;
     public float delay;
     public float remainingDelay;
@@ -58,11 +58,12 @@ public class TimerConsequence : MonoBehaviour
 
                 DisplayTime(timeRemaining);
             }
-            else
+            else if (globalVars.getVar("Pause") == 0)
             {
+                globalVars.setVar("Pause", 1);
                 Debug.Log("Time has run out!");
                 timeRemaining = 0;
-                timerIsRunning = false;
+                //timerIsRunning = false;
             }
         }
         if (position == null || globalVars.getVar("Pause") == 1)
@@ -72,7 +73,7 @@ public class TimerConsequence : MonoBehaviour
             if (remainingDelay <= 0)
             {
                 globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
-                remainingDelay = 3.99f;
+                //remainingDelay = 3.99f;
             }
         }
     }

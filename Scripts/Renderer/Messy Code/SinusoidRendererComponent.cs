@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-
+[RequireComponent(typeof(MeshRenderer))]
 public class SinusoidRendererComponent : MonoBehaviour
 {
     public double fakeBpm
