@@ -7,10 +7,18 @@ public class ToggleConsequence : Consequence
     public UnityEngine.GameObject toToggle;
     public UnityEngine.Renderer toDecativate;
     public AnimateMoveMenuConsequence toSlumber;
+    public MonoBehaviour componentToToggle;
     private bool toggled = true, activated = true;
     public bool delay;
     public override void Disengage()
     {
+        if (componentToToggle != null)
+        {
+            componentToToggle.enabled = !toggled;
+            toggled = componentToToggle.enabled;
+            return;
+
+        }
         if (toToggle != null)
         {
 
@@ -34,6 +42,13 @@ public class ToggleConsequence : Consequence
     {
         if (delay)
         {
+            if (componentToToggle != null)
+            {
+                toggled = componentToToggle.enabled;
+
+                componentToToggle.enabled = false;
+                return;
+            }
             if (toToggle != null)
             {
                 toggled = toToggle.activeSelf;

@@ -7,39 +7,61 @@ public class RenderTextureResolutionConsequence : Consequence
     public List<RenderTexture> texturesToManage;
     public override void Disengage()//werkt niet als in gebruik
     {
-        texturesToManage.ForEach(t =>
-       {
-           t.antiAliasing = 1;
-           t.format = RenderTextureFormat.ARGBHalf;
-           if (t.height >= 768)
-           {
-               t.width /= 2;
-               t.height /= 2;
-           }
+        foreach (var t in texturesToManage)
+        {
+            if (t.IsCreated())
+                continue;
+            t.antiAliasing = 1;
+            t.format = RenderTextureFormat.ARGBHalf;
+            
+            if (!t.useDynamicScale && t.height >= 768)
+            {
+                t.width /= 2;
+                t.height /= 2;
+            }
 
 
-       });
+        } ;
     }
 
     public override void Engage()
     {
-        texturesToManage.ForEach(t =>
+        foreach (var t in texturesToManage)
         {
+            if (t.IsCreated())
+                continue;
             t.antiAliasing = 2;
-            if (t.height <= 2160)
+
+#if UNITY_IOS || UNITY_ANDROID
+            if (!t.useDynamicScale && t.height <= 2160)
             {
                 t.width *= 2;
                 t.height *= 2;
             }
+#else
+            if (  t.height <= 2160)
+            {
+                t.width *= 2;
+                t.height *= 2;
 
-
-        });
+                t.antiAliasing = 4;
+            }
+#endif
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        foreach (var t in texturesToManage)
+        {
+            if (t.IsCreated())
+                continue;
+            t.width = Screen.width;
+            t.height = Screen.height;
 
+
+        };
     }
 
     // Update is called once per frame

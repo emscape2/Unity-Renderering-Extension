@@ -16,7 +16,7 @@ public class Clickable : Interaction
             {
                 MouseBehavior.InstantiateDrawRect(gameObject);
             }
-
+            
             var mouseDownNow = Input.GetMouseButton(0);
             if (mouseDownLast && !mouseDownNow)
             {
@@ -28,7 +28,7 @@ public class Clickable : Interaction
                     {
 
                         Debug.LogWarning("Clicked: " + gameObject.name);
-                        tijd = DateTime.Now.AddMilliseconds(500);
+                        tijd = DateTime.Now.AddMilliseconds(200);
                         return true;
                     }
                         

@@ -20,6 +20,7 @@ public class SinusoidRendererComponent : MonoBehaviour
     public double totalLength;
     public Color color;
     public bool setColor;
+    public bool optimized;
     public double detail;
     public Vector2[] points;
     public double ratioUp;
@@ -52,7 +53,7 @@ public class SinusoidRendererComponent : MonoBehaviour
         points = pointsafterEmielsZak.ToArray();
         MeshData meshData = new MeshData(
             pointsafterEmielsZak,
-            width, true);
+            width, !optimized);
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
 
@@ -112,8 +113,8 @@ public class SinusoidRendererComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var global = GlobalVars.getGlobalVars();
-        if (global.getVar("Pause") == 0)
+        var global = GlobalVars.getGlobalVars(); 
+        if (global.getVar("Pause") == 0 && global.getVar("delayGlobal") <= 0)
         {
             transform.position -= new Vector3(Time.deltaTime, 0);
         }

@@ -15,7 +15,7 @@ namespace Assets.Scripts.Interactivity.ActionComponents
         {
             if (! triggered)
             {
-                gameObject.transform.localScale /= 2.0f;
+                gameObject.transform.localScale /= 1.41f;
                 triggered = true;
             }
         }
