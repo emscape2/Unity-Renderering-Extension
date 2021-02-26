@@ -5,19 +5,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TimerConsequence : MonoBehaviour
+public class TimerConsequence : Consequence
 {
     public float timeRemaining;
     private float initialTimeRemainder;
+
     //public bool timerIsRunning = false;
     public TextMeshPro timeText;
     public float delay;
     public float remainingDelay;
     private void OnEnable()
     {
-        initialTimeRemainder = timeRemaining;
+        if (initialTimeRemainder < 0.5f)
+            initialTimeRemainder = timeRemaining;
+        else
+            timeRemaining = initialTimeRemainder;
         var globalVars = GlobalVars.getGlobalVars();
         var speed = globalVars.getVar("SPEED");
+        globalVars.setVar("Pause", 0);
         switch (speed)
         {
             case 0:
@@ -33,6 +38,9 @@ public class TimerConsequence : MonoBehaviour
         remainingDelay = delay;
         globalVars.setVar("delayGlobal", (int)(delay*1000));
     }
+
+
+
 
     void Update()
     {
@@ -56,8 +64,9 @@ public class TimerConsequence : MonoBehaviour
             {
                 timeRemaining = initialTimeRemainder - position?.x ?? 0f;
 
-                DisplayTime(timeRemaining);
+                timeText.text = DisplayTime(timeRemaining);
             }
+
             else if (globalVars.getVar("Pause") == 0)
             {
                 globalVars.setVar("Pause", 1);
@@ -68,25 +77,38 @@ public class TimerConsequence : MonoBehaviour
         }
         if (position == null || globalVars.getVar("Pause") == 1)
         {
-            timeText.text = $"<#B3C2AC>Ready?</color>";
+            timeRemaining = initialTimeRemainder - position?.x ?? 0f;
+            timeText.text = $"<#B3C2AC>{DisplayTime(timeRemaining)}</color>";
+
 
             if (remainingDelay <= 0)
             {
                 globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
+
                 //remainingDelay = 3.99f;
             }
         }
     }
 
-    void DisplayTime(float timeToDisplay)
+
+    string DisplayTime(float timeToDisplay)
+
     {
         timeToDisplay += 1;
 
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
-        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
+        return string.Format("{0}:{1:00}", minutes, seconds);
     }
-    
+
+    public override void Engage()
+    {
+        // do nothing
+    }
+
+    public override void Disengage()
+    {
+        OnEnable(); //force reset the counter
+    }
 }

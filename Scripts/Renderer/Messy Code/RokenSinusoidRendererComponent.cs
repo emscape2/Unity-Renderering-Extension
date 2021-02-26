@@ -6,6 +6,7 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
 {
     public float secWait = 2.0f;
     public float ampScale = 1.66f;
+    public bool startMetUitadem;
     protected override List<Vector2> GetPointsAfterEmielsZak()
     {
 
@@ -17,15 +18,18 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
         var amplitudeL = mr*amplitude;
         List<Vector2> pointsafterEmielsZak = new List<Vector2>();
         //eerst diep uitademen
+        float? initmult = null;
+        if (!startMetUitadem)
+            initmult = -amplitudeL;
 
-        pointsafterEmielsZak.Add(new Vector2(Omhoog[0].x,amplitudeL));
-        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.20f), amplitudeL));
-        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.25f), amplitudeL));
-        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.25f), amplitudeL));
-        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.20f), amplitudeL));
+        pointsafterEmielsZak.Add(new Vector2(Omhoog[0].x, initmult?? amplitudeL));
+        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.20f), initmult?? amplitudeL));
+        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.25f), initmult?? amplitudeL));
+        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.25f), initmult?? amplitudeL));
+        pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + (secWait * 0.20f), initmult?? amplitudeL));
         foreach ( var point in Omlaag)
         {
-            pointsafterEmielsZak.Add(new Vector2(point.x + secWait, point.y *mr));
+            pointsafterEmielsZak.Add(new Vector2(point.x + secWait, initmult ?? (point.y *mr)));
         }
 
 
@@ -89,14 +93,26 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
         float xBoost = 0;
         for (int i = 0; i < pointsafterEmielsZak.Count -1; i++)
         {
+            float perct = (pointsafterEmielsZak[i].y / amplitude);
             pointsToReturn.Add(pointsafterEmielsZak[i]+new Vector2(xBoost, 0f));
-            xBoost += (float)(Mathf.Abs(pointsafterEmielsZak[i].y) / (0.95*amplitude * detail * realbpm));
+            if (Mathf.Abs(perct) > 0.5f )
+                xBoost += (float)((perct * perct) / (0.90 * detail * realbpm));
+            float avgX = (pointsafterEmielsZak[i].x + pointsafterEmielsZak[i + 1].x ) * 0.5f;
+            float avgY = (pointsafterEmielsZak[i].y + pointsafterEmielsZak[i + 1].y) * 0.5f;
+            if (Mathf.Abs(avgY) < 0.66f * amplitudeL)
+                continue;
+            pointsToReturn.Add(new Vector2(avgX+ xBoost, avgY));
+            perct = (pointsafterEmielsZak[i].y / amplitude); 
+            xBoost += (float)((perct * perct) / (0.90 * detail * realbpm));
+
+/*            xBoost += (float)(Mathf.Abs(pointsafterEmielsZak[i].y) / (0.95*amplitude * detail * realbpm));
             float avgX = (pointsafterEmielsZak[i].x + pointsafterEmielsZak[i + 1].x ) * 0.5f;
             float avgY = (pointsafterEmielsZak[i].y + pointsafterEmielsZak[i + 1].y) * 0.5f;
             if (Mathf.Abs(avgY) < 0.66f * amplitudeL)
                 continue; 
             pointsToReturn.Add(new Vector2(avgX+ xBoost, avgY));
             xBoost += (float)(Mathf.Abs(pointsafterEmielsZak[i].y) / (0.95*amplitude * detail * realbpm));
+*/
         }
         return pointsToReturn;
     }

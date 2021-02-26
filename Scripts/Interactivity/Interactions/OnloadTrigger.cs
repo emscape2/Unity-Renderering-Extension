@@ -8,6 +8,7 @@ using UnityEngine;
 class OnloadTrigger : Interaction
 {
     bool triggered;
+    public bool disengage;
     public bool timedDelay;
     public float delaySeconds;
     public override bool? TryInteract(GameObject gameObject)
@@ -32,6 +33,7 @@ class OnloadTrigger : Interaction
             triggered = true;
             return true;
         }
+        if (disengage) return false;
         return true;
     }
 }

@@ -121,14 +121,16 @@ namespace Assets.Coding.Renderer
 
 
             sizeVector = new Vector2(-sizeVectorTurned.y, sizeVectorTurned.x); //90 graden draaien
-
-            Vector2 sizevectorstraigtened = Vector3.zero;
+            Vector2 sizevectorDown = sizeVector;
+            Vector2 sizevectorUp = -sizeVector;
             if (opticalPositioning)
-                sizevectorstraigtened = sizeVectorTurned.x != 0.0f ? (sizeVector.x / sizeVectorTurned.x) * sizeVectorTurned : sizeVector;
+            {
+                Vector2 sizevectorstraigtened = sizeVectorTurned.x != 0.0f ? (sizeVector.x / sizeVectorTurned.x) * sizeVectorTurned : sizeVector;
 
 
-            var sizevectorDown = sizeVector - (sizevectorstraigtened);
-            var sizevectorUp = (Vector2.zero - sizeVector) + (sizevectorstraigtened);
+                sizevectorDown -= sizevectorstraigtened;
+                sizevectorUp += sizevectorstraigtened;
+            }
 
 
             // schetst directie orthagonaal op het verloop van de grafiek

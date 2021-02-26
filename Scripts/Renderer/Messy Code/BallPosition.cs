@@ -32,7 +32,7 @@ public class BallPosition : MonoBehaviour
         points      = transform.parent.GetComponent<SinusoidRendererComponent>().points;
         CurrentColor = colorUnlit;
 
-        pointsMaxX = points.Max(p => p.x);
+        pointsMaxX = (float) (totalLength * 60);// points.Max(p => p.x);
 
     }
 
