@@ -78,11 +78,14 @@ public class SinusoidRendererComponent : MonoBehaviour
         var Omhoog = Upwards_Graph(totalRatio);
         var Omlaag = Downwards_Graph(totalRatio);
         List<Vector2> pointsafterEmielsZak = new List<Vector2>();
-
+        var lastOmh = Omhoog.Last();
         pointsafterEmielsZak.Add(Omlaag[0]);
         for (double i = 0; i < (totalLength * realbpm); i += 1)
         {
-            for (int j = 0; j < Omlaag.Count; j++)
+            pointsafterEmielsZak.Add(new Vector2(((Omlaag[0].x +
+                       (float)(i * 60.0 / realbpm)))
+                   , amplitude));
+            for (int j = 1; j < Omlaag.Count; j++)
             {
                 pointsafterEmielsZak.Add(new Vector2(((Omlaag[j].x +
                         (float)(i * 60.0 / realbpm)))

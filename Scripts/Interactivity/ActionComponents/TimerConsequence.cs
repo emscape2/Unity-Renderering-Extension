@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TimerConsequence : MonoBehaviour
+public class TimerConsequence : Consequence
 {
     public float timeRemaining;
     private float initialTimeRemainder;
@@ -16,9 +16,13 @@ public class TimerConsequence : MonoBehaviour
     public float remainingDelay;
     private void OnEnable()
     {
-        initialTimeRemainder = timeRemaining;
+        if (initialTimeRemainder < 0.5f)
+            initialTimeRemainder = timeRemaining;
+        else
+            timeRemaining = initialTimeRemainder;
         var globalVars = GlobalVars.getGlobalVars();
         var speed = globalVars.getVar("SPEED");
+        globalVars.setVar("Pause", 0);
         switch (speed)
         {
             case 0:
@@ -35,6 +39,9 @@ public class TimerConsequence : MonoBehaviour
         globalVars.setVar("delayGlobal", (int)(delay*1000));
     }
 
+
+
+
     void Update()
     {
         var position = -FindObjectOfType<SinusoidRendererComponent>()?.transform?.position;
@@ -42,11 +49,14 @@ public class TimerConsequence : MonoBehaviour
         
         if ( remainingDelay >= 0)
         {
-            remainingDelay -= Time.deltaTime;
+            if (globalVars.getVar("Pause") == 0)
+            {
+                remainingDelay -= Time.deltaTime;
+            }
             globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
             timeRemaining = initialTimeRemainder;
             
-                timeText.text = $"<#DD9DA5> {(int)(remainingDelay + 1) }</color>";
+            timeText.text = $"<#DD9DA5> {(int)(remainingDelay + 1) }</color>";
             
         }
         else
@@ -93,6 +103,17 @@ public class TimerConsequence : MonoBehaviour
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
         return string.Format("{0}:{1:00}", minutes, seconds);
+
     }
-    
+
+    public override void Engage()
+    {
+        // do nothing
+    }
+
+    public override void Disengage()
+    {
+        OnEnable(); //force reset the counter
+
+    }
 }
