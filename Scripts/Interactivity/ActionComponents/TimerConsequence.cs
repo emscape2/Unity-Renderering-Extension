@@ -49,8 +49,11 @@ public class TimerConsequence : Consequence
         
         if ( remainingDelay >= 0)
         {
-            remainingDelay -= Time.deltaTime;
-            globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
+            if (globalVars.getVar("Pause") == 0)
+            {
+                remainingDelay -= Time.deltaTime;
+                globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
+            }
             timeRemaining = initialTimeRemainder;
             
                 timeText.text = $"<#DD9DA5> {(int)(remainingDelay + 1) }</color>";

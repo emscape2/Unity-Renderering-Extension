@@ -85,7 +85,7 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
            for (int j = 0; j < normal.Count; j++)
             {
                 var point = normal[j];
-                normal[j] = new Vector2(point.x + endX, point.y);
+                normal[j] = new Vector2((point.x * 1.05f) + endX, point.y);
             }
         
         pointsafterEmielsZak.AddRange(normal);
