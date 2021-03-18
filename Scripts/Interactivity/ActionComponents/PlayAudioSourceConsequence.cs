@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayAudioSourceConsequence : Consequence
 {
     public AudioSource source;
-    public bool muteIfUnMuted;
     public override void Disengage()
     {
         
@@ -14,20 +13,10 @@ public class PlayAudioSourceConsequence : Consequence
 
     public override void Engage()
     {
-        var global = GlobalVars.getGlobalVars();
-        var waarde = global.getVar(tag + "Audio");
-        if (!source.isPlaying )
-        {
+        if (!source.isPlaying)
             source.Play();
-            if ( waarde == 0)
-                source.mute = false;
-        }
         else
-        {
-            if (muteIfUnMuted)
-               source.mute = true;
             source.timeSamples = 0;
-        }
     }
     public override bool CanEngage()
     {

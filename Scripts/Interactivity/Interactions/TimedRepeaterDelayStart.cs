@@ -1,5 +1,4 @@
 using Assets.Scripts.Interactivity.ActionComponents;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,67 +24,56 @@ public class TimedRepeaterDelayStart : Interaction
 
     public override bool? TryInteract(GameObject gameObject)
     {
-        if (!gameObject.GetComponent<SinusoidRendererComponent>()._started)
-            return null;
-        
-        
-            var sin = gameObject.GetComponent<SinusoidRendererComponent>();
-            realBPM = sin?.realbpm ?? realBPM;
-        double secsforLoop = (60.0 / realBPM);
+        double realbpm = realBPM;// gameObject.GetComponent<SinusoidRendererComponent>()?.realbpm ?? 12.0;
+        double secsforLoop = (60.0 / realbpm);
 
         if (!started)
         {
-
             if (Mathf.Abs(gameObject.transform.position.x) < delay)
             {
                 return null;
             }
             started = true;
-            ratioUp = /*ratioUp != 0 ? ratioUp :*/ sin?.ratioUp ?? ratioUp;//todo:  abstractify
-            ratioDown = /*ratioDown != 0 ? ratioDown :*/ sin?.ratioDown ?? ratioDown;
+            ratioUp = ratioUp != 0 ? ratioUp : gameObject.GetComponent<SinusoidRendererComponent>()?.ratioUp ?? 1.0;//todo:  abstractify
+            ratioDown = ratioDown != 0 ? ratioDown : gameObject.GetComponent<SinusoidRendererComponent>()?.ratioDown ?? 1.0;
             double totalRatio = ratioDown + ratioUp;
-            nextUp = -secsforLoop;
-
-            if (gameObject.GetComponent<RokenSinusoidRendererComponent>() != null)
-            {
-                nextUp = -delay + secsforLoop;
-                nextUp  -= (ratioDown / totalRatio) * secsforLoop;
-            }
-        
-            nextUp += headstart ;
-            nextDown = 0;
-            if (gameObject.GetComponent<RokenSinusoidRendererComponent>() != null)
-            {
-                nextDown = -delay + secsforLoop;
-
-            }
-            else
-            { 
-                nextDown -=(ratioUp / totalRatio) * secsforLoop;
-            }
+            nextUp = -(ratioDown / totalRatio) * secsforLoop;
+            nextUp += headstart;
+            nextDown = -secsforLoop;
             nextDown += headstart;
-            return false;
+            return true;
         }
         if (gameObject.GetComponent<SinusoidRendererComponent>() != null)
         {
             if (gameObject.transform.position.x <= nextUp)
             {
-                Debug.Log($"Disengaged {name} , timestamp: " + (-sin.transform.position.x).ToString(System.Globalization.CultureInfo.InstalledUICulture.DateTimeFormat));
-                while (gameObject.transform.position.x <= nextUp)
-                    nextUp -= secsforLoop;
-                return false; //disengage 
+                nextUp -= secsforLoop;
+                return true; //engage 
             }
             if (gameObject.transform.position.x <= nextDown)
             {
-                Debug.Log($"Engaged {name} , timestamp: " + (-sin.transform.position.x).ToString(System.Globalization.CultureInfo.InstalledUICulture.DateTimeFormat));
-                while (gameObject.transform.position.x <= nextDown)
-                    nextDown -= secsforLoop;
-                return true; //engage
+                nextDown -= secsforLoop;
+                return false; //disengage
             }
             if (nextUp > nextDown)
-                return false;
+                return true;
         }
-        return true;
+        else
+        {
+            if (Time.realtimeSinceStartup <= nextUp)
+            {
+                nextUp -= secsforLoop;
+                return true; //engage 
+            }
+            if (Time.realtimeSinceStartup <= nextDown)
+            {
+                nextDown -= secsforLoop;
+                return false; //disengage
+            }
+            if (nextUp > nextDown)
+                return true;
+        }
+        return false;
     }
 
 

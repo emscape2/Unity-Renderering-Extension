@@ -8,17 +8,17 @@ public class Consequence : MonoBehaviour, IConsequence
     protected bool engaged;
     public virtual void Engage()
     {
-        //Debug.Log("Engaged");
+        Debug.Log("Engaged");
         engaged = true;
     }
     public virtual void Disengage()
     {
-        //Debug.Log("DisEngage");
+        Debug.Log("DisEngage");
         engaged = false;
     }
     public virtual bool CanEngage()
     {
-        //Debug.Log("CanEngage");
+        Debug.Log("CanEngage");
         return true;
 
     }

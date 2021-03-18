@@ -17,50 +17,32 @@ public class Toggle_TWO_Audio_volumes : Consequence
     private void MuteOnStartUp(string tag)
     {
         var global = GlobalVars.getGlobalVars();
-        GameObject[] _gameObjects;
+        AudioSource source;
 
-        _gameObjects = GameObject.FindGameObjectsWithTag(tag);
-        if (_gameObjects == null)
+        source = GameObject.FindWithTag(tag)?.GetComponent<AudioSource>();
+        if (source == null)
         {
             return;
         }
         var waarde = global.getVar(tag + "Audio");
         if (waarde == 1)
         {
-            foreach(GameObject _gameObject in _gameObjects)
-            {
-                var source = _gameObject.GetComponent<AudioSource>();
-                source.mute = true;
-            }
+            source.mute = false;
         }
         else
         {
-            foreach (GameObject _gameObject in _gameObjects)
-            {
-                var source = _gameObject.GetComponent<AudioSource>();
-                source.mute = false;
-            }
+            source.mute = true;
         }
     }
 
     public override void Disengage()
     {
-        var global = GlobalVars.getGlobalVars();
         foreach (var tag1 in tags)
         {
-            var _gameObjects = GameObject.FindGameObjectsWithTag(tag1);
-            if (global.getVar(tag1 + "Audio") == 0)
-                global.setVar(tag1 + "Audio", 1);
-            else
-                global.setVar(tag1 + "Audio", 0);
+            var source = GameObject.FindWithTag(tag1)?.GetComponent<AudioSource>();
 
-            foreach (GameObject _gameObject in _gameObjects)
-            {
-                var source = _gameObject.GetComponent<AudioSource>();
-                ProcessAudioChanges(source);
-            } 
+            ProcessAudioChanges(source);
         }
-
 
        
 
@@ -73,13 +55,15 @@ public class Toggle_TWO_Audio_volumes : Consequence
         {
             return;
         }
-        if (global.getVar(source.tag + "Audio") == 0)
+        if (global.getVar(source.tag + "Audio") == 1)
         {
             source.mute = false;
+            global.setVar(source.tag + "Audio", 0);
         }
         else
         {
             source.mute = true;
+            global.setVar(source.tag + "Audio", 1);
         }
     }
 

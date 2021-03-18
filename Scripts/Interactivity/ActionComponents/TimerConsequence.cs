@@ -14,26 +14,25 @@ public class TimerConsequence : Consequence
     public TextMeshPro timeText;
     public float delay;
     public float remainingDelay;
-    public Color color;
     private void OnEnable()
     {
         if (initialTimeRemainder < 0.5f)
-            initialTimeRemainder = 0.5f;
+            initialTimeRemainder = timeRemaining;
         else
             timeRemaining = initialTimeRemainder;
         var globalVars = GlobalVars.getGlobalVars();
         var speed = globalVars.getVar("SPEED");
-        globalVars.setVar("Pause", 1);
+        globalVars.setVar("Pause", 0);
         switch (speed)
         {
             case 0:
-                delay = 0.01f;
+                delay = 6.5f;
                 break;
             case 1:
-                delay = 0.01f;
+                delay = 6;
                 break;
             case 2:
-                delay = 0.01f;
+                delay = 5.5f;
                 break;
         }
         remainingDelay = delay;
@@ -57,7 +56,7 @@ public class TimerConsequence : Consequence
             globalVars.setVar("delayGlobal", (int)(remainingDelay * 1000));
             timeRemaining = initialTimeRemainder;
             
-            timeText.text = $"<#{ColorUtility.ToHtmlStringRGB(color)}> {(int)(remainingDelay + 1) }</color>";
+            timeText.text = $"<#DD9DA5> {(int)(remainingDelay + 1) }</color>";
             
         }
         else
@@ -82,7 +81,7 @@ public class TimerConsequence : Consequence
         if (position == null || globalVars.getVar("Pause") == 1)
         {
             timeRemaining = initialTimeRemainder - position?.x ?? 0f;
-            timeText.text = $"<#{ColorUtility.ToHtmlStringRGB(color)}> {DisplayTime(timeRemaining)}</color>";
+            timeText.text = $"<#B3C2AC>{DisplayTime(timeRemaining)}</color>";
 
 
             if (remainingDelay <= 0)

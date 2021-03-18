@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.Rendering.PostProcessing;
 
 public class TemporaryCleanup : Editor
 {

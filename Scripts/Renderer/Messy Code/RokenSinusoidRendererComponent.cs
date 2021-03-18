@@ -7,7 +7,6 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
     public float secWait = 2.0f;
     public float ampScale = 1.66f;
     public bool startMetUitadem;
-    public TimedRepeaterDelayStart toAdjust;
     protected override List<Vector2> GetPointsAfterEmielsZak()
     {
 
@@ -33,7 +32,7 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
             pointsafterEmielsZak.Add(new Vector2(point.x + secWait, initmult ?? (point.y *mr)));
         }
 
-        int indexTempSwitch = 0;
+
         // standaard routine 3 diepe teugen
         for (double i = 0; i < 3; i+=1)
         {
@@ -81,13 +80,12 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
         pointsafterEmielsZak.Add(new Vector2(pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x + 0.15f, amplitudeL/ampScale));
 
         endX = pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x+0.10f;
-        indexTempSwitch = pointsafterEmielsZak.Count - 1;
         var normal = base.GetPointsAfterEmielsZak();
         normal.RemoveAt(0);
            for (int j = 0; j < normal.Count; j++)
             {
                 var point = normal[j];
-                normal[j] = new Vector2((point.x * 1.02f) + endX, point.y);
+                normal[j] = new Vector2((point.x * 1.05f) + endX, point.y);
             }
         
         pointsafterEmielsZak.AddRange(normal);
@@ -95,11 +93,6 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
         float xBoost = 0;
         for (int i = 0; i < pointsafterEmielsZak.Count -1; i++)
         {
-            if (i == indexTempSwitch && toAdjust != null)
-            {
-                toAdjust.delay = pointsToReturn[pointsToReturn.Count - 1].x;
-
-            }
             float perct = (pointsafterEmielsZak[i].y / amplitude);
             pointsToReturn.Add(pointsafterEmielsZak[i]+new Vector2(xBoost, 0f));
 
@@ -123,8 +116,6 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
             xBoost += (float)(Mathf.Abs(pointsafterEmielsZak[i].y) / (0.95*amplitude * detail * realbpm));
 */
         }
-        endX = normal[normal.Count - 1].x;
-        realbpm = realbpm / (1.02 * ((endX + xBoost )/ (double)endX));
         return pointsToReturn;
     }
 }

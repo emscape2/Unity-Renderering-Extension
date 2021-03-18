@@ -60,5 +60,5 @@ Shader "GUIllaume/PlainColourShader,Transparent"
 }
         ENDCG
     }
-                   FallBack "Unlit/Transparent Cutout"
+                   FallBack "Legacy Shaders/Transparent/Cutout/VertexLit"
 }

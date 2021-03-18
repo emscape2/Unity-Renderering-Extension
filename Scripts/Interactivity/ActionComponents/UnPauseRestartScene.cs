@@ -21,13 +21,13 @@ public class UnPauseRestartScene : Consequence
         var global = GlobalVars.getGlobalVars();
         if (global.getVar("Pause") == 1)
         {
-         //   global.setVar("Pause", 0);
+            global.setVar("Pause", 0);
         }
         else
         {
             
         }
-            StartCoroutine(reloadScene());
+        StartCoroutine(reloadScene());
     }
 
     public IEnumerator reloadScene()

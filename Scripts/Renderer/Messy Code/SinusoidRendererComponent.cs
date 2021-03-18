@@ -26,10 +26,7 @@ public class SinusoidRendererComponent : MonoBehaviour
     public double ratioUp;
     public double ratioDown;
     public double realbpm;
-    public bool startUp;
     public bool getSPEED;
-    internal bool _started;
-    protected int iterations;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,71 +69,36 @@ public class SinusoidRendererComponent : MonoBehaviour
         meshRenderer.material = Resources.Load<Material>("Materials/colouredUnlit");
         if (setColor)
         meshRenderer.material.SetColor("_EmissionColor", color);
-
-        if (!_started)
-            _started = true;
     }
 
     protected virtual List<Vector2> GetPointsAfterEmielsZak()
     {
-        iterations = 0;
+
         var totalRatio = ratioUp + ratioDown;
         var Omhoog = Upwards_Graph(totalRatio);
         var Omlaag = Downwards_Graph(totalRatio);
         List<Vector2> pointsafterEmielsZak = new List<Vector2>();
-        if (startUp)
+        var lastOmh = Omhoog.Last();
+        pointsafterEmielsZak.Add(Omlaag[0]);
+        for (double i = 0; i < (totalLength * realbpm); i += 1)
         {
-            var lastOmh = Omlaag.Last();
-            pointsafterEmielsZak.Add(Omhoog[0]);
-            for(double i = 0; i < (totalLength * realbpm); i += 1)
+            pointsafterEmielsZak.Add(new Vector2(((Omlaag[0].x +
+                       (float)(i * 60.0 / realbpm)))
+                   , amplitude));
+            for (int j = 1; j < Omlaag.Count; j++)
             {
-                iterations++;
-                pointsafterEmielsZak.Add(new Vector2(((Omhoog[0].x +
-                           (float)(i * 60.0 / realbpm)))
-                       , -amplitude));
-                for (int j = 1; j < Omhoog.Count; j++)
-                {
-                    pointsafterEmielsZak.Add(new Vector2(((Omhoog[j].x +
-                            (float)(i * 60.0 / realbpm)))
-                        , Omhoog[j].y));
-                }
-
-                for (int j = 0; j < Omlaag.Count; j++)
-                {
-                    pointsafterEmielsZak.Add(new Vector2((Omlaag[j].x + (
-                        (float)(
-                        (i + (ratioUp / totalRatio))
-                        * 60.0 / realbpm)))
-                        , Omlaag[j].y));
-                }
+                pointsafterEmielsZak.Add(new Vector2(((Omlaag[j].x +
+                        (float)(i * 60.0 / realbpm)))
+                    , Omlaag[j].y));
             }
-        }
-        else
-        {
-            var lastOmh = Omhoog.Last();
 
-            pointsafterEmielsZak.Add(Omlaag[0]);
-            for (double i = 0; i < (totalLength * realbpm); i += 1)
+            for (int j = 0; j < Omhoog.Count; j++)
             {
-                iterations++;
-                pointsafterEmielsZak.Add(new Vector2(((Omlaag[0].x +
-                           (float)(i * 60.0 / realbpm)))
-                       , amplitude));
-                for (int j = 1; j < Omlaag.Count; j++)
-                {
-                    pointsafterEmielsZak.Add(new Vector2(((Omlaag[j].x +
-                            (float)(i * 60.0 / realbpm)))
-                        , Omlaag[j].y));
-                }
-
-                for (int j = 0; j < Omhoog.Count; j++)
-                {
-                    pointsafterEmielsZak.Add(new Vector2((Omhoog[j].x + (
-                        (float)(
-                        (i + (ratioDown / totalRatio))
-                        * 60.0 / realbpm)))
-                        , Omhoog[j].y));
-                }
+                pointsafterEmielsZak.Add(new Vector2((Omhoog[j].x + (
+                    (float)(
+                    (i + (ratioDown / totalRatio))
+                    * 60.0 / realbpm)))
+                    , Omhoog[j].y));
             }
         }
         return pointsafterEmielsZak;
