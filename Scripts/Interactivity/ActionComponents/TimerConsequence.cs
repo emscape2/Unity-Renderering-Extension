@@ -18,7 +18,7 @@ public class TimerConsequence : Consequence
     private void OnEnable()
     {
         if (initialTimeRemainder < 0.5f)
-            initialTimeRemainder = 0.5f;
+            initialTimeRemainder = timeRemaining;
         else
             timeRemaining = initialTimeRemainder;
         var globalVars = GlobalVars.getGlobalVars();
@@ -36,7 +36,7 @@ public class TimerConsequence : Consequence
                 delay = 0.01f;
                 break;
         }
-        remainingDelay = delay;
+        remainingDelay = 0.01f;//delay;
         globalVars.setVar("delayGlobal", (int)(delay*1000));
     }
 
