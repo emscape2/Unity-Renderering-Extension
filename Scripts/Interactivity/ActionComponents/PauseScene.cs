@@ -21,15 +21,18 @@ public class PauseScene : Consequence
         global.setVar("Pause",  Convert.ToInt32((global.getVar("Pause")==0)));
 		foreach(var tag in tagger)
 		{
-			source = GameObject.FindWithTag(tag).GetComponent<AudioSource>();
-			if (source.isPlaying)
-			{
-				source.Pause();
-			}
-			else
-			{
-				source.UnPause();
-			}
+            foreach (var sourced in GameObject.FindGameObjectsWithTag(tag))
+            {
+                var source = sourced.GetComponent<AudioSource>();
+                if (source.isPlaying)
+                {
+                    source.Pause();
+                }
+                else
+                {
+                    source.UnPause();
+                } 
+            }
 		}
     }
 
