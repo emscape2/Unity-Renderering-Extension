@@ -8,7 +8,7 @@ public class PlayMultipleAudioConsequence : Consequence
 {
     public List<AudioSource> sources;
     int index;
-    bool bPlay;
+    public bool bPlay;
     public override void Disengage()
     {
         PlayAudio();
