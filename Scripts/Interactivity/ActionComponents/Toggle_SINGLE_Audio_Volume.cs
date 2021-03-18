@@ -6,17 +6,17 @@ using Assets.Scripts.Interactivity.ActionComponents;
 public class Toggle_SINGLE_Audio_Volume : Consequence
 {
     AudioSource source;
-    public new string tag;
+    public new string tag1;
 
     private void Start()
     {
         var global = GlobalVars.getGlobalVars();
-        source = GameObject.FindWithTag(tag)?.GetComponent<AudioSource>();
+        source = GameObject.FindWithTag(tag1)?.GetComponent<AudioSource>();
         if (source == null)
         {
             return;
         }
-        var waarde = global.getVar(tag + "Audio");
+        var waarde = global.getVar(tag1 + "Audio");
         if (waarde == 0)
         {
             source.mute = false;
@@ -31,7 +31,7 @@ public class Toggle_SINGLE_Audio_Volume : Consequence
     public override void Disengage()
     {
         var global = GlobalVars.getGlobalVars();
-        source = GameObject.FindWithTag(tag)?.GetComponent<AudioSource>();
+        source = GameObject.FindWithTag(tag1)?.GetComponent<AudioSource>();
         if (source == null)
         {
             return;
@@ -39,12 +39,12 @@ public class Toggle_SINGLE_Audio_Volume : Consequence
         if (source.mute == true)
         {
             source.mute = false;
-            global.setVar(tag + "Audio", 0);
+            global.setVar(tag1 + "Audio", 0);
         }
         else
         {
             source.mute = true;
-            global.setVar(tag + "Audio", 1);
+            global.setVar(tag1 + "Audio", 1);
         }
     }
 
