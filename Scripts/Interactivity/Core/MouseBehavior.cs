@@ -9,11 +9,16 @@ using UnityEngine.UI;
 
 class MouseBehavior
 {
-
+    private static Vector2 mousePos;
+    private static Vector3 rayPos;
+    private static Camera guillaumeCam;
     public static bool MouseOver(Vector2 pos, GameObject gameObject)
     {
+        if (guillaumeCam == null)
+        {
+            guillaumeCam = Camera.allCameras.Where(c => c.gameObject.layer == 29).FirstOrDefault();//eerste guillaume camera 
+        }
         // var rect = rectSurface();
-        var guillaumeCam = Camera.allCameras.Where(c => c.gameObject.layer == 29).FirstOrDefault();//eerste guillaume camera 
         if (guillaumeCam == null)
         {
             Debug.LogError("no carmerá attaché");
@@ -21,9 +26,15 @@ class MouseBehavior
         }
         else
         {
+            if (Mathf.Abs(pos.x - mousePos.x) + Mathf.Abs(pos.y - mousePos.y) > 0.01f)
+            {
+                mousePos = pos;
+                Ray ray = guillaumeCam.ScreenPointToRay(pos);
+                rayPos = ray.origin;
+            }
             // var ray = (Vector2)rect.InverseTransformPoint(guillaumeCam.ScreenPointToRay(pos).origin);
-            var ray = guillaumeCam.ScreenPointToRay(pos);
-            if (RectSurface(ray.origin, gameObject, guillaumeCam))
+
+            if (RectSurface(rayPos, gameObject, guillaumeCam))
             {
                 return true;
             }

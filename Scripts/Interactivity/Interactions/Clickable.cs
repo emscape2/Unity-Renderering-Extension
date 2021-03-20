@@ -9,7 +9,7 @@ public class Clickable : Interaction
 
     public override bool? TryInteract(GameObject gameObject)
     {
-        if (tijd == null || DateTime.Now >= tijd)
+        if (tijd == null || DateTime.UtcNow >= tijd)
         {
             //debug masks 
             if (Input.GetKeyDown(KeyCode.U))
@@ -28,7 +28,7 @@ public class Clickable : Interaction
                     {
 
                         Debug.LogWarning("Clicked: " + gameObject.name);
-                        tijd = DateTime.Now.AddMilliseconds(200);
+                        tijd = DateTime.UtcNow.AddMilliseconds(200);
                         return true;
                     }
                         

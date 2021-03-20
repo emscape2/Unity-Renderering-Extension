@@ -2,6 +2,7 @@ using Assets.Scripts.Interactivity.ActionComponents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class TimedRepeaterDelayStart : Interaction
@@ -17,7 +18,7 @@ public class TimedRepeaterDelayStart : Interaction
     public double realBPM;
     public double ratioUp, ratioDown;
     private bool started;
-
+    public static  DateTimeFormatInfo dateF = System.Globalization.CultureInfo.InstalledUICulture.DateTimeFormat;
     private void OnEnable()
     {
         started = false;
@@ -70,14 +71,14 @@ public class TimedRepeaterDelayStart : Interaction
         {
             if (gameObject.transform.position.x <= nextUp)
             {
-                Debug.Log($"Disengaged {name} , timestamp: " + (-sin.transform.position.x).ToString(System.Globalization.CultureInfo.InstalledUICulture.DateTimeFormat));
+                Debug.Log($"Disengaged {name} , timestamp: " + (-sin.transform.position.x).ToString(dateF));
                 while (gameObject.transform.position.x <= nextUp)
                     nextUp -= secsforLoop;
                 return false; //disengage 
             }
             if (gameObject.transform.position.x <= nextDown)
             {
-                Debug.Log($"Engaged {name} , timestamp: " + (-sin.transform.position.x).ToString(System.Globalization.CultureInfo.InstalledUICulture.DateTimeFormat));
+                Debug.Log($"Engaged {name} , timestamp: " + (-sin.transform.position.x).ToString(dateF));
                 while (gameObject.transform.position.x <= nextDown)
                     nextDown -= secsforLoop;
                 return true; //engage
