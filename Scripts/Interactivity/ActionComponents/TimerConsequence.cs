@@ -43,7 +43,7 @@ public class TimerConsequence : Consequence
 
 
 
-    void Update()
+    void FixedUpdate()
     {
         var position = -FindObjectOfType<SinusoidRendererComponent>()?.transform?.position;
             var globalVars = GlobalVars.getGlobalVars();
@@ -98,10 +98,11 @@ public class TimerConsequence : Consequence
     string DisplayTime(float timeToDisplay)
 
     {
-        timeToDisplay += 1;
 
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        timeToDisplay ++;
+
+        int minutes = ((int)timeToDisplay / 60);
+        int seconds = ((int)timeToDisplay % 60);
 
         return string.Format("{0}:{1:00}", minutes, seconds);
     }
