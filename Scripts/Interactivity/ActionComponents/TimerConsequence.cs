@@ -105,6 +105,7 @@ public class TimerConsequence : Consequence
         int seconds = ((int)timeToDisplay % 60);
 
         return string.Format("{0}:{1:00}", minutes, seconds);
+
     }
 
     public override void Engage()
@@ -115,5 +116,6 @@ public class TimerConsequence : Consequence
     public override void Disengage()
     {
         OnEnable(); //force reset the counter
+
     }
 }

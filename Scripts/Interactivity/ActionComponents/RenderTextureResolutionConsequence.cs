@@ -53,16 +53,43 @@ public class RenderTextureResolutionConsequence : Consequence
     }
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         foreach (var t in texturesToManage)
         {
             if (t.IsCreated())
                 continue;
-            t.width = Screen.width;
-            t.height = Screen.height;
 
+            if (SystemInfo.deviceType == DeviceType.Desktop)
+            {
+                switch (SystemInfo.operatingSystemFamily)
+                {
+                    case OperatingSystemFamily.MacOSX:
+                        {
+                            t.width = Screen.width/2;
+                            t.height = Screen.height/2;
+                            break;
+                        }
+                    default:
+                        {
+                            t.width = Screen.width;
+                            t.height = Screen.height;
+                            break;
+                        }
+                }
+            }
+            else if (SystemInfo.deviceType == DeviceType.Handheld)
+            {
 
+                t.width = Screen.width *3 /4;
+                t.height = Screen.height *3 /4;
+            }
+            else
+            {
+
+                t.width = Screen.width;
+                t.height = Screen.height;
+            }
         };
     }
 

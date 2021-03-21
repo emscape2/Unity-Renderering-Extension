@@ -82,6 +82,7 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
 
         endX = pointsafterEmielsZak[pointsafterEmielsZak.Count - 1].x+0.10f;
         indexTempSwitch = pointsafterEmielsZak.Count - 1;
+        base.ratioUp = 4; base.ratioDown = 6; base.realbpm = 6;
         var normal = base.GetPointsAfterEmielsZak();
         normal.RemoveAt(0);
            for (int j = 0; j < normal.Count; j++)
@@ -102,8 +103,10 @@ public class RokenSinusoidRendererComponent : SinusoidRendererComponent
             }
             float perct = (pointsafterEmielsZak[i].y / amplitude);
             pointsToReturn.Add(pointsafterEmielsZak[i]+new Vector2(xBoost, 0f));
+
             if (Mathf.Abs(perct) > 0.5f )
                 xBoost += (float)((perct * perct) / (0.90 * detail * realbpm));
+
             float avgX = (pointsafterEmielsZak[i].x + pointsafterEmielsZak[i + 1].x ) * 0.5f;
             float avgY = (pointsafterEmielsZak[i].y + pointsafterEmielsZak[i + 1].y) * 0.5f;
             if (Mathf.Abs(avgY) < 0.66f * amplitudeL)
