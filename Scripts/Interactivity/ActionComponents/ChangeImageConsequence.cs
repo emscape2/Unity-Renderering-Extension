@@ -1,3 +1,4 @@
+using Assets.Scripts.Interactivity.ActionComponents;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,11 @@ public class ChangeImageConsequence : Consequence
     {
         renderer = gameobject.GetComponent<SpriteRenderer>();
         Used = renderer.sprite;
-        if (Used == PauseImage)
+
+
+        
+        
+        if (GlobalVars.getGlobalVars().getVar("Pause") == 1)//Used == PauseImage)
             gameobject.GetComponent<SpriteRenderer>().sprite = PlayImage;
         else
             gameobject.GetComponent<SpriteRenderer>().sprite = PauseImage;
